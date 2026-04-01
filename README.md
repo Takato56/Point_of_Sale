@@ -1,0 +1,1 @@
+# Point of Sale system for group project
