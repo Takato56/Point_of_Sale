@@ -11,7 +11,7 @@ class Beverage : public Product {
 private:
     std::string size;
 public:
-    Beverage(const std::string& name, int p);
+    Beverage(const std::string& n, std::string id, int p);
     void display() const override;
     double calculatePrice() const;
 };

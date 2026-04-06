@@ -4,8 +4,6 @@
 
 #include "Product.h"
 
-Product::Product(std::string n, int p) : prodName(n), prodPrice(p) {}
-
 std::string Product::getProdName() const{
     return prodName;
 }
@@ -37,4 +35,8 @@ void Product::edit() {
 
 void Product::display() const {
     std::cout << prodName << " - " << prodPrice << std::endl;
+}
+
+std::string Product::toString() const {
+    return prodId + " | " + prodName + " | " + std::to_string(prodPrice);
 }

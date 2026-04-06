@@ -12,19 +12,23 @@ private:
     std::string prodId;
     int prodPrice;
 public:
-    Product(std::string n, int price);
+    Product() : prodId(""), prodName(""), prodPrice(0) {}
+
+    Product(const std::string& n, std::string id, int p) : prodName(n), prodId(id), prodPrice(p) {}
 
     std::string getProdName() const;
     std::string getProdId() const;
     int getProdPrice() const;
 
-    void setProdName(const std::string& newName);
-    void setProdId(const std::string& newProdId);
+    void setProdName(std::string newName);
+    void setProdId(std::string newId);
     void setProdPrice(int price);
 
     virtual void edit();
     virtual void display() const;
     virtual ~Product() {}
+
+    std::string toString() const;
 };
 
 

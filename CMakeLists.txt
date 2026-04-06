@@ -14,6 +14,10 @@ add_executable(Point_of_Sale main.cpp
         DatabaseSRC/DBContext/DBContext.h
         Menu.cpp
         Menu.h
+        ProductRepo.cpp
+        ProductRepo.h
+        MenuController.cpp
+        MenuController.h
 )
 
 target_link_libraries(Point_of_Sale PRIVATE odbc32)

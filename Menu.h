@@ -9,17 +9,31 @@
 #include "Beverage.h"
 class Menu {
 private:
-    std::vector<Product*> products;
+    std::vector<Product*> menu;
     int beverageCount = 0;
 public:
-    void addProduct(Product* product) {
-        if (dynamic_cast<Beverage*>(product)) {
-            beverageCount++;
-            products->set
+    void addProduct(Product* newProducts) {
+        menu.push_back(newProducts);
+    }
+    void editProduct(const std::string& name) {
+        for (Product* product : menu) {
+            if (product->getProdName() == name) {
+                std::cout << "Product founded! Editing..." << std::endl;
+                product->edit();
+                return;
+            }
         }
     }
-    void editProduct(const std::string& name);
-    void deleteProduct(const std::string& name);
+    void deleteProduct(const std::string& name) {
+        for (auto product = menu.begin(); product != menu.end(); ++product) {
+            if ((*product)->getProdName() == name) {
+                delete *product;
+                menu.erase(product);
+                std::cout << "Item deleted!\n" << std::endl;
+                return;
+            }
+        }
+    }
 };
 
 
