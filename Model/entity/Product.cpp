@@ -2,7 +2,7 @@
 // Created by ntt12 on 4/3/2026.
 //
 
-#include "Product.h"
+#include "../../Product.h"
 
 std::string Product::getProdName() const{
     return prodName;

@@ -5,7 +5,7 @@
 #ifndef POINT_OF_SALE_MENU_H
 #define POINT_OF_SALE_MENU_H
 #include <vector>
-#include "Product.h"
+#include "../Product.h"
 class Menu {
 private:
     std::vector<Product*> menu;

@@ -2,7 +2,7 @@
 // Created by ntt12 on 4/7/2026.
 //
 
-#include "Categories.h"
+#include "../../Categories.h"
 
 Categories::Categories(const std::string &name, int cate_id, int display_order)
     : CateName(name), CateId(cate_id), DisplayOrder(display_order) {}

@@ -4,10 +4,10 @@
 
 #ifndef POINT_OF_SALE_STAFFREPO_H
 #define POINT_OF_SALE_STAFFREPO_H
-#include "DatabaseSRC/DBContext/DBContext.h"
+#include "../DBContext/DBContext.h"
 #include <vector>
 
-#include "Employee.h"
+#include "../../Model/entity/Employee.h"
 
 class StaffRepo {
     DBContext& db;

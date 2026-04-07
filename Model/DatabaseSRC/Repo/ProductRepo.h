@@ -5,10 +5,10 @@
 #ifndef POINT_OF_SALE_PRODUCTREPO_H
 #define POINT_OF_SALE_PRODUCTREPO_H
 
-#include "../../Product.h"
+#include "../../Model/entity/Product.h"
 #include <vector>
 #include "../DBContext/DBContext.h"
-#include "../../Categories.h"
+#include "../../Model/entity/Categories.h"
 class ProductRepo {
 private:
     DBContext& db;
