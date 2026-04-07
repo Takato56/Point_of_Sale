@@ -18,6 +18,16 @@ add_executable(Point_of_Sale main.cpp
         ProductRepo.h
         MenuController.cpp
         MenuController.h
+        PasswordHasher.cpp
+        PasswordHasher.h
+        Employee.cpp
+        Employee.h
+        Manager.cpp
+        Manager.h
+        StaffController.cpp
+        StaffController.h
+        StaffRepo.cpp
+        StaffRepo.h
 )
 
 target_link_libraries(Point_of_Sale PRIVATE odbc32)
