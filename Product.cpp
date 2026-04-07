@@ -5,11 +5,11 @@
 #include "Product.h"
 
 std::string Product::getProdName() const{
-    return prodName;
+    return ProdName;
 }
 
 int Product::getProdId() const {
-    return prodId;
+    return ProdId;
 }
 
 int Product::getCateId() const {
@@ -20,11 +20,11 @@ int Product::getCateId() const {
 // }
 
 void Product::setProdName(const std::string newName) {
-    prodName = newName;
+    ProdName = newName;
 }
 
 void Product::setProdId(const int newId) {
-    prodId = newId;
+    ProdId = newId;
 }
 
 void Product::setCateId(const int newCateId) {
@@ -36,14 +36,16 @@ void Product::setCateId(const int newCateId) {
 //}
 
 void Product::edit() {
-    std::cout << "Enter new name: "; std::getline(std::cin, prodName);
+    std::cout << "Enter new name: ";
+    std::cin.ignore();
+    std::getline(std::cin, ProdName);
     // std::cout << "Enter new price: "; std::cin >> prodPrice;
 }
 
 void Product::display() const {
-    std::cout << prodName << std::endl;
+    std::cout << ProdName << std::endl;
 }
 
 std::string Product::toString() const {
-    return prodId + " | " + prodName;
+    return ProdId + " | " + ProdName;
 }

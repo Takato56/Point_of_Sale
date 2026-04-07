@@ -8,7 +8,7 @@
 #include "../../Product.h"
 #include <vector>
 #include "../DBContext/DBContext.h"
-#include "../../Categories.h"
+
 class ProductRepo {
 private:
     DBContext& db;

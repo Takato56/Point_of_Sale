@@ -8,13 +8,13 @@
 #include <iostream>
 class Product {
 private:
-    std::string prodName;
-    int prodId;
+    std::string ProdName;
+    int ProdId;
     int CateId;
 public:
-    Product() : prodId(), prodName(""), CateId() {}
+    Product() : ProdId(), ProdName(""), CateId() {}
 
-    Product(const std::string& n, int id) : prodName(n), prodId(id) {}
+    Product(const std::string& n, int id) : ProdName(n), ProdId(id) {}
 
     std::string getProdName() const;
     int getProdId() const;

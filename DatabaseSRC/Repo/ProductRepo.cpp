@@ -38,7 +38,7 @@
     Product ProductRepo::getByID(const std::string& id) {
         Product pd;
         std::string query =
-            "SELECT ProdId, ProdName, ProdPrice FROM PRODUCT WHERE ProdID='" + id + "';";
+            "SELECT ProdId, ProdName, ProdPrice FROM Product WHERE ProdId='" + id + "';";
 
         db.execute(query);
         SQLHSTMT stmt = db.getStmt();
@@ -58,7 +58,7 @@
 
     void ProductRepo::update(const Product& pd) {
         std::string query =
-            "UPDATE PRODUCT SET ProdName='" + pd.getProdName()+
+            "UPDATE Product SET ProdName='" + pd.getProdName()+
             " WHERE ProdId='" + std::to_string(pd.getProdId()) + "';";
 
         db.execute(query);
@@ -67,7 +67,7 @@
 
     void ProductRepo::remove(const std::string& id) {
         std::string query =
-            "DELETE FROM PRODUCT WHERE ProdId='" + id + "';";
+            "DELETE FROM Product WHERE ProdId='" + id + "';";
 
         db.execute(query);
         db.clearStmt();

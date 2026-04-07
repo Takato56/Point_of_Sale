@@ -30,6 +30,12 @@ add_executable(Point_of_Sale main.cpp
         StaffController.h
         StaffRepo.cpp
         StaffRepo.h
+        ProductVariants.cpp
+        ProductVariants.h
+        DatabaseSRC/Repo/PVRepo.cpp
+        DatabaseSRC/Repo/PVRepo.h
+        Modifiers.cpp
+        Modifiers.h
 )
 
 target_link_libraries(Point_of_Sale PRIVATE odbc32)
