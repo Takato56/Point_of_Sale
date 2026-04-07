@@ -8,16 +8,18 @@ add_executable(Point_of_Sale main.cpp
         utils/Exception.h
         Product.cpp
         Product.h
-        Beverage.cpp
-        Beverage.h
         DatabaseSRC/DBContext/DBContext.cpp
         DatabaseSRC/DBContext/DBContext.h
         Menu.cpp
         Menu.h
-        ProductRepo.cpp
-        ProductRepo.h
+        DatabaseSRC/Repo/ProductRepo.cpp
+        DatabaseSRC/Repo/ProductRepo.h
         MenuController.cpp
         MenuController.h
+        DatabaseSRC/Repo/CategoriesRepo.cpp
+        DatabaseSRC/Repo/CategoriesRepo.h
+        Categories.cpp
+        Categories.h
         PasswordHasher.cpp
         PasswordHasher.h
         Employee.cpp

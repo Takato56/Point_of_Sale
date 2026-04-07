@@ -9,20 +9,22 @@
 class Product {
 private:
     std::string prodName;
-    std::string prodId;
-    int prodPrice;
+    int prodId;
+    int CateId;
 public:
-    Product() : prodId(""), prodName(""), prodPrice(0) {}
+    Product() : prodId(), prodName(""), CateId() {}
 
-    Product(const std::string& n, std::string id, int p) : prodName(n), prodId(id), prodPrice(p) {}
+    Product(const std::string& n, int id) : prodName(n), prodId(id) {}
 
     std::string getProdName() const;
-    std::string getProdId() const;
+    int getProdId() const;
     int getProdPrice() const;
+    int getCateId() const;
 
     void setProdName(std::string newName);
-    void setProdId(std::string newId);
+    void setProdId(int newId);
     void setProdPrice(int price);
+    void setCateId(int newCateId);
 
     virtual void edit();
     virtual void display() const;
