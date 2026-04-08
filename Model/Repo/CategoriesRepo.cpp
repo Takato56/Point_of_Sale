@@ -3,11 +3,14 @@
 //
 
 #include "CategoriesRepo.h"
+#include "../../utils/DataHelper.h"
 
 void CategoriesRepo::addCategories(const Categories& ct) {
+    int newId = DataHelper::getNextId(db, "Categories", "CateId");
+
     std::string query =
     "INSERT INTO Categories (CateId, CateName, DisplayOrder) VALUES ('" +
-        std::to_string(ct.getCateId()) + "', '" + ct.getCateName() + "', '" + ct.getDisplayOrder() + "');";
+        std::to_string(newId) + "', '" + ct.getCateName() + "', '" + ct.getDisplayOrder() + "');";
 
     db.execute(query);
     db.clearStmt();

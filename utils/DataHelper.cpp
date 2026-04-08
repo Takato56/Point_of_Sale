@@ -2,11 +2,13 @@
 // Created by ntt12 on 4/8/2026.
 //
 
-#include "GetNextId.h"
+#include "DataHelper.h"
 
-int GetNextId::getNextId() {
+int DataHelper::getNextId(DBContext& db, const std::string& tableName, const std::string& columnName) {
     int nextId = 1;
-    db.execute("SELECT MAX(" +getColumn() + ") FROM" + getTable() + ";");
+    std::string query = "SELECT MAX(" + columnName + ") FROM " + tableName + ";";
+
+    db.execute(query);
     SQLHSTMT stmt = db.getStmt();
 
     SQLINTEGER maxId;
@@ -14,7 +16,6 @@ int GetNextId::getNextId() {
 
     if (SQLFetch(stmt) == SQL_SUCCESS) {
         SQLGetData(stmt, 1, SQL_C_SLONG, &maxId, 0, &cbMaxId);
-
         if (cbMaxId != SQL_NULL_DATA) {
             nextId = (int)maxId + 1;
         }

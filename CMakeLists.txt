@@ -42,8 +42,14 @@ add_executable(Point_of_Sale main.cpp
         Controller/EmployeeController.cpp
         Model/entity/ProductModifiers.cpp
         Model/entity/ProductModifiers.h
-        utils/GetNextId.cpp
-        utils/GetNextId.h
+        utils/DataHelper.cpp
+        utils/DataHelper.h
+        Model/entity/OrderItems.cpp
+        Model/entity/OrderItems.h
+        Model/entity/Customer.cpp
+        Model/entity/Customer.h
+        Model/Repo/EmployeeRepo.cpp
+        Model/Repo/EmployeeRepo.h
 )
 
 target_link_libraries(Point_of_Sale PRIVATE odbc32)

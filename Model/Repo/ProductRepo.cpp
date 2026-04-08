@@ -3,31 +3,14 @@
     //
 
     #include "ProductRepo.h"
-
-    int ProductRepo::getNextId() {
-        int nextId = 1;
-        db.execute("SELECT MAX(ProdId) FROM Products;");
-        SQLHSTMT stmt = db.getStmt();
-
-        SQLINTEGER maxId;
-        SQLLEN cbMaxId;
-
-        if (SQLFetch(stmt) == SQL_SUCCESS) {
-            SQLGetData(stmt, 1, SQL_C_SLONG, &maxId, 0, &cbMaxId);
-
-            if (cbMaxId != SQL_NULL_DATA) {
-                nextId = (int)maxId + 1;
-            }
-        }
-        db.clearStmt();
-        return nextId;
-    }
-
+#include "../../utils/DataHelper.h"
 
     void ProductRepo::addProduct(const Product& pd) {
+        int newId = DataHelper::getNextId(db, "Products", "ProdId");
+
         std::string query =
         "INSERT INTO Products (ProdID, CateId, ProdName, Price) VALUES (" +
-        std::to_string(pd.getProdId()) + ", " +
+        std::to_string(newId) + ", " +
         std::to_string(pd.getCateId()) + ", '" +
         pd.getProdName() + "', " +
         std::to_string(pd.getProdPrice()) + ");";
@@ -63,7 +46,7 @@
         return list;
     }
 
-    Product ProductRepo::getByID(int id) {
+    Product ProductRepo::getByID(const int id) {
         Product pd;
         std::string query = "SELECT ProdId, CateId, ProdName, Price FROM Products WHERE ProdId = " + std::to_string(id) + ";";
 

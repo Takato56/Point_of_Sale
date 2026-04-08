@@ -7,7 +7,7 @@
 #include <iostream>
 #include <string>
 enum Role {
-    Employee = 1,
+    Staff = 1,
     Manager = 2
 };
 

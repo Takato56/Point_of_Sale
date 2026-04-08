@@ -14,7 +14,6 @@ private:
     DBContext& db;
 public:
     ProductRepo(DBContext& context) : db(context) {}
-    int getNextId();
     void addProduct(const Product& pd);
     std::vector<Product> getAll();
     Product getByID(int id);

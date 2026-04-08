@@ -15,8 +15,10 @@ public:
     void addPM(const ProductModifiers& pm);
     std::vector<ProductModifiers> getAll();
     ProductModifiers getByID(const std::string& id);
-    void update(const ProductModifiers& pm);
-    void remove(const std::string& id);
+    virtual void update(const ProductModifiers& pm);
+    virtual void remove(const std::string& id);
+
+    virtual ~PMRepo();
 };
 
 
