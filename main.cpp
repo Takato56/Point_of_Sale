@@ -1,5 +1,6 @@
-#include "MenuController.h"
-#include "DatabaseSRC/DBContext/DBContext.h"
+#include "Controller/MenuController.h"
+#include "model/DatabaseSRC/DBContext/DBContext.h"
+
 int main() {
     DBContext db;
     // DB Connection

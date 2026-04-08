@@ -6,17 +6,22 @@
 #define POINT_OF_SALE_PRODUCTVARIANS_H
 #include <string>
 
+enum Size {
+    Small,
+    Medium,
+    Large
+};
 
 class ProductVariants {
 private:
     int PVId;
-    std::string size;
+    Size size;
     int price;
     int ProdId;
 public:
-    ProductVariants() : PVId(), size(""), price(), ProdId() {}
+    ProductVariants() : PVId(), size(), price(), ProdId() {}
 
-    std::string getSize() const;
+    Size getSize() const;
     int getPVId() const;
     int getPrice() const;
     int getProdId() const;

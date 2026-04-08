@@ -7,9 +7,10 @@
 
 #include <vector>
 
-#include "Categories.h"
-#include "DatabaseSRC/Repo/CategoriesRepo.h"
-#include "DatabaseSRC/Repo/ProductRepo.h"
+#include "../Model/entity/Categories.h"
+#include "../model/Repo/ProductRepo.h"
+#include "../model/Repo/CategoriesRepo.h"
+#include "../model/DatabaseSRC/DBContext/DBContext.h"
 class MenuController {
 private:
     ProductRepo pr;

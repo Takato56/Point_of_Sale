@@ -4,9 +4,9 @@
 
 #ifndef POINT_OF_SALE_PVREPO_H
 #define POINT_OF_SALE_PVREPO_H
-#include "../../DatabaseSRC/DBContext/DBContext.h"
+#include "../DatabaseSRC/DBContext/DBContext.h"
 #include <vector>
-#include "../../ProductVariants.h"
+#include "../entity/ProductVariants.h"
 
 class PVRepo {
 private:

@@ -7,7 +7,7 @@
 #include <iostream>
 #include <ostream>
 
-std::string ProductVariants::getSize() const {
+Size ProductVariants::getSize() const {
     return size;
 }
 int ProductVariants::getPVId() const {
