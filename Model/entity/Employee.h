@@ -6,20 +6,32 @@
 #define POINT_OF_SALE_EMPLOYEE_H
 #include <iostream>
 #include <string>
-
+enum Role {
+    Employee = 1,
+    Manager = 2
+};
 
 class Employee {
-    std::string name;
+    std::string EmpName;
     std::string pinHash;
+    Role role;
+    std::string EmpPhone;
 public:
-    Employee();
-    virtual void showInterface();
-    void orderItem();
-    std::string getPinHash();
-    void setPinHash(std::string pinHash);
-    std::string getName();
-    void setName(std::string name);
-    std::string toString();
+    Employee() : EmpName(""), pinHash(""), role(), EmpPhone("") {}
+
+    std::string getEmployeeName() const;
+    std::string getEmployeePhone() const;
+    Role getRole() const;
+    std::string getPinHash() const;
+
+    void setEmpName(std::string newEmpName);
+    void setEmpPhone(std::string newEmpPhone);
+    void setRole(Role newRole);
+    void setPinHash(std::string newPinHash);
+
+    virtual void edit();
+    // virtual void display() const;
+    virtual ~Employee() {}
 };
 
 

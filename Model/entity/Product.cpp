@@ -47,5 +47,5 @@ void Product::display() const {
 }
 
 std::string Product::toString() const {
-    return ProdId + " | " + ProdName;
+    return std::to_string(ProdId) + " | " + ProdName + " | " + std::to_string(ProdPrice);
 }
