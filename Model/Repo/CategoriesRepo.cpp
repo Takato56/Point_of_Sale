@@ -17,17 +17,17 @@ std::vector<Categories> CategoriesRepo::getAll() {
     std::vector<Categories> list;
     db.execute("SELECT CateId, CateName, DisplayOrder FROM Categories;");
     SQLHSTMT stmt = db.getStmt();
-    // SQLINTEGER idBuffer;
+    SQLINTEGER idBuffer;
     SQLCHAR CateName[50];
     SQLLEN cbId, cbName, cbDisplayOrder;
     while (SQLFetch(stmt) == SQL_SUCCESS) {
         Categories ct;
 
-        SQLGetData(stmt, 1, SQL_C_SLONG, &cbId, 0, &cbId);
+        SQLGetData(stmt, 1, SQL_C_SLONG, &idBuffer, sizeof(idBuffer), NULL);
         SQLGetData(stmt, 2, SQL_C_CHAR, CateName, sizeof(CateName), &cbName);
         SQLGetData(stmt, 3, SQL_C_SLONG,&cbDisplayOrder , 0, &cbDisplayOrder);
 
-        ct.setCateId((int)cbId);
+        ct.setCateId((int)idBuffer);
         ct.setCateName((char*)CateName);
         ct.setDisplayOrder((int)cbDisplayOrder);
 

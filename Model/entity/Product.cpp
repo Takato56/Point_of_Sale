@@ -15,9 +15,9 @@ int Product::getProdId() const {
 int Product::getCateId() const {
     return CateId;
 }
-// int Product::getProdPrice() const {
-//     return prodPrice;
-// }
+int Product::getProdPrice() const {
+    return ProdPrice;
+}
 
 void Product::setProdName(const std::string newName) {
     ProdName = newName;
@@ -31,15 +31,15 @@ void Product::setCateId(const int newCateId) {
     CateId = newCateId;
 }
 
-// void Product::setProdPrice(int price) {
-//     prodPrice = price;
-//}
+ void Product::setProdPrice(const int newPrice) {
+     ProdPrice = newPrice;
+}
 
 void Product::edit() {
     std::cout << "Enter new name: ";
     std::cin.ignore();
     std::getline(std::cin, ProdName);
-    // std::cout << "Enter new price: "; std::cin >> prodPrice;
+    std::cout << "Enter new price: "; std::cin >> ProdPrice;
 }
 
 void Product::display() const {

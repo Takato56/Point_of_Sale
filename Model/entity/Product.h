@@ -11,8 +11,9 @@ private:
     std::string ProdName;
     int ProdId;
     int CateId;
+    int ProdPrice;
 public:
-    Product() : ProdId(), ProdName(""), CateId() {}
+    Product() : ProdId(), ProdName(""), CateId(), ProdPrice() {}
 
     Product(const std::string& n, int id) : ProdName(n), ProdId(id) {}
 
@@ -23,7 +24,7 @@ public:
 
     void setProdName(std::string newName);
     void setProdId(int newId);
-    void setProdPrice(int price);
+    void setProdPrice(int newPrice);
     void setCateId(int newCateId);
 
     virtual void edit();

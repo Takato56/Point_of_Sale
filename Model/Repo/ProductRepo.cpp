@@ -6,8 +6,8 @@
 
     void ProductRepo::addProduct(const Product& pd) {
         std::string query =
-            "INSERT INTO Products (ProdID, CateId, ProdName) VALUES "
-            "(" + std::to_string(pd.getProdId()) + ", " + std::to_string(pd.getCateId()) +", '" + pd.getProdName() + "');";
+            "INSERT INTO Products (ProdID, CateId, ProdName, Price) VALUES "
+            "(" + std::to_string(pd.getProdId()) + ", " + std::to_string(pd.getCateId()) +", '" + pd.getProdName() + "', " + std::to_string(pd.getProdPrice()) + ");";
 
         std::cout << query << std::endl;
         db.execute(query);
@@ -16,18 +16,23 @@
 
     std::vector<Product> ProductRepo::getAll() {
         std::vector<Product> list;
-        db.execute("SELECT ProdId, ProdName FROM PRODUCT;");
+        db.execute("SELECT ProdId, CateId, ProdName, Price FROM PRODUCT;");
         SQLHSTMT stmt = db.getStmt();
-        SQLINTEGER idBuffer[50];
+        SQLINTEGER idBuffer, CateId, Price;
         SQLCHAR ProdName[20];
         while (SQLFetch(stmt) == SQL_SUCCESS) {
             Product pd;
 
-            SQLGetData(stmt, 1, SQL_C_CHAR, idBuffer, sizeof(idBuffer), NULL);
+            SQLGetData(stmt, 1, SQL_C_SLONG, &idBuffer, sizeof(idBuffer), NULL);
+            SQLGetData(stmt, 2, SQL_C_SLONG, &CateId, sizeof(CateId), NULL);
             SQLGetData(stmt, 3, SQL_C_CHAR, ProdName, sizeof(ProdName), NULL);
+            SQLGetData(stmt, 4, SQL_C_SLONG, &Price, sizeof(Price), NULL);
 
-            pd.setProdId(*idBuffer);
+
+            pd.setProdId((int)idBuffer);
+            pd.setCateId((int)CateId);
             pd.setProdName((char*)ProdName);
+            pd.setProdPrice((int)Price);
 
             list.push_back(pd);
         }
@@ -38,19 +43,24 @@
     Product ProductRepo::getByID(const std::string& id) {
         Product pd;
         std::string query =
-            "SELECT ProdId, ProdName, ProdPrice FROM Product WHERE ProdId='" + id + "';";
+            "SELECT ProdId, ProdName, Price FROM Product WHERE ProdId='" + id + "';";
 
         db.execute(query);
         SQLHSTMT stmt = db.getStmt();
         if (SQLFetch(stmt) == SQL_SUCCESS) {
-            SQLCHAR idBuffer[50];
+            SQLINTEGER idBuffer, CateId, Price;
             SQLCHAR ProdName[20];
 
-            SQLGetData(stmt, 1, SQL_C_CHAR, idBuffer, sizeof(idBuffer), NULL);
-            SQLGetData(stmt, 2, SQL_C_CHAR, ProdName, sizeof(ProdName), NULL);
 
-            pd.setProdId(*idBuffer);
+            SQLGetData(stmt, 1, SQL_C_SLONG, &idBuffer, sizeof(idBuffer), NULL);
+            SQLGetData(stmt, 2, SQL_C_SLONG, &CateId, sizeof(CateId), NULL);
+            SQLGetData(stmt, 3, SQL_C_CHAR, ProdName, sizeof(ProdName), NULL);
+            SQLGetData(stmt, 4, SQL_C_SLONG, &Price, sizeof(Price), NULL);
+
+            pd.setProdId((int)idBuffer);
+            pd.setCateId((int)CateId);
             pd.setProdName((char*)ProdName);
+            pd.setProdPrice((int)Price);
         }
         db.clearStmt();
         return pd;

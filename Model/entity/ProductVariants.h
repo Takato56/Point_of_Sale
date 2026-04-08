@@ -7,9 +7,9 @@
 #include <string>
 
 enum Size {
-    Small,
-    Medium,
-    Large
+    Small = 1,
+    Medium = 2,
+    Large = 3
 };
 
 class ProductVariants {
@@ -27,7 +27,7 @@ public:
     int getProdId() const;
 
     void setPVId(int newPVId);
-    void setSize(std::string newSize);
+    void setSize(Size newSize);
     void setPrice(int newPrice);
     void setProdId(int newProdId);
 

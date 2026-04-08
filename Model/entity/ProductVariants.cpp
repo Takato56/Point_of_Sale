@@ -23,7 +23,7 @@ int ProductVariants::getProdId() const {
 void ProductVariants::setPVId(int newPVId) {
     PVId = newPVId;
 }
-void ProductVariants::setSize(std::string newSize) {
+void ProductVariants::setSize(Size newSize) {
     size = newSize;
 }
 void ProductVariants::setPrice(int newPrice) {
@@ -34,9 +34,10 @@ void ProductVariants::setProdId(int newProdId) {
 }
 
 void ProductVariants::edit() {
-        std::cout << "Enter new product variances size: ";
-        std::cin.ignore();
-        std::getline(std::cin, size);
+    int input;
+    std::cout << "Enter new product variances size: ";
+    std::cin >> input;
+    size = static_cast<Size>(input);
 }
 void ProductVariants::display() const {
     std::cout << size << std::endl;
