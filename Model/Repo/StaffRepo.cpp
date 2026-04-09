@@ -55,7 +55,7 @@ std::vector<Employee> StaffRepo::getAll() {
         emp.setPhoneNumber((char*)phoneBuffer);
         emp.setPinHash((char*)pinHashBuffer);
         std::string roleStr((char*)roleBuffer);
-        emp.setRole(stringToRole(roleBuffer));
+        emp.setRole(stringToRole(roleStr));
         emp.setIsActive((int)isActiveBuffer);
 
         list.push_back(emp);
