@@ -43,7 +43,7 @@ void Product::edit() {
 }
 
 void Product::display() const {
-    std::cout << ProdName << std::endl;
+    std::cout << ProdId << " - " << CateId << " - " << ProdName << " - " << ProdPrice << std::endl;
 }
 
 std::string Product::toString() const {

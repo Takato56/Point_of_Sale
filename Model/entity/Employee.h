@@ -12,6 +12,7 @@ enum Role {
 };
 
 class Employee {
+    int EmpId;
     std::string EmpName;
     std::string pinHash;
     Role role;
@@ -19,18 +20,20 @@ class Employee {
 public:
     Employee() : EmpName(""), pinHash(""), role(), EmpPhone("") {}
 
+    int getEmployeeId() const;
     std::string getEmployeeName() const;
     std::string getEmployeePhone() const;
     Role getRole() const;
     std::string getPinHash() const;
 
+    void setEmployeeId(int newEmpId);
     void setEmpName(std::string newEmpName);
     void setEmpPhone(std::string newEmpPhone);
     void setRole(Role newRole);
     void setPinHash(std::string newPinHash);
 
     virtual void edit();
-    // virtual void display() const;
+    virtual void display() const;
     virtual ~Employee() {}
 };
 

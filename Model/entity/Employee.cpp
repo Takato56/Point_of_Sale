@@ -3,6 +3,10 @@
 //
 
 #include "Employee.h"
+int Employee::getEmployeeId() const {
+    return EmpId;
+}
+
 std::string Employee::getEmployeeName() const {
     return EmpName;
 }
@@ -15,6 +19,10 @@ Role Employee::getRole() const {
 }
 std::string Employee::getPinHash() const {
     return pinHash;
+}
+
+void Employee::setEmployeeId(int newEmpId) {
+    EmpId = newEmpId;
 }
 
 void Employee::setEmpName(std::string newEmpName) {
@@ -33,4 +41,8 @@ void Employee::setPinHash(std::string newPinHash) {
 void Employee::edit() {
     std::cout << "" << std::endl;
 }
-// void Employee::display()
+void Employee::display() const{
+    std::cout << "Employee Name: " << EmpName << std::endl;
+    std::cout << "Employee Phone: " << EmpPhone << std::endl;
+    std::cout << "Role: " << role << std::endl;
+}

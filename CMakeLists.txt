@@ -4,8 +4,8 @@ project(Point_of_Sale)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(Point_of_Sale main.cpp
-        controller/StaffController.cpp
-        controller/StaffController.h
+        Controller/LoginController.cpp
+        Controller/LoginController.h
         controller/MenuController.cpp
         controller/MenuController.h
         utils/Exception.cpp
@@ -50,6 +50,20 @@ add_executable(Point_of_Sale main.cpp
         Model/entity/Customer.h
         Model/Repo/EmployeeRepo.cpp
         Model/Repo/EmployeeRepo.h
+        Model/Repo/CustomerRepo.cpp
+        Model/Repo/CustomerRepo.h
+        Model/entity/Orders.cpp
+        Model/entity/Orders.h
+        Model/entity/Discount.cpp
+        Model/entity/Discount.h
+        Model/entity/OrderDiscounts.cpp
+        Model/entity/OrderDiscounts.h
+        Model/entity/Payments.cpp
+        Model/entity/Payments.h
+        Controller/ManagerController.cpp
+        Controller/ManagerController.h
+        Model/Repo/OrderRepo.cpp
+        Model/Repo/OrderRepo.h
 )
 
 target_link_libraries(Point_of_Sale PRIVATE odbc32)

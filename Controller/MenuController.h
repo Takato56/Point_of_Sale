@@ -6,19 +6,17 @@
 #define POINT_OF_SALE_MENUCONTROLLER_H
 
 #include <vector>
-
+#include "../Model/entity/Product.h"
 #include "../Model/entity/Categories.h"
 #include "../model/Repo/ProductRepo.h"
 #include "../model/Repo/CategoriesRepo.h"
 #include "../model/DatabaseSRC/DBContext/DBContext.h"
-#include "EmployeeController.h"
 class MenuController {
 private:
     ProductRepo pr;
     CategoriesRepo cr;
-    EmployeeController ec;
 public:
-    MenuController(DBContext& db) : pr(db), cr(db), ec(db) {}
+    MenuController(DBContext& db) : pr(db), cr(db) {}
     void run() {
         int choice;
 
@@ -33,7 +31,7 @@ public:
             std::cin >> choice;
 
             switch (choice) {
-                case 1: ec.createProduct(); break;
+                // case 1: ec.createProduct(); break;
                 // case 1: createCategories(); break;
                 case 2: getAllProduct(); break;
                 //case 3: updateProduct(); break;
@@ -77,6 +75,32 @@ public:
     // std::string sizeChoice;
     //  cout << "Size S, M, L: "; getline(cin, sizeChoice);
     //}
+
+    int showAndSelectCategories(const std::vector<Categories>& ct) {
+        std::cout << "\n===== CATEGORIES =====" << std::endl;
+        for (const auto& cate : ct) {
+            std::cout << "[" << cate.getCateId() << "] " << cate.getCateName() << std::endl;
+        }
+
+        int choice;
+        std::cout << "Choose Category ID: ";
+        std::cin >> choice;
+        return choice;
+    }
+
+    void displayProductsByCategory(int cateId, const std::vector<Product>& pd) {
+        std::cout << "\n===== PRODUCT IN CATEGORIES =====" << std::endl;
+        bool found = false;
+        for (const auto& prod : pd) {
+            if (prod.getCateId() == cateId) {
+                std::cout << "ID: " << prod.getProdId() << " | " << prod.getProdName() << std::endl;
+                found = true;
+            }
+        }
+        if (!found) {
+            std::cout << "Product not exist" << std::endl;
+        }
+    }
 };
 
 

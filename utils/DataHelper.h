@@ -10,6 +10,7 @@
 class DataHelper {
 public:
     static int getNextId(DBContext& db, const std::string& tableName, const std::string& columnName);
+
 };
 
 

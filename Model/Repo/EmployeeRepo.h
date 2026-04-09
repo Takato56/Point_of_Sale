@@ -13,9 +13,8 @@
 class EmployeeRepo {
 private:
     DBContext& db;
-    DataHelper dh;
 public:
-    EmployeeRepo(DBContext& context) : db(context), dh(context) {}
+    EmployeeRepo(DBContext& context) : db(context){}
 
     void addEmployee(Employee& employee);
     std::vector<Employee> getAll();

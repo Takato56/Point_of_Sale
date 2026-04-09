@@ -1,45 +1,38 @@
 //
 // Created by ntt12 on 4/8/2026.
 //
-
+#include "MenuController.h"
 #include "EmployeeController.h"
+#include "../utils/DataHelper.h"
 
-void EmployeeController::createProduct() {
-    std::vector<Categories> listCate = cr.getAll();
-    if (listCate.empty()) {
-        std::cout << "No categories found!\n";
-        return;
-    }
-    std::cout << "\n==========CATEGORIES==========\n";
-    for (size_t i = 0; i < listCate.size(); i++) {
-        std::cout << i + 1 <<". "<< listCate[i].getCateName()
-                                 << " (ID: " << listCate[i].getCateId() << ")\n";
-    }
-    std::cout << "0. Exit";
-
-    int CateChoice;
-    std::cout << "\nChoice: ";  std::cin >> CateChoice;
-    if (CateChoice == 0 || CateChoice > (int)listCate.size()) {
-        std::cout << "Invalid choice!\n";
-        return;
-    }
-
-    int selectedCateId = listCate[CateChoice - 1].getCateId();
-    int autoProdId = pr.getNextId();
-    std::cout << "\nGenerated Product ID: " << autoProdId << std::endl;
-
-    int prodPrice;
-    std::string prodName;
-    std::cout << "Product Name: ";
-    std::cin.ignore();
-    std::getline(std::cin, prodName);
-    std::cout << "Product price: ";  std::cin >> prodPrice;
-
-    Product p;
-    p.setProdId(autoProdId);
-    p.setProdName(prodName);
-    p.setCateId(selectedCateId);
-    p.setProdPrice(prodPrice);
-
-    pr.addProduct(p);
+void EmployeeController::loadData(const std::vector<Categories>& c, const std::vector<Product>& p) {
+    listCt = c;
+    listPd = p;
 }
+
+void EmployeeController::createOrder() {
+    std::string CustPhone;
+    int newOrderId = DataHelper::getNextId(db, "Orders", "OrderId");
+    int selectedId = mc.showAndSelectCategories(listCt);
+    mc.displayProductsByCategory(selectedId, listPd);
+
+    int prodId;
+    std::cout<<"\nEnter ProdId to add to Order(0 to cancel): "; std::cin>>prodId;
+    if (prodId == 0) {
+        std::cout<<"Order Cancelled!";
+        return;
+    }
+    std::cout<<"Added Product " << prodId << " to order!" << std::endl;
+
+    Orders o;
+    o.setOrderId(newOrderId);
+    int StaffId = 1, CustId = 1;
+
+    o.setStaffId(StaffId);
+    o.setCustId(CustId);
+
+    odr.addOrder(o);
+}
+void EmployeeController::createPayment(){}
+void EmployeeController::takeOrderCard(){}
+void EmployeeController::checkCustPoint(){}
