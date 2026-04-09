@@ -3,11 +3,14 @@
 //
 
 #include "CategoriesRepo.h"
+#include "../../utils/DataHelper.h"
 
 void CategoriesRepo::addCategories(const Categories& ct) {
+    int newId = DataHelper::getNextId(db, "Categories", "CateId");
+
     std::string query =
     "INSERT INTO Categories (CateId, CateName, DisplayOrder) VALUES ('" +
-        std::to_string(ct.getCateId()) + "', '" + ct.getCateName() + "', '" + ct.getDisplayOrder() + "');";
+        std::to_string(newId) + "', '" + ct.getCateName() + "', '" + ct.getDisplayOrder() + "');";
 
     db.execute(query);
     db.clearStmt();
@@ -37,10 +40,10 @@ std::vector<Categories> CategoriesRepo::getAll() {
     return list;
 }
 
-Categories CategoriesRepo::getByID(const std::string& id) {
+Categories CategoriesRepo::getByID(const int id) {
     Categories ct;
     std::string query =
-        "SELECT CateId, CateName, DisplayOrder FROM Categories WHERE CateId='" + id + "';";
+        "SELECT CateId, CateName, DisplayOrder FROM Categories WHERE CateId='" + std::to_string(id) + "';";
 
     db.execute(query);
     SQLHSTMT stmt = db.getStmt();
@@ -70,9 +73,9 @@ void CategoriesRepo::update(const Categories &ct) {
     db.clearStmt();
 }
 
-void CategoriesRepo::remove(const std::string &id) {
+void CategoriesRepo::remove(const int id) {
     std::string query =
-        "DELETE FROM Categories WHERE CateId='" + id + "';";
+        "DELETE FROM Categories WHERE CateId='" + std::to_string(id) + "';";
 
     db.execute(query);
     db.clearStmt();

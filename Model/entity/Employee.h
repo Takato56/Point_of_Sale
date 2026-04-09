@@ -6,7 +6,10 @@
 #define POINT_OF_SALE_EMPLOYEE_H
 #include <iostream>
 #include <string>
-
+enum Role {
+    Staff = 1,
+    Manager = 2
+};
 
 class Employee {
     int EmpId;
@@ -16,7 +19,7 @@ class Employee {
     std::string role;
     int isActive;
 public:
-    Employee();
+    Employee() : EmpName(""), pinHash(""), role(), EmpPhoneNumber("") {}
     Employee(int id, std::string name, std::string phoneNumber, std::string pinHash, std::string role);
     virtual void showInterface();
     void orderItem();
@@ -35,6 +38,9 @@ public:
     void setIsActive(int isActive);
 
     std::string toString();
+    virtual void edit();
+    virtual void display() const;
+    virtual ~Employee() {}
 };
 
 

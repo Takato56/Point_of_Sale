@@ -4,8 +4,6 @@
 
 #include "Employee.h"
 
-Employee::Employee() {
-}
 
 Employee::Employee(int id, std::string name, std::string phoneNumber, std::string NewPinHash, std::string NewRole) {
     EmpId = id;

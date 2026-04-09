@@ -8,6 +8,10 @@
 
 
 class Manager : public Employee {
+public:
+    Manager();
+    Manager(const Employee& employee) : Employee(employee) {};
+
 };
 
 

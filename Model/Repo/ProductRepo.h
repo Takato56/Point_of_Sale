@@ -16,9 +16,9 @@ public:
     ProductRepo(DBContext& context) : db(context) {}
     void addProduct(const Product& pd);
     std::vector<Product> getAll();
-    Product getByID(const std::string& id);
+    Product getByID(int id);
     void update(const Product& pd);
-    void remove(const std::string& id);
+    void remove(int id);
 };
 
 #endif //POINT_OF_SALE_PRODUCTREPO_H

@@ -12,24 +12,12 @@
 class StaffRepo {
     DBContext& db;
 public:
-    StaffRepo(DBContext& context);
-    std::vector<Employee> getAll() {
-        std::vector<Employee> list;
-        db.execute("SELECT PinHash FROM Staffs;");
-        SQLHSTMT stmt = db.getStmt();
-        SQLPOINTER PinHash;
-        while (SQLFetch(stmt) == SQL_SUCCESS) {
-            Employee pd;
-
-            SQLGetData(stmt, 4, SQL_C_CHAR, PinHash, sizeof(PinHash), NULL);
-
-            pd.setPinHash((char*)PinHash);
-
-            list.push_back(pd);
-        }
-        db.clearStmt();
-        return list;
-    }
+    StaffRepo(DBContext& context) : db(context) {}
+    void addStaff(const Employee& employee);
+    std::vector<Employee> getAll();
+    Employee getByID(int id);
+    void update(const Employee& employee);
+    void remove(int id);
 };
 
 

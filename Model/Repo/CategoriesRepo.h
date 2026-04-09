@@ -15,9 +15,9 @@ public:
     CategoriesRepo(DBContext& db) : db(db) {}
     void addCategories(const Categories& ct);
     std::vector<Categories> getAll();
-    Categories getByID(const std::string& id);
+    Categories getByID(const int id);
     void update(const Categories& ct);
-    void remove(const std::string& id);
+    void remove(const int id);
 };
 
 

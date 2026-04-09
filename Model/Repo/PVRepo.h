@@ -15,9 +15,12 @@ public:
     PVRepo(DBContext& context) : db(context) {}
     void addPV(const ProductVariants& pv);
     std::vector<ProductVariants> getAll();
-    ProductVariants getByID(const std::string& id);
+    ProductVariants getByID(int id);
     void update(const ProductVariants& pv);
-    void remove(const std::string& id);
+    void remove(int id);
+
+    std::string sizeToString(Size s);
+    Size stringToSize(const std::string& str);
 };
 
 
