@@ -4,16 +4,6 @@
 
 #include "Employee.h"
 
-
-Employee::Employee(int id, std::string name, std::string phoneNumber, std::string NewPinHash, std::string NewRole) {
-    EmpId = id;
-    EmpName = name;
-    EmpPhoneNumber = phoneNumber;
-    pinHash = NewPinHash;
-    role = NewRole;
-    isActive = true;
-}
-
 void Employee::showInterface() {
 }
 
@@ -52,11 +42,11 @@ void Employee::setPinHash(std::string NewPinHash) {
     pinHash = NewPinHash;
 }
 
-std::string Employee::getRole() const {
+Role Employee::getRole() const {
     return role;
 }
 
-void Employee::setRole(std::string NewRole) {
+void Employee::setRole(Role NewRole) {
     role = NewRole;
 }
 

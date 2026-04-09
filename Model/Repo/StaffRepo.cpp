@@ -4,6 +4,20 @@
 
 #include "StaffRepo.h"
 
+std::string StaffRepo::roleToString(Role r) {
+    switch (r) {
+        case Staff :  return "Staff";
+        case Manager : return "Manager";
+        default:     return "Unknown";
+    }
+}
+
+Role StaffRepo::stringToRole(const std::string& str) {
+    if (str == "Staff")  return Role::Staff;
+    if (str == "Manager") return Role::Manager;
+    return Role::Staff;
+}
+
 void StaffRepo::addStaff(const Employee& employee) {
     std::string query =
         "INSERT INTO Staff (EmpId, EmpName, EmpPhoneNumber, PinHash, Role, IsActive) VALUES ("
@@ -11,7 +25,7 @@ void StaffRepo::addStaff(const Employee& employee) {
         + employee.getName() + "', '"
         + employee.getPhoneNumber() + "', '"
         + employee.getPinHash() + "', '"
-        + employee.getRole() + "', "
+        + roleToString(employee.getRole()) + "', "
         + std::to_string(employee.getIsActive()) + ");";
 
     db.execute(query);
@@ -40,7 +54,8 @@ std::vector<Employee> StaffRepo::getAll() {
         emp.setName((char*)nameBuffer);
         emp.setPhoneNumber((char*)phoneBuffer);
         emp.setPinHash((char*)pinHashBuffer);
-        emp.setRole((char*)roleBuffer);
+        std::string roleStr((char*)roleBuffer);
+        emp.setRole(stringToRole(roleBuffer));
         emp.setIsActive((int)isActiveBuffer);
 
         list.push_back(emp);

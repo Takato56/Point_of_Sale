@@ -6,10 +6,10 @@
 #define POINT_OF_SALE_STAFFREPO_H
 #include "../DatabaseSRC/DBContext/DBContext.h"
 #include <vector>
-
 #include "../../Model/entity/Employee.h"
 
 class StaffRepo {
+private:
     DBContext& db;
 public:
     StaffRepo(DBContext& context) : db(context) {}
@@ -18,6 +18,9 @@ public:
     Employee getByID(int id);
     void update(const Employee& employee);
     void remove(int id);
+
+    std::string roleToString(Role r);
+    Role stringToRole(const std::string& str);
 };
 
 

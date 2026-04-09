@@ -16,11 +16,10 @@ class Employee {
     std::string EmpName;
     std::string EmpPhoneNumber;
     std::string pinHash;
-    std::string role;
+    Role role;
     int isActive;
 public:
     Employee() : EmpName(""), pinHash(""), role(), EmpPhoneNumber("") {}
-    Employee(int id, std::string name, std::string phoneNumber, std::string pinHash, std::string role);
     virtual void showInterface();
     void orderItem();
 
@@ -32,8 +31,8 @@ public:
     void setPhoneNumber(std::string phoneNumber);
     std::string getPinHash() const;
     void setPinHash(std::string pinHash);
-    std::string getRole() const;
-    void setRole(std::string role);
+    Role getRole() const;
+    void setRole(Role newRole);
     int getIsActive() const;
     void setIsActive(int isActive);
 
