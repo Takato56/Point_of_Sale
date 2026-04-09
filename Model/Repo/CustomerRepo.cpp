@@ -10,11 +10,11 @@ void CustomerRepo::addCustomer(const Customer& c) {
     int newId = DataHelper::getNextId(db, "Customers", "CustId");
 
     std::string query =
-    "INSERT INTO Customers (CustId, CustName, CustPhone, Point) VALUES (" +
-    std::to_string(newId) + ", " +
-    c.getCustName() + ", '" +
-    c.getCustPhone() + "', " +
-    std::to_string(c.getPoint()) + ");";
+        "INSERT INTO Customers (CustId, CustName, CustPhone, Point) VALUES ("
+        + std::to_string(newId) + ", '"
+        + c.getCustName() + "', '"
+        + c.getCustPhone() + "', "
+        + std::to_string(c.getPoint()) + ");";
 
     std::cout << "[SQL LOG]: " << query << std::endl;
     db.execute(query);
@@ -69,6 +69,31 @@ Customer CustomerRepo::getByID(const int id) {
     db.clearStmt();
     return c;
 }
+
+Customer CustomerRepo::getByPhone(const std::string& phone) {
+    Customer c;
+    std::string query = "SELECT CustId, CustName, CustPhone, Point FROM Customers WHERE CustPhone= '" + phone + "';";
+
+    db.execute(query);
+    SQLHSTMT stmt = db.getStmt();
+    if (SQLFetch(stmt) == SQL_SUCCESS) {
+        SQLINTEGER CustId, Point;
+        SQLCHAR CustName[50], CustPhone[50];
+
+        SQLGetData(stmt, 1, SQL_C_SLONG, &CustId, sizeof(CustId), NULL);
+        SQLGetData(stmt, 2, SQL_C_CHAR, CustName, sizeof(CustName), NULL);
+        SQLGetData(stmt, 3, SQL_C_CHAR, CustPhone, sizeof(CustPhone), NULL);
+        SQLGetData(stmt, 4, SQL_C_SLONG, &Point, sizeof(Point), NULL);
+
+        c.setCustId((int)CustId);
+        c.setCustName((char*)CustName);
+        c.setCustPhone((char*)CustPhone);
+        c.setPoint((int)Point);
+    }
+    db.clearStmt();
+    return c;
+}
+
 void CustomerRepo::update(const Customer& c) {
     std::string query =
         "UPDATE Customers SET CustId = '" + std::to_string(c.getCustId()) +

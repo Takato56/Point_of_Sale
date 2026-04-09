@@ -1,8 +1,5 @@
-//
-// Created by ntt12 on 4/9/2026.
-//
-
 #include "Orders.h"
+#include <iostream>
 
 int Orders::getOrderId() const {
     return OrderId;
@@ -12,6 +9,9 @@ int Orders::getStaffId() const {
 }
 int Orders::getCustId() const {
     return CustId;
+}
+int Orders::getOrderCardId() const {
+    return OrderCardId;
 }
 
 void Orders::setOrderId(const int newOrderId) {
@@ -23,11 +23,22 @@ void Orders::setStaffId(const int newStaffId) {
 void Orders::setCustId(const int newCustId) {
     CustId = newCustId;
 }
+void Orders::setOrderCardId(const int newOrderCardId) {
+    OrderCardId = newOrderCardId;
+}
 
 void Orders::edit() {
-    std::cout <<"Enter new StaffId: "; std::cin >> StaffId;
-    std::cout <<"Enter new CustId: "; std::cin >> CustId;
+    std::cout << "Enter new StaffId: ";
+    std::cin >> StaffId;
+    std::cout << "Enter new CustId: ";
+    std::cin >> CustId;
+    std::cout << "Enter new OrderCardId: ";
+    std::cin >> OrderCardId;
 }
+
 void Orders::display() const {
-    std::cout << OrderId;
+    std::cout << "OrderId: " << OrderId << "\n";
+    std::cout << "StaffId: " << StaffId << "\n";
+    std::cout << "CustId: " << CustId << "\n";
+    std::cout << "OrderCardId: " << OrderCardId << "\n";
 }

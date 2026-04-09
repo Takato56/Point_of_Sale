@@ -1,9 +1,6 @@
-//
-// Created by ntt12 on 4/7/2026.
-//
-
 #ifndef POINT_OF_SALE_PVREPO_H
 #define POINT_OF_SALE_PVREPO_H
+
 #include "../DatabaseSRC/DBContext/DBContext.h"
 #include <vector>
 #include "../entity/ProductVariants.h"
@@ -13,8 +10,10 @@ private:
     DBContext& db;
 public:
     PVRepo(DBContext& context) : db(context) {}
+
     void addPV(const ProductVariants& pv);
     std::vector<ProductVariants> getAll();
+    std::vector<ProductVariants> getByProdID(int prodId);
     ProductVariants getByID(int id);
     void update(const ProductVariants& pv);
     void remove(int id);
@@ -22,6 +21,5 @@ public:
     std::string sizeToString(Size s);
     Size stringToSize(const std::string& str);
 };
-
 
 #endif //POINT_OF_SALE_PVREPO_H

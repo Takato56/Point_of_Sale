@@ -10,7 +10,7 @@ int Payments::getPayId() const {
 int Payments::getOrderId() const {
     return OrderId;
 }
-int Payments::getAmount() const {
+double Payments::getAmount() const {
     return Amount;
 }
 std::string Payments::getMethod() const {
@@ -23,7 +23,7 @@ void Payments::setPayId(int newPayId) {
 void Payments::setOrderId(int newOrderId) {
     OrderId = newOrderId;
 }
-void Payments::setAmount(int newAmount) {
+void Payments::setAmount(double newAmount) {
     Amount = newAmount;
 }
 void Payments::setMethod(std::string newMethod) {
@@ -38,5 +38,8 @@ void Payments::edit() {
     std::cin >> Amount;
 }
 void Payments::display() const {
-    std::cout << PayId;
+    std::cout << "PayId: " << PayId << "\n";
+    std::cout << "OrderId: " << OrderId << "\n";
+    std::cout << "Amount: " << Amount << "\n";
+    std::cout << "Method: " << Method << "\n";
 }

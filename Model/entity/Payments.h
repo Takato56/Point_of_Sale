@@ -9,19 +9,20 @@
 
 class Payments {
 private:
-    int PayId, OrderId, Amount;
+    int PayId, OrderId;
+    double Amount;
     std::string Method;
 public:
-    Payments() : PayId(), OrderId(), Amount(), Method("") {}
+    Payments() : PayId(), OrderId(), Amount(0.0), Method("") {}
 
     int getPayId() const;
     int getOrderId() const;
-    int getAmount() const;
+    double getAmount() const;
     std::string getMethod() const;
 
     void setPayId(int newPayId);
     void setOrderId(int newOrderId);
-    void setAmount(int newAmount);
+    void setAmount(double newAmount);
     void setMethod(std::string newMethod);
 
     virtual void edit();

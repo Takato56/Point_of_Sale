@@ -61,3 +61,15 @@ void Employee::setIsActive(int NewIsActive) {
 std::string Employee::toString() {
     return EmpName;
 }
+
+void Employee::edit() {
+    std::cout <<"Enter new employee name: ";
+    std::cin.ignore();
+    std::getline(std::cin, EmpName);
+    std::cout << "Enter new phone number: ";
+    std::getline(std::cin, EmpPhoneNumber);
+}
+
+void Employee::display() const{
+    std::cout << EmpId;
+}

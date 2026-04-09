@@ -16,9 +16,9 @@ public:
     CustomerRepo(DBContext& context) : db(context) {}
 
     void addCustomer(const Customer& c);
-
     std::vector<Customer> getAll();
     Customer getByID(int id);
+    Customer getByPhone(const std::string& phone);
     void update(const Customer& c);
     void remove(int id);
 };

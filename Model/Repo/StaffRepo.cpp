@@ -6,26 +6,32 @@
 
 std::string StaffRepo::roleToString(Role r) {
     switch (r) {
-        case Staff :  return "Staff";
-        case Manager : return "Manager";
-        default:     return "Unknown";
+        case Staff:   return "Staff";
+        case Manager: return "Manager";
+        default:      return "Staff";
     }
 }
 
 Role StaffRepo::stringToRole(const std::string& str) {
-    if (str == "Staff")  return Role::Staff;
+    if (str == "Staff")   return Role::Staff;
     if (str == "Manager") return Role::Manager;
     return Role::Staff;
 }
 
 void StaffRepo::addStaff(const Employee& employee) {
+    std::string roleStr = roleToString(employee.getRole());
+
+    if (roleStr != "Staff" && roleStr != "Manager") {
+        roleStr = "Staff";
+    }
+
     std::string query =
-        "INSERT INTO Staff (EmpId, EmpName, EmpPhoneNumber, PinHash, Role, IsActive) VALUES ("
+        "INSERT INTO Staffs (StaffId, StaffName, StaffPhone, PinHash, Role, isActive) VALUES ("
         + std::to_string(employee.getId()) + ", '"
         + employee.getName() + "', '"
         + employee.getPhoneNumber() + "', '"
         + employee.getPinHash() + "', '"
-        + roleToString(employee.getRole()) + "', "
+        + roleStr + "', "
         + std::to_string(employee.getIsActive()) + ");";
 
     db.execute(query);
@@ -34,7 +40,7 @@ void StaffRepo::addStaff(const Employee& employee) {
 
 std::vector<Employee> StaffRepo::getAll() {
     std::vector<Employee> list;
-    db.execute("SELECT EmpId, EmpName, EmpPhoneNumber, PinHash, Role, IsActive FROM Staff;");
+    db.execute("SELECT StaffId, StaffName, StaffPhone, PinHash, Role, isActive FROM Staffs;");
     SQLHSTMT stmt = db.getStmt();
 
     SQLINTEGER idBuffer, isActiveBuffer;
@@ -67,7 +73,7 @@ std::vector<Employee> StaffRepo::getAll() {
 Employee StaffRepo::getByID(int id) {
     Employee emp;
     std::string query =
-        "SELECT EmpId, EmpName, EmpPhoneNumber, PinHash, Role, IsActive FROM Staff WHERE EmpId="
+        "SELECT StaffId, StaffName, StaffPhone, PinHash, Role, isActive FROM Staffs WHERE StaffId="
         + std::to_string(id) + ";";
 
     db.execute(query);
@@ -88,7 +94,8 @@ Employee StaffRepo::getByID(int id) {
         emp.setName((char*)nameBuffer);
         emp.setPhoneNumber((char*)phoneBuffer);
         emp.setPinHash((char*)pinHashBuffer);
-        emp.setRole((char*)roleBuffer);
+        std::string roleStr((char*)roleBuffer);
+        emp.setRole(stringToRole(roleStr));
         emp.setIsActive((int)isActiveBuffer);
     }
     db.clearStmt();
@@ -96,13 +103,14 @@ Employee StaffRepo::getByID(int id) {
 }
 
 void StaffRepo::update(const Employee& employee) {
+    std::string roleStr = roleToString(employee.getRole());
     std::string query =
-        "UPDATE Staff SET EmpName='" + employee.getName()
-        + "', EmpPhoneNumber='" + employee.getPhoneNumber()
+        "UPDATE Staffs SET StaffName='" + employee.getName()
+        + "', StaffPhone='" + employee.getPhoneNumber()
         + "', PinHash='" + employee.getPinHash()
-        + "', Role='" + employee.getRole()
-        + "', IsActive=" + std::to_string(employee.getIsActive())
-        + " WHERE EmpId=" + std::to_string(employee.getId()) + ";";
+        + "', Role='" + roleStr
+        + "', isActive=" + std::to_string(employee.getIsActive())
+        + " WHERE StaffId=" + std::to_string(employee.getId()) + ";";
 
     db.execute(query);
     db.clearStmt();
@@ -110,7 +118,7 @@ void StaffRepo::update(const Employee& employee) {
 
 void StaffRepo::remove(int id) {
     std::string query =
-        "DELETE FROM Staff WHERE EmpId=" + std::to_string(id) + ";";
+        "DELETE FROM Staffs WHERE StaffId=" + std::to_string(id) + ";";
 
     db.execute(query);
     db.clearStmt();

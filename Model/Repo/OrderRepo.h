@@ -1,7 +1,3 @@
-//
-// Created by ntt12 on 4/9/2026.
-//
-
 #ifndef POINT_OF_SALE_ORDERREPO_H
 #define POINT_OF_SALE_ORDERREPO_H
 
@@ -19,6 +15,7 @@ public:
     void addOrder(const Orders& order);
     std::vector<Orders> getAll();
     Orders getByID(int id);
+    std::vector<Orders> getByOrderCardID(int orderCardId);
     void update(const Orders& order);
     void remove(int id);
 };

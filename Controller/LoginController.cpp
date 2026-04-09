@@ -14,7 +14,7 @@ LoginResult LoginController::login() {
         if (PasswordHasher::verify(pin, emp.getPinHash())) {
             result.isSuccess = true;
             result.staffId = emp.getId();
-            sr.roleToString(emp.getRole());
+            result.role = emp.getRole();
             result.empName = emp.getName();
             return result;
         }
