@@ -31,13 +31,13 @@ int runApp() {
 
     std::cout << "Welcome, " << loginResult.empName << "!\n";
 
-    if (loginResult.role == Manager) {
+    if (loginResult.role == Role_Manager) {
         ManagerController controller(db);
         controller.run();
         return 0;
     }
 
-    if (loginResult.role == Staff) {
+    if (loginResult.role == Role_Staff) {
         EmployeeController controller(db);
         controller.setCurrentStaffId(loginResult.staffId);
         controller.run();

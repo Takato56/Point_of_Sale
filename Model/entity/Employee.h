@@ -7,8 +7,8 @@
 #include <iostream>
 #include <string>
 enum Role {
-    Staff = 1,
-    Manager = 2
+    Role_Staff = 1,
+    Role_Manager = 2
 };
 
 class Employee {

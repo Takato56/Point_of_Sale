@@ -6,16 +6,16 @@
 
 std::string StaffRepo::roleToString(Role r) {
     switch (r) {
-        case Staff:   return "Staff";
-        case Manager: return "Manager";
+        case Role_Staff:   return "Staff";
+        case Role_Manager: return "Manager";
         default:      return "Staff";
     }
 }
 
 Role StaffRepo::stringToRole(const std::string& str) {
-    if (str == "Staff")   return Role::Staff;
-    if (str == "Manager") return Role::Manager;
-    return Role::Staff;
+    if (str == "Staff")   return Role::Role_Staff;
+    if (str == "Manager") return Role::Role_Manager;
+    return Role::Role_Staff;
 }
 
 void StaffRepo::addStaff(const Employee& employee) {
