@@ -100,27 +100,60 @@ void ManagerController::showAllCategories() {
 void ManagerController::run() {
     int choice;
     do {
-        std::cout << "\n===== MANAGER UI =====\n";
-        std::cout << "1. Create Category\n";
-        std::cout << "2. Show All Categories\n";
-        std::cout << "3. Create Product\n";
-        std::cout << "4. Show All Products\n";
-        std::cout << "0. Exit\n";
-        std::cout << "Choose: ";
+        std::cout << "\n===== MANAGER UI =====\n"
+                     "1. Category\n"
+                     "2. Product\n"
+                     "3. Employee\n"
+                     "4. Check Income\n"
+                     "0. Exit\n"
+                     "Choose: ";
         std::cin >> choice;
-
+        int subChoice = 0;
         switch (choice) {
             case 1:
-                createCategory();
+                std::cout << "1. Create Category\n";
+                std::cout << "3. Show All Categories\n";
+                std::cout << "2. Edit Category\n";
+                std::cout << "4. Delete Category\n";
+                std::cout << "Choose: "; std::cin >> subChoice;
+                switch (subChoice) {
+                    case 1: createCategory(); break;
+                    // case 2: editCategory(); break;
+                    case 3: showAllCategories(); break;
+                    // case 4: deleteCategory(); break;
+                    default: std::cout << "Invalid choice!\n";
+                }
                 break;
             case 2:
-                showAllCategories();
+                std::cout << "1. Create Product\n"
+                "2. Show All Products\n"
+                "3. Edit Product\n"
+                "4. Delete Product\n";
+                std::cout << "Choose: "; std::cin >> subChoice;
+                switch (subChoice) {
+                    case 1: createProduct(); break;
+                    case 2: showAllProducts(); break;
+                    // case 3: editProduct(); break;
+                    // case 4: deleteProduct(); break;
+                    default: std::cout << "Invalid choice!\n";
+                }
                 break;
             case 3:
-                createProduct();
+                std::cout << "1. Create Employee\n"
+                "2. Show All Employee\n"
+                "3. Edit Employee\n"
+                "4. Delete Employee\n";
+                std::cout << "Choose: "; std::cin >> subChoice;
+                switch (subChoice) {
+                    // case 1: createEmployee(); break;
+                    // case 2: showAllEmployees(); break;
+                    // case 3: editEmployee(); break;
+                    // case 4: deleteEmployee(); break;
+                    default: std::cout << "Invalid choice!\n";
+                }
                 break;
             case 4:
-                showAllProducts();
+                // checkIncome();
                 break;
             case 0:
                 break;

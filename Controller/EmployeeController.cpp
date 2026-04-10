@@ -240,9 +240,20 @@ void EmployeeController::createPayment() {
     freeOrderCard(cardId);
 
     std::cout << "Payment completed. OrderCard " << cardId << " is now free.\n";
+
+    int custId = order.getCustId();
+    if (custId > 0) {
+        Customer cust = cr.getByID(custId);
+        if (cust.getCustId() != 0) {
+            int earnedPoint = static_cast<int>(totalAmount / 10000);
+            int currentPoint = cust.getPoint();
+            cust.setPoint(currentPoint + earnedPoint);
+            cr.update(cust);
+        }
+    }
 }
 
-void EmployeeController::takeOrderCard() {
+void EmployeeController::takeOrderCard() const {
     showOccupiedOrderCards();
 }
 

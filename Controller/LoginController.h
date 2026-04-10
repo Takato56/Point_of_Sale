@@ -9,7 +9,6 @@
 #include "../utils/PasswordHasher.h"
 #include <iostream>
 #include <string>
-
 #include "../Model/Repo/StaffRepo.h"
 
 struct LoginResult {

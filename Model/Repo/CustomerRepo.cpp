@@ -96,11 +96,13 @@ Customer CustomerRepo::getByPhone(const std::string& phone) {
 
 void CustomerRepo::update(const Customer& c) {
     std::string query =
-        "UPDATE Customers SET CustId = '" + std::to_string(c.getCustId()) +
-        "', CustName = " + c.getCustName() +
-        ", CustPhone = " + c.getCustPhone() +
-        ", Point = " + std::to_string(c.getPoint()) + ";";
+        "UPDATE Customers SET "
+        "CustName = '" + c.getCustName() + "', "
+        "CustPhone = '" + c.getCustPhone() + "', "
+        "Point = " + std::to_string(c.getPoint()) +
         " WHERE CustId = " + std::to_string(c.getCustId()) + ";";
+
+    std::cout << "[SQL LOG]: " << query << std::endl;
 
     db.execute(query);
     db.clearStmt();

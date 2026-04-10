@@ -50,7 +50,7 @@ public:
     void loadData(const std::vector<Categories>& c, const std::vector<Product>& p);
     void createOrder();
     void createPayment();
-    void takeOrderCard();
+    void takeOrderCard() const;
     void checkCustPoint();
     void run();
 };
