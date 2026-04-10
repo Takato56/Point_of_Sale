@@ -187,7 +187,9 @@ void EmployeeController::createPayment() {
         return;
     }
 
-    Orders order = getOrderByCardId(cardId);
+    // Use the exact OrderId stored in memory when the order was created
+    int orderId = orderCardId[cardId - 1];
+    Orders order = odr.getByID(orderId);
     if (order.getOrderId() == 0) {
         std::cout << "Order not found for this card!\n";
         return;
@@ -219,7 +221,15 @@ void EmployeeController::createPayment() {
 
     std::string method;
     std::cout << "Enter payment method (C/Cash, M/Card): ";
-    std::cin >> method;
+    {
+        std::string input; std::cin >> input;
+        if (input == "C" || input == "Cash") method = "Cash";
+        else if (input == "M" || input == "Card") method = "Card";
+        else {
+            std::cout << "Invalid payment method!\n";
+            return;
+        }
+    }
 
     Payments payment;
     payment.setOrderId(order.getOrderId());

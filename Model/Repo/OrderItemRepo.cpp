@@ -64,7 +64,7 @@ std::vector<OrderItems> OrderItemsRepo::getByOrderID(int orderId) {
     db.execute(query);
     SQLHSTMT stmt = db.getStmt();
 
-    SQLINTEGER oiId, prodId, quantity;
+    SQLINTEGER oiId, dbOrderId, prodId, quantity;
     SQLDOUBLE unitPrice;
     SQLCHAR sizeLabel[50], note[255];
 
@@ -72,7 +72,7 @@ std::vector<OrderItems> OrderItemsRepo::getByOrderID(int orderId) {
         OrderItems item;
 
         SQLGetData(stmt, 1, SQL_C_SLONG, &oiId, sizeof(oiId), NULL);
-        SQLGetData(stmt, 2, SQL_C_SLONG, &orderId, sizeof(orderId), NULL);
+        SQLGetData(stmt, 2, SQL_C_SLONG, &dbOrderId, sizeof(dbOrderId), NULL);
         SQLGetData(stmt, 3, SQL_C_SLONG, &prodId, sizeof(prodId), NULL);
         SQLGetData(stmt, 4, SQL_C_CHAR, sizeLabel, sizeof(sizeLabel), NULL);
         SQLGetData(stmt, 5, SQL_C_SLONG, &quantity, sizeof(quantity), NULL);
