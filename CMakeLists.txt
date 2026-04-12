@@ -85,8 +85,6 @@ add_executable(Point_of_Sale main.cpp
         utils/Exception.h
         utils/PasswordHasher.cpp
         utils/PasswordHasher.h
-        utils/Uuid.cpp
-        utils/Uuid.h
 )
 
 target_link_libraries(Point_of_Sale PRIVATE odbc32)
