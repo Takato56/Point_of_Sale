@@ -4,13 +4,13 @@
 
 #ifndef POINT_OF_SALE_STAFFCONTROLLER_H
 #define POINT_OF_SALE_STAFFCONTROLLER_H
-#include "../Model/DatabaseSRC/DBContext/DBContext.h"
+
+#include "../model/database/DBContext.h"
 #include "../Model/entity/Employee.h"
 #include "../utils/PasswordHasher.h"
-#include <iostream>
+#include "../Model/repository/StaffRepo.h"
 #include <string>
 
-#include "../Model/Repo/StaffRepo.h"
 
 struct LoginResult {
     bool isSuccess = false;

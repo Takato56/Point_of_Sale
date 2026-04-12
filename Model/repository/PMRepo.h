@@ -4,7 +4,7 @@
 
 #ifndef POINT_OF_SALE_PMREPO_H
 #define POINT_OF_SALE_PMREPO_H
-#include "../DatabaseSRC/DBContext/DBContext.h"
+#include "../database/DBContext.h"
 #include "../entity/ProductModifiers.h"
 #include <vector>
 class PMRepo {

@@ -6,7 +6,7 @@
 #define POINT_OF_SALE_EMPLOYEEREPO_H
 #include <vector>
 
-#include "../DatabaseSRC/DBContext/DBContext.h"
+#include "../database/DBContext.h"
 #include "../../utils/DataHelper.h"
 #include "../entity/Employee.h"
 

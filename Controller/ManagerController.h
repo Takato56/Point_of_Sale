@@ -1,13 +1,15 @@
-#ifndef POINT_OF_SALE_ADMINCONTROLLER_H
-#define POINT_OF_SALE_ADMINCONTROLLER_H
+#ifndef POINT_OF_SALE_MANAGERCONTROLLER_H
+#define POINT_OF_SALE_MANAGERCONTROLLER_H
 
 #include "EmployeeController.h"
+#include "../view/ManagerView.h"
 
 class ManagerController : public EmployeeController {
 private:
     DBContext db;
     CategoriesRepo cr;
     ProductRepo pr;
+    ManagerView mgrView;
 
 public:
     explicit ManagerController(DBContext& context)
@@ -20,4 +22,4 @@ public:
     void run();
 };
 
-#endif //POINT_OF_SALE_ADMINCONTROLLER_H
+#endif //POINT_OF_SALE_MANAGERCONTROLLER_H

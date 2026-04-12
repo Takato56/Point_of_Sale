@@ -6,7 +6,7 @@
 #define POINT_OF_SALE_CUSTOMERREPO_H
 #include <vector>
 
-#include "../DatabaseSRC/DBContext/DBContext.h"
+#include "../database/DBContext.h"
 #include "../entity/Customer.h"
 
 class CustomerRepo {

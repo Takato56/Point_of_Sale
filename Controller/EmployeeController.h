@@ -1,44 +1,46 @@
 #ifndef POINT_OF_SALE_EMPLOYEECONTROLLER_H
 #define POINT_OF_SALE_EMPLOYEECONTROLLER_H
 
-#include "../Model/Repo/CategoriesRepo.h"
-#include "../Model/Repo/ProductRepo.h"
+#include "../model/repository/CategoriesRepo.h"
+#include "../model/repository/ProductRepo.h"
+#include "../model/repository/CustomerRepo.h"
+#include "../model/repository/OrderRepo.h"
+#include "../model/repository/OrderItemRepo.h"
+#include "../model/repository/PaymentRepo.h"
 #include "../utils/DataHelper.h"
-#include <iostream>
+#include "../view/EmployeeView.h"
+#include "../view/MenuView.h"
 #include <vector>
-#include "MenuController.h"
-#include "../Model/Repo/CustomerRepo.h"
-#include "../Model/Repo/OrderRepo.h"
-#include "../Model/Repo/OrderItemRepo.h"
-#include "../Model/Repo/PaymentRepo.h"
 
 class EmployeeController {
 private:
     DBContext db;
     std::vector<Categories> listCt;
     std::vector<Product> listPd;
-    MenuController mc;
+
+    // Views
+    EmployeeView empView;
+    MenuView menuView;
+
+    // Repos
     OrderRepo odr;
     CustomerRepo cr;
     OrderItemsRepo oir;
     PaymentRepo payRepo;
-    int currentStaffId = -1;
 
+    int currentStaffId = -1;
     bool orderCardUsed[20];
     int orderCardId[20];
 
     int findEmptyOrderCard() const;
-    void showAvailableOrderCard() const;
-    void showOccupiedOrderCards() const;
     void freeOrderCard(int cardId);
     bool isOrderCardValid(int cardId) const;
     Orders getOrderByCardId(int cardId);
-
     double calcSizePrice(double basePrice, const std::string& sizeLabel) const;
 
 public:
     explicit EmployeeController(DBContext& context)
-        : db(context), mc(context), odr(context), cr(context), oir(context), payRepo(context) {
+        : db(context), odr(context), cr(context), oir(context), payRepo(context) {
         for (int i = 0; i < 20; ++i) {
             orderCardUsed[i] = false;
             orderCardId[i] = -1;
