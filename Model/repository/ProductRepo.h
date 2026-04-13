@@ -7,7 +7,7 @@
 
 #include "../../Model/entity/Product.h"
 #include <vector>
-#include "../DatabaseSRC/DBContext/DBContext.h"
+#include "../database/DBContext.h"
 #include "../../Model/entity/Categories.h"
 class ProductRepo {
 private:

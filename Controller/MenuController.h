@@ -8,9 +8,9 @@
 #include <vector>
 #include "../Model/entity/Product.h"
 #include "../Model/entity/Categories.h"
-#include "../model/Repo/ProductRepo.h"
-#include "../model/Repo/CategoriesRepo.h"
-#include "../model/DatabaseSRC/DBContext/DBContext.h"
+#include "../model/repository/ProductRepo.h"
+#include "../model/repository/CategoriesRepo.h"
+#include "../model/database/DBContext.h"
 class MenuController {
 private:
     ProductRepo pr;

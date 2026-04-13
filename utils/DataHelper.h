@@ -4,7 +4,7 @@
 
 #ifndef POINT_OF_SALE_GETNEXTID_H
 #define POINT_OF_SALE_GETNEXTID_H
-#include "../model/DatabaseSRC/DBContext/DBContext.h"
+#include "../model/database/DBContext.h"
 
 
 class DataHelper {

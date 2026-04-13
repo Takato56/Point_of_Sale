@@ -2,7 +2,7 @@
 #define POINT_OF_SALE_PAYMENTREPO_H
 
 #include <vector>
-#include "../DatabaseSRC/DBContext/DBContext.h"
+#include "../database/DBContext.h"
 #include "../entity/Payments.h"
 
 class PaymentRepo {

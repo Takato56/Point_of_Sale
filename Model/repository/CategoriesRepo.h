@@ -5,7 +5,7 @@
 #ifndef POINT_OF_SALE_CATEGORIESREPO_H
 #define POINT_OF_SALE_CATEGORIESREPO_H
 #include <vector>
-#include "../DatabaseSRC/DBContext/DBContext.h"
+#include "../database/DBContext.h"
 #include "../../Model/entity/Categories.h"
 
 class CategoriesRepo {

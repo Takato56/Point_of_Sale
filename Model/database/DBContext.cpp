@@ -3,7 +3,6 @@
 //
 
 #include "DBContext.h"
-#include "DBContext.h"
 void DBContext::showError(SQLHANDLE handle, SQLSMALLINT type) {
     SQLCHAR msg[256];
     if (SQLGetDiagRec(type, handle, 1, NULL, NULL, msg, sizeof(msg), NULL) == SQL_SUCCESS) {

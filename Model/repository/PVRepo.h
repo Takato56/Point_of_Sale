@@ -1,7 +1,7 @@
 #ifndef POINT_OF_SALE_PVREPO_H
 #define POINT_OF_SALE_PVREPO_H
 
-#include "../DatabaseSRC/DBContext/DBContext.h"
+#include "../database/DBContext.h"
 #include <vector>
 #include "../entity/ProductVariants.h"
 
