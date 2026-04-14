@@ -381,7 +381,6 @@ void ManagerController::discountMenu() {
     } while (choice != 0);
 }
 
-
 // ═══════════════════════════════════════════
 //  MAIN RUN LOOP
 // ═══════════════════════════════════════════
