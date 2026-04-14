@@ -21,6 +21,7 @@ std::vector<Orders> OrderRepo::getAll() {
     SQLHSTMT stmt = db.getStmt();
 
     SQLINTEGER orderId, staffId, custId, orderCardId;
+    SQLCHAR createdAt[50];
 
     while (SQLFetch(stmt) == SQL_SUCCESS) {
         Orders o;
@@ -28,11 +29,13 @@ std::vector<Orders> OrderRepo::getAll() {
         SQLGetData(stmt, 2, SQL_C_SLONG, &staffId, 0, NULL);
         SQLGetData(stmt, 3, SQL_C_SLONG, &custId, 0, NULL);
         SQLGetData(stmt, 4, SQL_C_SLONG, &orderCardId, 0, NULL);
+        SQLGetData(stmt, 5, SQL_C_CHAR, createdAt, sizeof(createdAt), NULL);
 
         o.setOrderId((int)orderId);
         o.setStaffId((int)staffId);
         o.setCustId((int)custId);
         o.setOrderCardId((int)orderCardId);
+        o.setCreatedAt((char*)createdAt);
 
         list.push_back(o);
     }
@@ -44,7 +47,7 @@ std::vector<Orders> OrderRepo::getAll() {
 Orders OrderRepo::getByID(int id) {
     Orders o;
     std::string query =
-        "SELECT OrderId, StaffId, CustId, OrderCardId FROM Orders WHERE OrderId = "
+        "SELECT OrderId, StaffId, CustId, OrderCardId, CreatedAt FROM Orders WHERE OrderId = "
         + std::to_string(id) + ";";
 
     db.execute(query);
@@ -52,15 +55,18 @@ Orders OrderRepo::getByID(int id) {
 
     if (SQLFetch(stmt) == SQL_SUCCESS) {
         SQLINTEGER orderId, staffId, custId, orderCardId;
+        SQLCHAR createdAt[50];
         SQLGetData(stmt, 1, SQL_C_SLONG, &orderId, 0, NULL);
         SQLGetData(stmt, 2, SQL_C_SLONG, &staffId, 0, NULL);
         SQLGetData(stmt, 3, SQL_C_SLONG, &custId, 0, NULL);
         SQLGetData(stmt, 4, SQL_C_SLONG, &orderCardId, 0, NULL);
+        SQLGetData(stmt, 5, SQL_C_CHAR, createdAt, sizeof(createdAt), NULL);
 
         o.setOrderId((int)orderId);
         o.setStaffId((int)staffId);
         o.setCustId((int)custId);
         o.setOrderCardId((int)orderCardId);
+        o.setCreatedAt((char*)createdAt);
     }
 
     db.clearStmt();
@@ -70,24 +76,27 @@ Orders OrderRepo::getByID(int id) {
 std::vector<Orders> OrderRepo::getByOrderCardID(int orderCardId) {
     std::vector<Orders> list;
     std::string query =
-        "SELECT OrderId, StaffId, CustId, OrderCardId FROM Orders WHERE OrderCardId = "
+        "SELECT OrderId, StaffId, CustId, OrderCardId, CreatedAt FROM Orders WHERE OrderCardId = "
         + std::to_string(orderCardId) + ";";
 
     db.execute(query);
     SQLHSTMT stmt = db.getStmt();
 
     SQLINTEGER orderId, staffId, custId, cardId;
+    SQLCHAR createdAt[50];
     while (SQLFetch(stmt) == SQL_SUCCESS) {
         Orders o;
         SQLGetData(stmt, 1, SQL_C_SLONG, &orderId, 0, NULL);
         SQLGetData(stmt, 2, SQL_C_SLONG, &staffId, 0, NULL);
         SQLGetData(stmt, 3, SQL_C_SLONG, &custId, 0, NULL);
         SQLGetData(stmt, 4, SQL_C_SLONG, &cardId, 0, NULL);
+        SQLGetData(stmt, 5, SQL_C_CHAR, createdAt, sizeof(createdAt), NULL);
 
         o.setOrderId((int)orderId);
         o.setStaffId((int)staffId);
         o.setCustId((int)custId);
         o.setOrderCardId((int)cardId);
+        o.setCreatedAt((char*)createdAt);
 
         list.push_back(o);
     }
@@ -111,4 +120,57 @@ void OrderRepo::remove(int id) {
     std::string query = "DELETE FROM Orders WHERE OrderId = " + std::to_string(id) + ";";
     db.execute(query);
     db.clearStmt();
+}
+
+std::vector<std::string> OrderRepo::getDistinctDates() {
+    std::vector<std::string> dates;
+    std::string query =
+        "SELECT DISTINCT CONVERT(VARCHAR(10), CreatedAt, 120) AS OrderDate "
+        "FROM Orders WHERE CreatedAt IS NOT NULL "
+        "ORDER BY OrderDate DESC;";
+
+    db.execute(query);
+    SQLHSTMT stmt = db.getStmt();
+
+    SQLCHAR dateBuf[20];
+    while (SQLFetch(stmt) == SQL_SUCCESS) {
+        SQLGetData(stmt, 1, SQL_C_CHAR, dateBuf, sizeof(dateBuf), NULL);
+        dates.emplace_back((char*)dateBuf);
+    }
+
+    db.clearStmt();
+    return dates;
+}
+
+std::vector<Orders> OrderRepo::getByDate(const std::string& date) {
+    std::vector<Orders> list;
+    std::string query =
+        "SELECT OrderId, StaffId, CustId, OrderCardId, CreatedAt "
+        "FROM Orders WHERE CONVERT(VARCHAR(10), CreatedAt, 120) = '" + date + "';";
+
+    db.execute(query);
+    SQLHSTMT stmt = db.getStmt();
+
+    SQLINTEGER orderId, staffId, custId, orderCardId;
+    SQLCHAR createdAt[20];
+
+    while (SQLFetch(stmt) == SQL_SUCCESS) {
+        Orders o;
+        SQLGetData(stmt, 1, SQL_C_SLONG, &orderId, 0, NULL);
+        SQLGetData(stmt, 2, SQL_C_SLONG, &staffId, 0, NULL);
+        SQLGetData(stmt, 3, SQL_C_SLONG, &custId, 0, NULL);
+        SQLGetData(stmt, 4, SQL_C_SLONG, &orderCardId, 0, NULL);
+        SQLGetData(stmt, 5, SQL_C_CHAR, createdAt, sizeof(createdAt), NULL);
+
+        o.setOrderId((int)orderId);
+        o.setStaffId((int)staffId);
+        o.setCustId((int)custId);
+        o.setOrderCardId((int)orderCardId);
+        o.setCreatedAt((char*)createdAt);
+
+        list.push_back(o);
+    }
+
+    db.clearStmt();
+    return list;
 }
