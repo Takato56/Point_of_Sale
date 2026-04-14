@@ -26,24 +26,26 @@ std::vector<Discount> DiscountRepo::getAll() {
     std::vector<Discount> list;
     db.execute("SELECT DiscountId, Code, Value, Type, isActive FROM Discount;");
     SQLHSTMT stmt = db.getStmt();
-    SQLINTEGER idBuffer;
-    SQLCHAR Code[50];
-    SQLCHAR Type[50];
+
+    SQLINTEGER idBuffer, isActiveBuffer;
+    SQLCHAR Code[50], Type[50];
+    SQLDOUBLE ValueBuffer;
     SQLLEN cbId, cbCode, cbValue, cbType, cbIsActive;
+
     while (SQLFetch(stmt) == SQL_SUCCESS) {
         Discount d;
 
-        SQLGetData(stmt, 1, SQL_C_SLONG, &idBuffer, sizeof(idBuffer), NULL);
+        SQLGetData(stmt, 1, SQL_C_SLONG, &idBuffer, 0, &cbId);
         SQLGetData(stmt, 2, SQL_C_CHAR, Code, sizeof(Code), &cbCode);
-        SQLGetData(stmt, 3, SQL_C_DOUBLE,&cbValue , 0, &cbValue);
+        SQLGetData(stmt, 3, SQL_C_DOUBLE, &ValueBuffer, 0, &cbValue);
         SQLGetData(stmt, 4, SQL_C_CHAR, Type, sizeof(Type), &cbType);
-        SQLGetData(stmt, 5, SQL_C_SLONG,&cbIsActive , 0, &cbIsActive);
+        SQLGetData(stmt, 5, SQL_C_SLONG, &isActiveBuffer, 0, &cbIsActive);
 
         d.setDiscountId((int)idBuffer);
         d.setCode((char*)Code);
-        d.setValue((double)cbValue);
+        d.setValue((double)ValueBuffer);
         d.setType((char*)Type);
-        d.setIsActive((int)cbIsActive);
+        d.setIsActive((int)isActiveBuffer);
 
         list.push_back(d);
     }

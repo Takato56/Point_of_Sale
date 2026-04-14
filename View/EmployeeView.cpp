@@ -130,3 +130,21 @@ void EmployeeView::showCustomerInfo(const Customer& c) const {
 void EmployeeView::showMessage(const std::string& msg) const {
     std::cout << msg << "\n";
 }
+
+void EmployeeView::showActiveDiscounts(const std::vector<Discount>& discounts) const {
+    std::cout << "\n--- Available Discounts ---\n";
+    std::cout << "0. No Discount\n";
+
+    for (const auto& d : discounts) {
+        std::cout << d.getDiscountId() << ". Code: " << d.getCode()
+                  << " (" << d.getValue() // Đảm bảo dùng d.getValue() ở đây
+                  << (d.getType() == "Percentage" ? "%" : " USD") << " off)\n";
+    }
+}
+
+int EmployeeView::promptDiscountChoice() const {
+    int choice;
+    std::cout << "Select Discount ID (or 0 to skip): ";
+    std::cin >> choice;
+    return choice;
+}

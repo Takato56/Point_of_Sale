@@ -183,18 +183,46 @@ void EmployeeController::createPayment() {
         totalAmount += item.getQuantity() * item.getUnitPrice();
     }
 
-    empView.showOrderDetail(order, cardId, items, totalAmount);
+    double discountValue = 0.0;
+    std::vector<Discount> allDiscounts = dr.getAll();
+    std::vector<Discount> activeDiscounts;
+
+    for (const auto& d : allDiscounts) {
+        if (d.getIsActive()) {
+            activeDiscounts.push_back(d);
+        }
+    }
+
+    empView.showActiveDiscounts(activeDiscounts);
+    int choice = empView.promptDiscountChoice();
+
+    if (choice != 0) {
+        Discount selectedDiscount = dr.getByID(choice);
+
+        if (selectedDiscount.getDiscountId() != 0 && selectedDiscount.getIsActive()) {
+            if (selectedDiscount.getType() == "Percentage") {
+                discountValue = totalAmount * (selectedDiscount.getValue() / 100.0);
+            } else {
+                discountValue = selectedDiscount.getValue();
+            }
+            empView.showMessage("Discount applied successfully!");
+        } else {
+            empView.showMessage("Invalid discount selection!");
+        }
+    }
+
+    double finalAmount = totalAmount - discountValue;
+    if (finalAmount < 0) finalAmount = 0;
+
+    empView.showOrderDetail(order, cardId, items, finalAmount);
 
     std::string method = empView.promptPaymentMethod();
-    if (method.empty()) {
-        empView.showMessage("Invalid payment method!");
-        return;
-    }
+    if (method.empty()) return;
 
     Payments payment;
     payment.setOrderId(order.getOrderId());
     payment.setMethod(method);
-    payment.setAmount(totalAmount);
+    payment.setAmount(finalAmount);
     payRepo.addPayment(payment);
 
     freeOrderCard(cardId);

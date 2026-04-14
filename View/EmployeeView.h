@@ -11,6 +11,7 @@
 #include "../model/entity/OrderItems.h"
 #include "../model/entity/Orders.h"
 #include "../model/entity/Customer.h"
+#include "../Model/entity/Discount.h"
 
 class EmployeeView {
 public:
@@ -33,6 +34,8 @@ public:
 
     void showCustomerInfo(const Customer& c) const;
     void showMessage(const std::string& msg) const;
+    void showActiveDiscounts(const std::vector<Discount>& discounts) const;
+    int promptDiscountChoice() const;
 };
 
 #endif //POINT_OF_SALE_EMPLOYEEVIEW_H

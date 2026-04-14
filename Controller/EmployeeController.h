@@ -12,6 +12,8 @@
 #include "../view/MenuView.h"
 #include <vector>
 
+#include "../Model/repository/DiscountRepo.h"
+
 class EmployeeController {
 private:
     DBContext db;
@@ -27,6 +29,7 @@ private:
     CustomerRepo cr;
     OrderItemsRepo oir;
     PaymentRepo payRepo;
+    DiscountRepo dr;
 
     int currentStaffId = -1;
     bool orderCardUsed[20];
@@ -40,7 +43,7 @@ private:
 
 public:
     explicit EmployeeController(DBContext& context)
-        : db(context), odr(context), cr(context), oir(context), payRepo(context) {
+        : db(context), odr(context), cr(context), oir(context), payRepo(context), dr(context) {
         for (int i = 0; i < 20; ++i) {
             orderCardUsed[i] = false;
             orderCardId[i] = -1;
