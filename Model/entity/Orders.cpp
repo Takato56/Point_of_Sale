@@ -14,6 +14,10 @@ int Orders::getOrderCardId() const {
     return OrderCardId;
 }
 
+std::string Orders::getCreatedAt() const {
+    return CreatedAt;
+}
+
 void Orders::setOrderId(const int newOrderId) {
     OrderId = newOrderId;
 }
@@ -25,6 +29,9 @@ void Orders::setCustId(const int newCustId) {
 }
 void Orders::setOrderCardId(const int newOrderCardId) {
     OrderCardId = newOrderCardId;
+}
+void Orders::setCreatedAt(const std::string newCreatedAt) {
+    CreatedAt = newCreatedAt;
 }
 
 void Orders::edit() {

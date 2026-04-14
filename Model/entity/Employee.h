@@ -17,7 +17,7 @@ class Employee {
     std::string EmpPhoneNumber;
     std::string pinHash;
     Role role;
-    int isActive;
+    int isActive = 1;
 public:
     Employee() : EmpName(""), pinHash(""), role(), EmpPhoneNumber("") {}
     virtual void showInterface();
