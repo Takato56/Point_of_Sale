@@ -85,6 +85,8 @@ add_executable(Point_of_Sale main.cpp
         utils/Exception.h
         utils/PasswordHasher.cpp
         utils/PasswordHasher.h
+        Model/repository/DiscountRepo.cpp
+        Model/repository/DiscountRepo.h
 )
 
 target_link_libraries(Point_of_Sale PRIVATE odbc32)

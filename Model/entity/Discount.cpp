@@ -13,6 +13,13 @@ int Discount::getValue() const {
 std::string Discount::getCode() const {
     return Code;
 }
+int Discount::getIsActive() const {
+    return isActive;
+}
+
+std::string Discount::getType() const {
+    return Type;
+}
 
 void Discount::setDiscountId(const int newDiscountId) {
     DiscountId = newDiscountId;
@@ -22,6 +29,12 @@ void Discount::setValue(const int newValue) {
 }
 void Discount::setCode(const std::string newCode) {
     Code = newCode;
+}
+void Discount::setIsActive(const int newIsActive) {
+    isActive = newIsActive;
+}
+void Discount::setType(const std::string newType) {
+    Type = newType;
 }
 
 void Discount::edit() {

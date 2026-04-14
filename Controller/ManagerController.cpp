@@ -303,6 +303,86 @@ void ManagerController::checkIncome() {
 }
 
 // ═══════════════════════════════════════════
+//  DISCOUNT CRUD
+// ═══════════════════════════════════════════
+
+void ManagerController::addDiscount() {
+    std::string code = mgrView.promptDiscountCode();
+    std::string type = mgrView.promptDiscountType();
+    int value = mgrView.promptDiscountValue(type);
+
+    Discount d;
+    d.setCode(code);
+    d.setValue(value);
+    d.setType(type);
+    d.setIsActive(1);
+
+    dr.addDiscount(d);
+    mgrView.showMessage("Discount added successfully. ID: " + std::to_string(d.getDiscountId()));
+}
+
+void ManagerController::viewAllDiscounts() {
+    mgrView.showAllDiscounts(dr.getAll());
+}
+
+void ManagerController::updateDiscount() {
+    viewAllDiscounts();
+    int id = mgrView.promptDiscountId();
+
+    Discount d = dr.getByID(id);
+    if (d.getDiscountId() == 0) {
+        mgrView.showMessage("Discount not found!");
+        return;
+    }
+
+    mgrView.showMessage("Updating: " + d.getCode());
+
+    std::string newCode = mgrView.promptDiscountCode();
+    std::string newType = mgrView.promptDiscountType();
+
+    int newValue = mgrView.promptDiscountValue(newType);
+
+    d.setCode(newCode);
+    d.setType(newType);
+    d.setValue(newValue);
+
+    dr.update(d);
+    mgrView.showMessage("Discount updated successfully.");
+}
+
+void ManagerController::deleteDiscount() {
+    viewAllDiscounts();
+    int id = mgrView.promptDiscountId();
+
+    Discount d = dr.getByID(id);
+    if (d.getDiscountId() == 0) {
+        mgrView.showMessage("Discount not found!");
+        return;
+    }
+
+    dr.remove(id);
+    mgrView.showMessage("Discount deleted successfully.");
+}
+
+void ManagerController::discountMenu() {
+    int choice;
+    do {
+        mgrView.showCrudMenu("Discount");
+        choice = mgrView.getMenuChoice();
+
+        switch (choice) {
+            case 1: addDiscount(); break;
+            case 2: viewAllDiscounts(); break;
+            case 3: updateDiscount(); break;
+            case 4: deleteDiscount(); break;
+            case 0: break;
+            default: mgrView.showMessage("Invalid choice!"); break;
+        }
+    } while (choice != 0);
+}
+
+
+// ═══════════════════════════════════════════
 //  MAIN RUN LOOP
 // ═══════════════════════════════════════════
 
@@ -316,7 +396,8 @@ void ManagerController::run() {
             case 1: categoryMenu(); break;
             case 2: productMenu(); break;
             case 3: employeeMenu(); break;
-            case 4: checkIncome(); break;
+            case 4: discountMenu(); break;
+            case 5: checkIncome(); break;
             case 0: break;
             default: mgrView.showMessage("Invalid choice!"); break;
         }

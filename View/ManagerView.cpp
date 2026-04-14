@@ -11,7 +11,8 @@ void ManagerView::showManagerMenu() const {
     std::cout << "1. Categories\n";
     std::cout << "2. Product\n";
     std::cout << "3. Employee\n";
-    std::cout << "4. Check Income\n";
+    std::cout << "4. Discount\n";
+    std::cout << "5. Check Income\n";
     std::cout << "0. Exit\n";
     std::cout << "Choose: ";
 }
@@ -241,6 +242,72 @@ void ManagerView::showBillDetail(const Orders& order,
     }
 
     std::cout << "\nTOTAL: " << std::fixed << std::setprecision(2) << total << "\n";
+}
+
+// ─── Discount ───
+int ManagerView::promptDiscountId() const {
+    int id;
+    std::cout << "Enter Discount ID: ";
+    std::cin >> id;
+    return id;
+}
+std::string ManagerView::promptDiscountCode() const {
+    std::string code;
+    std::cout << "Discount code: ";
+    std::cin >> code;
+    return code;
+}
+
+std::string ManagerView::promptDiscountType() const {
+    int choice;
+    while (true) {
+        std::cout << "Choose Discount Type (1. Percentage, 2. Fixed): ";
+        if (std::cin >> choice) {
+            if (choice == 1) return "Percentage";
+            if (choice == 2) return "Fixed";
+        }
+        std::cout << "Invalid choice! Please enter 1 or 2.\n";
+    }
+}
+
+int ManagerView::promptDiscountValue(const std::string& type) const {
+    int value;
+    while (true) {
+        std::cout << "Enter Discount Value (" << type << "): ";
+        if (std::cin >> value) {
+            if (type == "Percentage" && (value < 0 || value > 100)) {
+                std::cout << "Error: Percentage must be between 0 and 100.\n";
+                continue;
+            }
+            if (value < 0) {
+                std::cout << "Error: Value cannot be negative.\n";
+                continue;
+            }
+            return value;
+        }
+        std::cout << "Invalid input! Please enter a number.\n";
+    }
+}
+
+int ManagerView::promptDiscountIsActive() const {
+    std::cout << "Is active? (1 = Yes, 0 = No): ";
+    int choice;
+    std::cin >> choice;
+    return choice;
+}
+
+void ManagerView::showAllDiscounts(const std::vector<Discount>& discounts) const {
+    if (discounts.empty()) {
+        std::cout << "No discounts found.\n";
+        return;
+    }
+    std::cout << "\n========== DISCOUNTS ==========\n";
+    for (const auto& d : discounts) {
+        std::cout << "ID: " << d.getDiscountId()
+                  << " | Type: " << d.getType()
+                  << " | Value: " << d.getValue()
+                  << " | IsActive: " << (d.getIsActive() ? "Yes" : "No") << "\n";
+    }
 }
 
 void ManagerView::showDailyIncome(const std::string& date, double income) const {

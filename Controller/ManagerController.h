@@ -2,6 +2,7 @@
 #define POINT_OF_SALE_MANAGERCONTROLLER_H
 
 #include "EmployeeController.h"
+#include "../Model/repository/DiscountRepo.h"
 #include "../view/ManagerView.h"
 #include "../model/repository/EmployeeRepo.h"
 #include "../model/repository/OrderRepo.h"
@@ -18,6 +19,7 @@ private:
     OrderItemsRepo oiRepo;
     PaymentRepo payRepo2;
     ManagerView mgrView;
+    DiscountRepo dr;
 
     // Category CRUD
     void addCategory();
@@ -43,11 +45,18 @@ private:
     // Income
     void checkIncome();
 
+    // Discount CRUD
+    void addDiscount();
+    void viewAllDiscounts();
+    void updateDiscount();
+    void deleteDiscount();
+    void discountMenu();
+
 public:
     explicit ManagerController(DBContext& context)
         : EmployeeController(context), db(context),
           cr(context), pr(context), er(context),
-          orderRepo(context), oiRepo(context), payRepo2(context) {}
+          orderRepo(context), oiRepo(context), payRepo2(context), dr(context) {}
 
     void run();
 };

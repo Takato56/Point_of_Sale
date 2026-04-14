@@ -10,6 +10,7 @@
 #include "../model/entity/Orders.h"
 #include "../model/entity/OrderItems.h"
 #include "../model/entity/Payments.h"
+#include "../model/entity/Discount.h"
 
 class ManagerView {
 public:
@@ -50,6 +51,14 @@ public:
                         const std::vector<Payments>& payments,
                         double total) const;
     void showDailyIncome(const std::string& date, double income) const;
+
+    // ─── Discount prompts ───
+    int promptDiscountId() const;
+    std::string promptDiscountCode() const;
+    std::string promptDiscountType() const;
+    int promptDiscountValue(const std::string& type) const;
+    int promptDiscountIsActive() const;
+    void showAllDiscounts(const std::vector<Discount>& discounts) const;
 
     // Generic
     void showMessage(const std::string& msg) const;
