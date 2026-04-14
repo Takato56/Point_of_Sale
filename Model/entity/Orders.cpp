@@ -1,4 +1,6 @@
 #include "Orders.h"
+
+#include <filesystem>
 #include <iostream>
 
 int Orders::getOrderId() const {
@@ -13,9 +15,11 @@ int Orders::getCustId() const {
 int Orders::getOrderCardId() const {
     return OrderCardId;
 }
-
 std::string Orders::getCreatedAt() const {
     return CreatedAt;
+}
+bool Orders::isPaid() const {
+    return Status;
 }
 
 void Orders::setOrderId(const int newOrderId) {
@@ -32,6 +36,9 @@ void Orders::setOrderCardId(const int newOrderCardId) {
 }
 void Orders::setCreatedAt(const std::string newCreatedAt) {
     CreatedAt = newCreatedAt;
+}
+void Orders::setStatus(bool newStatus) {
+    Status = newStatus;
 }
 
 void Orders::edit() {

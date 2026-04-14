@@ -15,7 +15,7 @@
 struct LoginResult {
     bool isSuccess = false;
     int staffId = -1;
-    Role role = Staff;
+    Role role = Role_Staff;
     std::string empName;
 };
 

@@ -174,3 +174,35 @@ std::vector<Orders> OrderRepo::getByDate(const std::string& date) {
     db.clearStmt();
     return list;
 }
+
+std::vector<Orders> OrderRepo::getUnpaidOrders() {
+    std::vector<Orders> list;
+    std::string sql = "SELECT o.OrderId, o.StaffId, o.CustId, o.OrderCardId "
+                      "FROM Orders o "
+                      "LEFT JOIN Payments p ON o.OrderId = p.OrderId "
+                      "WHERE p.OrderId IS NULL;";
+
+    db.execute(sql);
+    SQLHSTMT stmt = db.getStmt();
+
+    SQLINTEGER id, staffId, custId, cardId;
+    SQLLEN cbId, cbStaff, cbCust, cbCard;
+
+    while (SQLFetch(stmt) == SQL_SUCCESS) {
+        Orders o;
+
+        SQLGetData(stmt, 1, SQL_C_LONG, &id, sizeof(id), &cbId);
+        SQLGetData(stmt, 2, SQL_C_LONG, &staffId, sizeof(staffId), &cbStaff);
+        SQLGetData(stmt, 3, SQL_C_LONG, &custId, sizeof(custId), &cbCust);
+        SQLGetData(stmt, 4, SQL_C_LONG, &cardId, sizeof(cardId), &cbCard);
+
+        o.setOrderId((int)id);
+        o.setStaffId((int)staffId);
+        o.setCustId((int)custId);
+        o.setOrderCardId((int)cardId);
+
+        list.push_back(o);
+    }
+    db.clearStmt();
+    return list;
+}

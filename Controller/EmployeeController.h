@@ -52,8 +52,9 @@ public:
     void loadData(const std::vector<Categories>& c, const std::vector<Product>& p);
     void createOrder();
     void createPayment();
-    void takeOrderCard() const;
+    void takeOrderCard();
     void checkCustPoint();
+    void syncOrderCards();
     void run();
 };
 

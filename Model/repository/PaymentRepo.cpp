@@ -122,3 +122,4 @@ void PaymentRepo::remove(int id) {
     db.execute(query);
     db.clearStmt();
 }
+

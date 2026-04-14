@@ -66,9 +66,10 @@ Categories CategoriesRepo::getByID(const int id) {
 
 void CategoriesRepo::update(const Categories &ct) {
     std::string query =
-        "UPDATE Categories SET CateName='" + ct.getCateName()+
-        " WHERE CateId='" + std::to_string(ct.getCateId()) + "';";
-
+        "UPDATE Categories SET CateName= '" +
+            ct.getCateName()+ "', DisplayOrder='" +
+            ct.getDisplayOrder() + "'"
+        "WHERE CateId='" + std::to_string(ct.getCateId()) + "';";
     db.execute(query);
     db.clearStmt();
 }

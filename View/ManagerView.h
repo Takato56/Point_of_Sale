@@ -31,7 +31,7 @@ public:
     std::string promptProductName() const;
     int promptProductPrice() const;
     int promptProductId() const;
-    void showAllProducts(const std::vector<Product>& products) const;
+    void showProductByCateId(const std::vector<Categories>& ct, const std::vector<Product>& pd) const;
 
     // ─── Employee prompts ───
     std::string promptEmployeeName() const;
@@ -53,6 +53,8 @@ public:
 
     // Generic
     void showMessage(const std::string& msg) const;
+
+    void showAllProducts(const std::vector<Product> & ct);
 };
 
 #endif //POINT_OF_SALE_MANAGERVIEW_H

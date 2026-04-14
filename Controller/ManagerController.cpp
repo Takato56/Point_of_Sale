@@ -108,12 +108,14 @@ void ManagerController::addProduct() {
     mgrView.showMessage("Product created successfully.");
 }
 
-void ManagerController::viewAllProducts() {
-    mgrView.showAllProducts(pr.getAll());
+void ManagerController::showProductByCateId() {
+    std::vector<Categories> listCate = cr.getAll();
+    std::vector<Product> listProd = pr.getAll();
+    mgrView.showProductByCateId(listCate, listProd);
 }
 
 void ManagerController::updateProduct() {
-    viewAllProducts();
+    showProductByCateId();
     int id = mgrView.promptProductId();
 
     Product p = pr.getByID(id);
@@ -143,7 +145,7 @@ void ManagerController::updateProduct() {
 }
 
 void ManagerController::deleteProduct() {
-    viewAllProducts();
+    showProductByCateId();
     int id = mgrView.promptProductId();
 
     Product p = pr.getByID(id);
@@ -164,7 +166,7 @@ void ManagerController::productMenu() {
 
         switch (choice) {
             case 1: addProduct(); break;
-            case 2: viewAllProducts(); break;
+            case 2: showProductByCateId(); break;
             case 3: updateProduct(); break;
             case 4: deleteProduct(); break;
             case 0: break;
@@ -187,7 +189,7 @@ void ManagerController::addEmployee() {
     emp.setName(name);
     emp.setPhoneNumber(phone);
     emp.setPinHash(PasswordHasher::hash(pin));
-    emp.setRole(roleChoice == 2 ? Manager : Staff);
+    emp.setRole(roleChoice == 2 ? Role_Manager : Role_Staff);
     emp.setIsActive(1);
 
     er.addEmployee(emp);
@@ -216,7 +218,7 @@ void ManagerController::updateEmployee() {
 
     emp.setName(newName);
     emp.setPhoneNumber(newPhone);
-    emp.setRole(newRole == 2 ? Manager : Staff);
+    emp.setRole(newRole == 2 ? Role_Manager : Role_Staff);
 
     er.update(emp);
     mgrView.showMessage("Employee updated successfully.");

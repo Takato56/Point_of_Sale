@@ -69,58 +69,90 @@ void EmployeeController::createOrder() {
     }
 
     empView.showMessage("Auto selected OrderCardID: " + std::to_string(cardId));
+    int customerId = checkCustPhone();
+
+    bool isOrdering = true;
+    std::vector<OrderItems> tempItems;
+
+    while (isOrdering) {
+        int selectedCateId = menuView.showAndSelectCategories(listCt);
+
+        if (selectedCateId == 0) break;
+
+        menuView.displayProductsByCategory(selectedCateId, listPd);
+
+        empView.showMessage("\n--- Enter Product ID to add, or 0 to STOP choosing items ---");
+        int prodId = empView.promptProductId();
+
+        if (prodId == 0) {
+            isOrdering = false;
+            break;
+        }
+
+        Product selectedProduct = ProductRepo(db).getByID(prodId);
+        if (selectedProduct.getProdId() == 0) {
+            empView.showMessage("Product not found! Please try again.");
+            continue;
+        }
+
+        int sizeChoice = empView.promptSizeChoice();
+        std::string sizeLabel;
+        switch (sizeChoice) {
+            case 1: sizeLabel = "S"; break;
+            case 2: sizeLabel = "M"; break;
+            case 3: sizeLabel = "L"; break;
+            default:
+                empView.showMessage("Invalid size! Item not added.");
+                continue;
+        }
+
+        int quantity = empView.promptQuantity();
+        if (quantity <= 0) {
+            empView.showMessage("Invalid quantity!");
+            continue;
+        }
+
+        OrderItems item;
+        item.setProdId(prodId);
+        item.setSizeLabel(sizeLabel);
+        item.setQuantity(quantity);
+        item.setUnitPrice(calcSizePrice(selectedProduct.getProdPrice(), sizeLabel));
+        item.setNote("");
+
+        tempItems.push_back(item);
+        empView.showMessage("Added " + selectedProduct.getProdName() + " (" + sizeLabel + ") x" + std::to_string(quantity));
+
+        empView.showMessage("\n1. Continue selecting more items");
+        empView.showMessage("0. Finish and Place Order");
+        if (empView.getMenuChoice() == 0) {
+            isOrdering = false;
+        }
+    }
+
+    if (tempItems.empty()) {
+        empView.showMessage("No items selected. Order cancelled!");
+        return;
+    }
 
     int newOrderId = DataHelper::getNextId(db, "Orders", "OrderId");
-    int selectedCateId = menuView.showAndSelectCategories(listCt);
-    menuView.displayProductsByCategory(selectedCateId, listPd);
-
-    int prodId = empView.promptProductId();
-    if (prodId == 0) {
-        empView.showMessage("Order Cancelled!");
-        return;
-    }
-
-    Product selectedProduct = ProductRepo(db).getByID(prodId);
-    if (selectedProduct.getProdId() == 0) {
-        empView.showMessage("Product not found!");
-        return;
-    }
-
-    int sizeChoice = empView.promptSizeChoice();
-
-    std::string sizeLabel;
-    switch (sizeChoice) {
-        case 1: sizeLabel = "S"; break;
-        case 2: sizeLabel = "M"; break;
-        case 3: sizeLabel = "L"; break;
-        default:
-            empView.showMessage("Invalid size!");
-            return;
-    }
-
-    int quantity = empView.promptQuantity();
 
     Orders o;
     o.setOrderId(newOrderId);
     o.setStaffId(currentStaffId);
-    o.setCustId(checkCustPhone());
+    o.setCustId(customerId);
     o.setOrderCardId(cardId);
     odr.addOrder(o);
 
-    OrderItems item;
-    item.setOrderId(newOrderId);
-    item.setProdId(prodId);
-    item.setSizeLabel(sizeLabel);
-    item.setQuantity(quantity);
-    item.setUnitPrice(calcSizePrice(selectedProduct.getProdPrice(), sizeLabel));
-    item.setNote("");
-    oir.addOrderItem(item);
+    for (auto& item : tempItems) {
+        item.setOrderId(newOrderId);
+        oir.addOrderItem(item);
+    }
 
     orderCardUsed[cardId - 1] = true;
     orderCardId[cardId - 1] = newOrderId;
 
-    empView.showMessage("Order created successfully. OrderID: " + std::to_string(newOrderId)
-                        + " | OrderCardID: " + std::to_string(cardId));
+    empView.showMessage("Order created successfully!");
+    empView.showMessage("OrderID: " + std::to_string(newOrderId) + " | OrderCard: " + std::to_string(cardId));
 }
 
 void EmployeeController::createPayment() {
@@ -171,6 +203,24 @@ void EmployeeController::createPayment() {
 
 void EmployeeController::takeOrderCard() {
     empView.showOccupiedOrderCards(orderCardUsed, orderCardId);
+
+    empView.showMessage("Enter Order Card ID to view details (or 0 to go back): ");
+    int cardId;
+    std::cin >> cardId;
+    if (cardId > 0 && isOrderCardValid(cardId)) {
+        if (orderCardUsed[cardId - 1]) {
+            int orderId = orderCardId[cardId - 1];
+            Orders order = odr.getByID(orderId);
+            std::vector<OrderItems> items = oir.getByOrderID(orderId);
+
+            double total = 0;
+            for(const auto& item : items) total += item.getQuantity() * item.getUnitPrice();
+
+            empView.showOrderDetail(order, cardId, items, total);
+        } else {
+            empView.showMessage("This card is currently empty.");
+        }
+    }
 }
 
 void EmployeeController::checkCustPoint() {
@@ -185,7 +235,20 @@ void EmployeeController::checkCustPoint() {
     empView.showCustomerInfo(c);
 }
 
+void EmployeeController::syncOrderCards() {
+    std::vector<Orders> unpaidOrders = odr.getUnpaidOrders();
+
+    for (const auto& order : unpaidOrders) {
+        int cId = order.getOrderCardId();
+        if (isOrderCardValid(cId)) {
+            orderCardUsed[cId - 1] = true;
+            orderCardId[cId - 1] = order.getOrderId();
+        }
+    }
+}
+
 void EmployeeController::run() {
+    syncOrderCards();
     int choice;
     do {
         empView.showStaffMenu();

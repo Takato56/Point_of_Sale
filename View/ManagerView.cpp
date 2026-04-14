@@ -103,14 +103,21 @@ int ManagerView::promptProductId() const {
     return id;
 }
 
-void ManagerView::showAllProducts(const std::vector<Product>& products) const {
-    if (products.empty()) {
-        std::cout << "No products found.\n";
-        return;
-    }
-    std::cout << "\n========== PRODUCTS ==========\n";
-    for (const auto& p : products) {
-        std::cout << p.toString() << "\n";
+void ManagerView::showProductByCateId(const std::vector<Categories>& ct, const std::vector<Product>& pd) const {
+    for (const auto& cat : ct) {
+        std::cout << "\nCategory: " << cat.getCateName() << " - ID: " << cat.getCateId() << "\n";
+        bool found = false;
+
+        for (const auto& p : pd) {
+            if (p.getCateId() == cat.getCateId()) {
+                std::cout << "  -> " << p.toString() << "\n";
+                found = true;
+            }
+        }
+
+        if (!found) {
+            std::cout << "  (No products in this category)\n";
+        }
     }
 }
 
@@ -159,7 +166,7 @@ void ManagerView::showAllEmployees(const std::vector<Employee>& employees) const
     }
     std::cout << "\n========== EMPLOYEES ==========\n";
     for (const auto& e : employees) {
-        std::string roleStr = (e.getRole() == Manager) ? "Manager" : "Staff";
+        std::string roleStr = (e.getRole() == Role_Manager) ? "Manager" : "Staff";
         std::string activeStr = e.getIsActive() ? "Active" : "Inactive";
         std::cout << "ID: " << e.getId()
                   << " | " << e.getName()

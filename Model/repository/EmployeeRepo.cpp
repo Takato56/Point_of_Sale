@@ -11,7 +11,7 @@ void EmployeeRepo::addEmployee(Employee& employee) {
 
     std::string roleStr;
     switch (employee.getRole()) {
-        case Manager: roleStr = "Manager"; break;
+        case Role_Manager: roleStr = "Manager"; break;
         default:      roleStr = "Staff";   break;
     }
 
@@ -50,7 +50,7 @@ std::vector<Employee> EmployeeRepo::getAll() {
         emp.setPhoneNumber((char*)phoneBuffer);
         emp.setPinHash((char*)pinHashBuffer);
         std::string roleStr((char*)roleBuffer);
-        emp.setRole(roleStr == "Manager" ? Manager : Staff);
+        emp.setRole(roleStr == "Manager" ? Role_Manager : Role_Staff);
         emp.setIsActive((int)isActiveBuffer);
 
         list.push_back(emp);
@@ -84,7 +84,7 @@ Employee EmployeeRepo::getById(int id) {
         emp.setPhoneNumber((char*)phoneBuffer);
         emp.setPinHash((char*)pinHashBuffer);
         std::string roleStr((char*)roleBuffer);
-        emp.setRole(roleStr == "Manager" ? Manager : Staff);
+        emp.setRole(roleStr == "Manager" ? Role_Manager : Role_Staff);
         emp.setIsActive((int)isActiveBuffer);
     }
     db.clearStmt();
@@ -94,7 +94,7 @@ Employee EmployeeRepo::getById(int id) {
 void EmployeeRepo::update(const Employee& e) {
     std::string roleStr;
     switch (e.getRole()) {
-        case Manager: roleStr = "Manager"; break;
+        case Role_Manager: roleStr = "Manager"; break;
         default:      roleStr = "Staff";   break;
     }
 

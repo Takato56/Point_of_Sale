@@ -21,6 +21,7 @@ public:
 
     std::vector<std::string> getDistinctDates();
     std::vector<Orders> getByDate(const std::string& date);
+    std::vector<Orders> getUnpaidOrders();
 };
 
 #endif //POINT_OF_SALE_ORDERREPO_H
