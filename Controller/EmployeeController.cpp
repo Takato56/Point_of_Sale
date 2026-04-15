@@ -268,6 +268,25 @@ void EmployeeController::createPayment() {
     payment.setAmount(finalAmount);
     payRepo.addPayment(payment);
 
+    if (order.getCustId() > 0) {
+        Customer customer = cr.getByID(order.getCustId());
+
+        if (customer.getCustId() != 0) {
+
+            int pointsToAdd = static_cast<int>(finalAmount / 1000.0);
+
+            if (pointsToAdd > 0) {
+                int newPoints = customer.getPoint() + pointsToAdd;
+                customer.setPoint(newPoints);
+
+                cr.update(customer);
+
+                empView.showMessage("Added +" + std::to_string(pointsToAdd) +
+                                    " points. Total: " + std::to_string(newPoints));
+            }
+        }
+    }
+
     freeOrderCard(cardId);
     empView.showMessage("Payment completed. OrderCard " + std::to_string(cardId) + " is now free.");
 }
