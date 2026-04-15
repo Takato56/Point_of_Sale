@@ -150,8 +150,9 @@ std::string PasswordHasher::hash(const std::string& password) {
 bool PasswordHasher::verify(const std::string& password, const std::string& storedHash) {
     // Split stored value into salt and hash
     size_t sep = storedHash.find('$');
-    if (sep == std::string::npos)
-        throw std::invalid_argument("Invalid stored hash format (expected SALT$HASH)");
+    if (sep == std::string::npos) {
+        return false;
+    }
 
     std::string salt   = storedHash.substr(0, sep);
     std::string expected = storedHash.substr(sep + 1);
