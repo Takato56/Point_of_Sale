@@ -180,7 +180,7 @@ std::vector<Orders> OrderRepo::getUnpaidOrders() {
     std::string sql = "SELECT o.OrderId, o.StaffId, o.CustId, o.OrderCardId "
                       "FROM Orders o "
                       "LEFT JOIN Payments p ON o.OrderId = p.OrderId "
-                      "WHERE p.OrderId IS NULL;";
+                      "WHERE o.Status = 0;";
 
     db.execute(sql);
     SQLHSTMT stmt = db.getStmt();

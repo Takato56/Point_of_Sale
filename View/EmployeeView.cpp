@@ -148,3 +148,10 @@ int EmployeeView::promptDiscountChoice() const {
     std::cin >> choice;
     return choice;
 }
+
+void EmployeeView::displayModifiers(const std::vector<Modifiers>& modifiers) const{
+    std::cout << "\n--- Available Modifiers ---" << std::endl;
+    for (const auto& mod : modifiers) {
+        std::cout << mod.getModId() << ". " << mod.getModName() << " (+" << mod.getExtraCost() << "đ)" << std::endl;
+    }
+}

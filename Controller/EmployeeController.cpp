@@ -112,6 +112,33 @@ void EmployeeController::createOrder() {
             continue;
         }
 
+        std::string notes = "";
+        empView.showMessage("\n--- Add Modifiers? (1. Yes / 0. No) ---");
+        if (empView.getMenuChoice() == 1) {
+            bool addingModifiers = true;
+            while (addingModifiers) {
+                std::vector<Modifiers> allModifiers = ModifierRepo(db).getAll();
+                empView.displayModifiers(allModifiers);
+
+                empView.showMessage("Select Modifier ID (0 to finish): ");
+                int modId = empView.getMenuChoice();
+
+                if (modId == 0) {
+                    addingModifiers = false;
+                } else {
+                    Modifiers selectedMod = ModifierRepo(db).getByID(modId);
+                    if (selectedMod.getModId() != 0) {
+                        if (!notes.empty()) notes += ", ";
+                        notes += selectedMod.getModName();
+
+                        empView.showMessage("Added: " + selectedMod.getModName());
+                    } else {
+                        empView.showMessage("Invalid Modifier ID!");
+                    }
+                }
+            }
+        }
+
         OrderItems item;
         item.setProdId(prodId);
         item.setSizeLabel(sizeLabel);

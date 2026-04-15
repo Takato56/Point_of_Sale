@@ -20,7 +20,7 @@ void ModifierRepo::addModifier(const Modifiers &m) {
 
 std::vector<Modifiers> ModifierRepo::getAll() {
     std::vector<Modifiers> list;
-    db.execute("SELECT OrderId, StaffId, CustId, OrderCardId FROM Orders;");
+    db.execute("SELECT ModId, ModName, ExtraCost FROM Modifiers;");
     SQLHSTMT stmt = db.getStmt();
 
     while (SQLFetch(stmt) == SQL_SUCCESS) {

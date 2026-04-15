@@ -10,6 +10,7 @@
 #include "../utils/DataHelper.h"
 #include "../view/EmployeeView.h"
 #include "../view/MenuView.h"
+#include "../model/repository/ModifierRepo.h"
 #include <vector>
 
 #include "../Model/repository/DiscountRepo.h"
@@ -19,6 +20,7 @@ private:
     DBContext db;
     std::vector<Categories> listCt;
     std::vector<Product> listPd;
+    std::vector<Modifiers> listMd;
 
     // Views
     EmployeeView empView;
@@ -30,6 +32,7 @@ private:
     OrderItemsRepo oir;
     PaymentRepo payRepo;
     DiscountRepo dr;
+    ModifierRepo mr;
 
     int currentStaffId = -1;
     bool orderCardUsed[20];
@@ -43,7 +46,7 @@ private:
 
 public:
     explicit EmployeeController(DBContext& context)
-        : db(context), odr(context), cr(context), oir(context), payRepo(context), dr(context) {
+        : db(context), odr(context), cr(context), oir(context), payRepo(context), dr(context), mr(context) {
         for (int i = 0; i < 20; ++i) {
             orderCardUsed[i] = false;
             orderCardId[i] = -1;
