@@ -12,8 +12,7 @@ void ManagerView::showManagerMenu() const {
     std::cout << "2. Product\n";
     std::cout << "3. Employee\n";
     std::cout << "4. Discount\n";
-    std::cout << "5. Modifier\n";
-    std::cout << "6. Check Income\n";
+    std::cout << "5. Check Income\n";
     std::cout << "0. Exit\n";
     std::cout << "Choose: ";
 }
