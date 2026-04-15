@@ -1,7 +1,7 @@
 #include "ManagerController.h"
 #include "../utils/DataHelper.h"
 #include "../utils/PasswordHasher.h"
-
+#include <iomanip>
 // ═══════════════════════════════════════════
 //  CATEGORY CRUD
 // ═══════════════════════════════════════════
@@ -114,6 +114,45 @@ void ManagerController::showProductByCateId() {
     mgrView.showProductByCateId(listCate, listProd);
 }
 
+void ManagerController::viewAllProducts(){
+    std::vector<Product> listProd = pr.getAll();
+    std::vector<Categories> listCate = cr.getAll();
+    if (listCate.empty()) {
+        std::cout << "\n[!] No categories available.\n";
+        return;
+    }
+
+    std::cout << "\n" << std::string(65, '=') << "\n";
+    std::cout << "              LIST PRODUCT BY CATEGORY               \n";
+    std::cout << std::string(65, '=') << "\n";
+
+    for (const auto& cate : listCate) {
+        std::cout << "\n>>> CATEGORY: " << cate.getCateName() << " <<<\n";
+        std::cout << std::left
+                  << std::setw(8)  << "ID"
+                  << std::setw(35) << "PRODUCT NAME"
+                  << "PRICE" << "\n";
+        std::cout << std::string(60, '-') << "\n";
+
+        bool hasProduct = false;
+        for (const auto& prod : listProd) {
+            if (prod.getCateId() == cate.getCateId()) {
+                std::cout << std::left
+                          << std::setw(8)  << prod.getProdId()
+                          << std::setw(35) << prod.getProdName()
+                          << (int)prod.getProdPrice() << " VND" << "\n";
+                hasProduct = true;
+            }
+        }
+
+        if (!hasProduct) {
+            std::cout << "   (No product in this category)\n";
+        }
+        std::cout << std::string(60, '.') << "\n";
+    }
+    std::cout << "\n" << std::string(65, '=') << "\n";
+}
+
 void ManagerController::updateProduct() {
     showProductByCateId();
     int id = mgrView.promptProductId();
@@ -166,7 +205,7 @@ void ManagerController::productMenu() {
 
         switch (choice) {
             case 1: addProduct(); break;
-            case 2: showProductByCateId(); break;
+            case 2: viewAllProducts(); break;
             case 3: updateProduct(); break;
             case 4: deleteProduct(); break;
             case 0: break;

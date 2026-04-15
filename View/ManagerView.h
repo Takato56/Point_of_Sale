@@ -62,7 +62,6 @@ public:
 
     // Generic
     void showMessage(const std::string& msg) const;
-
     void showAllProducts(const std::vector<Product> & ct);
 };
 

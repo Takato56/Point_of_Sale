@@ -30,6 +30,7 @@ private:
 
     // Product CRUD
     void addProduct();
+    void viewAllProducts();
     void showProductByCateId();
     void updateProduct();
     void deleteProduct();

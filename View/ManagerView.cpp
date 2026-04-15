@@ -71,13 +71,22 @@ int ManagerView::promptCategoryId() const {
 
 void ManagerView::showAllCategories(const std::vector<Categories>& categories) const {
     if (categories.empty()) {
-        std::cout << "No categories found.\n";
+        std::cout << "\n[!] No categories found.\n";
         return;
     }
-    std::cout << "\n========== CATEGORIES ==========\n";
+    std::cout << "\n" << std::string(40, '=') << "\n";
+    std::cout << std::left
+              << std::setw(10) << "ID"
+              << "CATEGORY NAME" << "\n";
+    std::cout << std::string(40, '-') << "\n";
+
     for (const auto& c : categories) {
-        std::cout << c.toString() << "\n";
+        std::cout << std::left
+                  << std::setw(10) << c.getCateId()
+                  << c.getCateName() << "\n";
     }
+
+    std::cout << std::string(40, '=') << "\n";
 }
 
 // ─── Product ───
@@ -162,19 +171,31 @@ int ManagerView::promptEmployeeId() const {
 
 void ManagerView::showAllEmployees(const std::vector<Employee>& employees) const {
     if (employees.empty()) {
-        std::cout << "No employees found.\n";
+        std::cout << "\n[!] No employees found.\n";
         return;
     }
-    std::cout << "\n========== EMPLOYEES ==========\n";
+
+    std::cout << "\n" << std::string(80, '=') << "\n";
+    std::cout << std::left
+              << std::setw(5)  << "ID"
+              << std::setw(25) << "FULL NAME"
+              << std::setw(15) << "PHONE"
+              << std::setw(15) << "ROLE"
+              << "STATUS" << "\n";
+    std::cout << std::string(80, '-') << "\n";
+
     for (const auto& e : employees) {
         std::string roleStr = (e.getRole() == Role_Manager) ? "Manager" : "Staff";
         std::string activeStr = e.getIsActive() ? "Active" : "Inactive";
-        std::cout << "ID: " << e.getId()
-                  << " | " << e.getName()
-                  << " | " << e.getPhoneNumber()
-                  << " | " << roleStr
-                  << " | " << activeStr << "\n";
+
+        std::cout << std::left
+                  << std::setw(5)  << e.getId()
+                  << std::setw(25) << e.getName()
+                  << std::setw(15) << e.getPhoneNumber()
+                  << std::setw(15) << roleStr
+                  << activeStr << "\n";
     }
+    std::cout << std::string(80, '=') << "\n";
 }
 
 // ─── Income ───
@@ -298,16 +319,32 @@ int ManagerView::promptDiscountIsActive() const {
 
 void ManagerView::showAllDiscounts(const std::vector<Discount>& discounts) const {
     if (discounts.empty()) {
-        std::cout << "No discounts found.\n";
+        std::cout << "\n[!] No discounts found.\n";
         return;
     }
-    std::cout << "\n========== DISCOUNTS ==========\n";
+    std::cout << "\n" << std::string(60, '=') << "\n";
+    std::cout << std::left
+              << std::setw(8)  << "ID"
+              << std::setw(15) << "DISCOUNT TYPE"
+              << std::setw(15) << "VALUE"
+              << "STATUS" << "\n";
+    std::cout << std::string(60, '-') << "\n";
+
     for (const auto& d : discounts) {
-        std::cout << "ID: " << d.getDiscountId()
-                  << " | Type: " << d.getType()
-                  << " | Value: " << d.getValue()
-                  << " | IsActive: " << (d.getIsActive() ? "Yes" : "No") << "\n";
+        std::string valueDisplay = std::to_string((int)d.getValue());
+        if (d.getType() == "Percentage") {
+            valueDisplay += "%";
+        } else {
+            valueDisplay += " VND";
+        }
+
+        std::cout << std::left
+                  << std::setw(8)  << d.getDiscountId()
+                  << std::setw(15) << d.getType()
+                  << std::setw(15) << valueDisplay
+                  << (d.getIsActive() ? "[ Yes ]" : "[ No  ]") << "\n";
     }
+    std::cout << std::string(60, '=') << "\n";
 }
 
 void ManagerView::showDailyIncome(const std::string& date, double income) const {
