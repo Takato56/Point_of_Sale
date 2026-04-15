@@ -299,17 +299,21 @@ void ManagerController::employeeMenu() {
 // ═══════════════════════════════════════════
 
 void ManagerController::checkIncome() {
-    // Step 1: Show all dates with income
     std::vector<std::string> dates = orderRepo.getDistinctDates();
+
+    if (dates.empty()) {
+        mgrView.showMessage("No data available.");
+        return;
+    }
+
     int dateChoice = mgrView.showDatesAndSelect(dates);
 
-    if (dateChoice == 0 || dateChoice < 0 || dateChoice > static_cast<int>(dates.size())) {
+    if (dateChoice <= 0 || dateChoice > static_cast<int>(dates.size())) {
+        mgrView.showMessage("Invalid Date ID selected!");
         return;
     }
 
     std::string selectedDate = dates[dateChoice - 1];
-
-    // Step 2: Get all orders on that date, calc totals
     std::vector<Orders> dayOrders = orderRepo.getByDate(selectedDate);
     std::vector<double> totals;
     double dailyIncome = 0.0;
@@ -326,21 +330,19 @@ void ManagerController::checkIncome() {
 
     mgrView.showDailyIncome(selectedDate, dailyIncome);
 
-    // Step 3: Let user pick a bill
     int billChoice = mgrView.showOrdersAndSelect(dayOrders, totals);
 
-    if (billChoice == 0 || billChoice < 0 || billChoice > static_cast<int>(dayOrders.size())) {
+    if (billChoice <= 0 || billChoice > static_cast<int>(dayOrders.size())) {
+        mgrView.showMessage("Invalid Order ID selected!");
         return;
     }
 
-    // Step 4: Show full bill detail
     Orders selectedOrder = dayOrders[billChoice - 1];
     std::vector<OrderItems> items = oiRepo.getByOrderID(selectedOrder.getOrderId());
     std::vector<Payments> payments = payRepo2.getByOrderID(selectedOrder.getOrderId());
 
     mgrView.showBillDetail(selectedOrder, items, payments, totals[billChoice - 1]);
 }
-
 // ═══════════════════════════════════════════
 //  DISCOUNT CRUD
 // ═══════════════════════════════════════════
