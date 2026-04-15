@@ -20,21 +20,22 @@ void ModifierRepo::addModifier(const Modifiers &m) {
 
 std::vector<Modifiers> ModifierRepo::getAll() {
     std::vector<Modifiers> list;
-    db.execute("SELECT ModId, ModName, ExtraCost FROM Modifiers;");
+    db.execute("SELECT ModId, ModName, ExtraCost, Type FROM Modifiers;");
     SQLHSTMT stmt = db.getStmt();
 
     while (SQLFetch(stmt) == SQL_SUCCESS) {
         Modifiers m;
         SQLINTEGER modId, extraCost;
-        SQLCHAR modName[50];
+        SQLCHAR modName[50], modType[20];
         SQLGetData(stmt, 1, SQL_C_SLONG, &modId, 0, NULL);
         SQLGetData(stmt, 2, SQL_C_CHAR, &modName, sizeof(modName), NULL);
         SQLGetData(stmt, 3, SQL_C_SLONG, &extraCost, 0, NULL);
+        SQLGetData(stmt, 4, SQL_C_CHAR, modType, sizeof(modType), NULL);
 
         m.setModId((int)modId);
         m.setModName((char*)modName);
         m.setExtraCost((int)extraCost);
-
+        m.setModType((char*)modType);
         list.push_back(m);
     }
 

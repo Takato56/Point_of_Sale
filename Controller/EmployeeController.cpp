@@ -115,26 +115,42 @@ void EmployeeController::createOrder() {
         std::string notes = "";
         empView.showMessage("\n--- Add Modifiers? (1. Yes / 0. No) ---");
         if (empView.getMenuChoice() == 1) {
-            bool addingModifiers = true;
-            while (addingModifiers) {
-                std::vector<Modifiers> allModifiers = ModifierRepo(db).getAll();
-                empView.displayModifiers(allModifiers);
+            std::vector<Modifiers> allModifiers = ModifierRepo(db).getAll();
+            bool menuActive = true;
 
-                empView.showMessage("Select Modifier ID (0 to finish): ");
-                int modId = empView.getMenuChoice();
+            while (menuActive) {
+                empView.showMessage("\n===== SELECT MODIFIER CATEGORY =====");
+                empView.showMessage("1. Ice Options (Đá)");
+                empView.showMessage("2. Sugar Options (Đường)");
+                empView.showMessage("0. Finish (Hoàn tất)");
 
-                if (modId == 0) {
-                    addingModifiers = false;
-                } else {
-                    Modifiers selectedMod = ModifierRepo(db).getByID(modId);
-                    if (selectedMod.getModId() != 0) {
-                        if (!notes.empty()) notes += ", ";
-                        notes += selectedMod.getModName();
+                int catChoice = empView.getMenuChoice();
+                if (catChoice == 0) break;
 
-                        empView.showMessage("Added: " + selectedMod.getModName());
-                    } else {
-                        empView.showMessage("Invalid Modifier ID!");
-                    }
+                std::string targetType = (catChoice == 1) ? "ice" : "sugar";
+                std::vector<Modifiers> filteredList;
+                for (const auto& m : allModifiers) {
+                    if (m.getModType() == targetType) filteredList.push_back(m);
+                }
+
+                if (filteredList.empty()) {
+                    empView.showMessage("No options available for this category.");
+                    continue;
+                }
+
+                empView.showMessage("\n--- Select Option (1-" + std::to_string(filteredList.size()) + ") ---");
+                for (int i = 0; i < filteredList.size(); ++i) {
+                    empView.showMessage(std::to_string(i + 1) + ". " + filteredList[i].getModName());
+                }
+                empView.showMessage("0. Back to categories");
+
+                int itemChoice = empView.getMenuChoice();
+                if (itemChoice > 0 && itemChoice <= (int)filteredList.size()) {
+                    Modifiers selected = filteredList[itemChoice - 1];
+
+                    if (!notes.empty()) notes += ", ";
+                    notes += selected.getModName();
+                    empView.showMessage(">> Added: " + selected.getModName());
                 }
             }
         }

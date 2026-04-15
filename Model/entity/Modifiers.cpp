@@ -13,6 +13,10 @@ int Modifiers::getModId() const {
 int Modifiers::getExtraCost() const {
     return ExtraCost;
 }
+std::string Modifiers::getModType() const {
+    return ModType;
+}
+
 
 void Modifiers::setModName(const std::string newName) {
     ModName = newName;
@@ -22,6 +26,9 @@ void Modifiers::setModId(const int newId) {
 }
 void Modifiers::setExtraCost(const int newExtraCost) {
     ExtraCost = newExtraCost;
+}
+void Modifiers::setModType(const std::string newModType) {
+    ModType = newModType;
 }
 
 void Modifiers::edit() {
