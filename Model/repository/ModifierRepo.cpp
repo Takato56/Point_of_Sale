@@ -28,7 +28,7 @@ std::vector<Modifiers> ModifierRepo::getAll() {
         SQLINTEGER modId, extraCost;
         SQLCHAR modName[50];
         SQLGetData(stmt, 1, SQL_C_SLONG, &modId, 0, NULL);
-        SQLGetData(stmt, 2, SQL_C_SLONG, &modName, 0, NULL);
+        SQLGetData(stmt, 2, SQL_C_CHAR, &modName, sizeof(modName), NULL);
         SQLGetData(stmt, 3, SQL_C_SLONG, &extraCost, 0, NULL);
 
         m.setModId((int)modId);
@@ -55,7 +55,7 @@ Modifiers ModifierRepo::getByID(int id) {
         SQLINTEGER modId, extraCost;
         SQLCHAR modName[50];
         SQLGetData(stmt, 1, SQL_C_SLONG, &modId, 0, NULL);
-        SQLGetData(stmt, 2, SQL_C_SLONG, &modName, 0, NULL);
+        SQLGetData(stmt, 2, SQL_C_CHAR, &modName, sizeof(modName), NULL);
         SQLGetData(stmt, 3, SQL_C_SLONG, &extraCost, 0, NULL);
 
         m.setModId((int)modId);

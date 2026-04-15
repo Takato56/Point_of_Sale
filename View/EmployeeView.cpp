@@ -137,7 +137,7 @@ void EmployeeView::showActiveDiscounts(const std::vector<Discount>& discounts) c
 
     for (const auto& d : discounts) {
         std::cout << d.getDiscountId() << ". Code: " << d.getCode()
-                  << " (" << d.getValue() // Đảm bảo dùng d.getValue() ở đây
+                  << " (" << d.getValue()
                   << (d.getType() == "Percentage" ? "%" : " USD") << " off)\n";
     }
 }
