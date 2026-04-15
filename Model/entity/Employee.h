@@ -19,7 +19,7 @@ class Employee {
     Role role;
     int isActive = 1;
 public:
-    Employee() : EmpName(""), pinHash(""), role(), EmpPhoneNumber("") {}
+    Employee() : EmpId() ,EmpName(""), pinHash(""), role(), EmpPhoneNumber("") {}
     virtual void showInterface();
     void orderItem();
 
