@@ -22,12 +22,16 @@ int runApp() {
     }
 
     LoginController loginController(db);
-    LoginResult loginResult = loginController.login();
+    LoginResult loginResult;
 
-    if (!loginResult.isSuccess) {
-        std::cout << "Invalid login.\n";
-        return 0;
-    }
+    do {
+        loginResult = loginController.login();
+
+        if (!loginResult.isSuccess) {
+            std::cout << "Invalid login.\n";
+        }
+
+    } while (!loginResult.isSuccess);
 
     std::cout << "Welcome, " << loginResult.empName << "!\n";
 

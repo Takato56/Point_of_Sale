@@ -12,7 +12,8 @@ void ManagerView::showManagerMenu() const {
     std::cout << "2. Product\n";
     std::cout << "3. Employee\n";
     std::cout << "4. Discount\n";
-    std::cout << "5. Check Income\n";
+    std::cout << "5. Modifier\n";
+    std::cout << "6. Check Income\n";
     std::cout << "0. Exit\n";
     std::cout << "Choose: ";
 }
@@ -23,8 +24,15 @@ int ManagerView::getMenuChoice() const {
     return choice;
 }
 
+std::string toUpper(std::string str) {
+    for (char &c : str) {
+        c = std::toupper(static_cast<unsigned char>(c));
+    }
+    return str;
+}
+
 void ManagerView::showCrudMenu(const std::string& entityName) const {
-    std::cout << "\n===== " << entityName << " MANAGEMENT =====\n";
+    std::cout << "\n===== " << toUpper(entityName) << " MANAGEMENT =====\n";
     std::cout << "1. Add " << entityName << "\n";
     std::cout << "2. View All " << entityName << "\n";
     std::cout << "3. Update " << entityName << "\n";

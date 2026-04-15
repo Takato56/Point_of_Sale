@@ -220,30 +220,37 @@ void ManagerController::productMenu() {
 
 void ManagerController::addEmployee() {
     std::string name = mgrView.promptEmployeeName();
-    std::string phone = mgrView.promptEmployeePhone();
+    std::string phone;
+    Employee emp;
+    do {
+        phone = mgrView.promptEmployeePhone();
+        emp = sr.getByPhone(phone);
+        if (emp.getPhoneNumber() == phone)
+            mgrView.showMessage("This phone number is already exist, please enter a different phone.");
+    } while (emp.getPhoneNumber() == phone);
     std::string pin = mgrView.promptEmployeePin();
     int roleChoice = mgrView.promptEmployeeRole();
 
-    Employee emp;
-    emp.setName(name);
-    emp.setPhoneNumber(phone);
-    emp.setPinHash(PasswordHasher::hash(pin));
-    emp.setRole(roleChoice == 2 ? Role_Manager : Role_Staff);
-    emp.setIsActive(1);
+    Employee newEmp;
+    newEmp.setName(name);
+    newEmp.setPhoneNumber(phone);
+    newEmp.setPinHash(PasswordHasher::hash(pin));
+    newEmp.setRole(roleChoice == 2 ? Role_Manager : Role_Staff);
+    newEmp.setIsActive(1);
 
-    er.addEmployee(emp);
+    sr.addStaff(newEmp);
     mgrView.showMessage("Employee added successfully. ID: " + std::to_string(emp.getId()));
 }
 
 void ManagerController::viewAllEmployees() {
-    mgrView.showAllEmployees(er.getAll());
+    mgrView.showAllEmployees(sr.getAll());
 }
 
 void ManagerController::updateEmployee() {
     viewAllEmployees();
     int id = mgrView.promptEmployeeId();
 
-    Employee emp = er.getById(id);
+    Employee emp = sr.getById(id);
     if (emp.getId() == 0) {
         mgrView.showMessage("Employee not found!");
         return;
@@ -259,7 +266,7 @@ void ManagerController::updateEmployee() {
     emp.setPhoneNumber(newPhone);
     emp.setRole(newRole == 2 ? Role_Manager : Role_Staff);
 
-    er.update(emp);
+    sr.update(emp);
     mgrView.showMessage("Employee updated successfully.");
 }
 
@@ -267,13 +274,13 @@ void ManagerController::deleteEmployee() {
     viewAllEmployees();
     int id = mgrView.promptEmployeeId();
 
-    Employee emp = er.getById(id);
+    Employee emp = sr.getById(id);
     if (emp.getId() == 0) {
         mgrView.showMessage("Employee not found!");
         return;
     }
 
-    er.remove(id);
+    sr.remove(id);
     mgrView.showMessage("Employee deleted successfully.");
 }
 

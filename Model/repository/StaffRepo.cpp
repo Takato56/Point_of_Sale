@@ -18,7 +18,9 @@ Role StaffRepo::stringToRole(const std::string& str) {
     return Role::Role_Staff;
 }
 
-void StaffRepo::addStaff(const Employee& employee) {
+void StaffRepo::addStaff(Employee& employee) {
+    int newId = DataHelper::getNextId(db, "Staffs", "StaffId");
+    employee.setId(newId);
     std::string roleStr = roleToString(employee.getRole());
 
     if (roleStr != "Staff" && roleStr != "Manager") {
@@ -44,7 +46,7 @@ std::vector<Employee> StaffRepo::getAll() {
     SQLHSTMT stmt = db.getStmt();
 
     SQLINTEGER idBuffer, isActiveBuffer;
-    SQLCHAR nameBuffer[100], phoneBuffer[50], pinHashBuffer[256], roleBuffer[50];
+    SQLCHAR nameBuffer[100], phoneBuffer[10], pinHashBuffer[100], roleBuffer[10];
 
     while (SQLFetch(stmt) == SQL_SUCCESS) {
         Employee emp;
@@ -70,7 +72,7 @@ std::vector<Employee> StaffRepo::getAll() {
     return list;
 }
 
-Employee StaffRepo::getByID(int id) {
+Employee StaffRepo::getById(int id) {
     Employee emp;
     std::string query =
         "SELECT StaffId, StaffName, StaffPhone, PinHash, Role, isActive FROM Staffs WHERE StaffId="
@@ -81,7 +83,37 @@ Employee StaffRepo::getByID(int id) {
 
     if (SQLFetch(stmt) == SQL_SUCCESS) {
         SQLINTEGER idBuffer, isActiveBuffer;
-        SQLCHAR nameBuffer[100], phoneBuffer[50], pinHashBuffer[256], roleBuffer[50];
+        SQLCHAR nameBuffer[50], phoneBuffer[10], pinHashBuffer[100], roleBuffer[10];
+
+        SQLGetData(stmt, 1, SQL_C_SLONG, &idBuffer, sizeof(idBuffer), NULL);
+        SQLGetData(stmt, 2, SQL_C_CHAR, nameBuffer, sizeof(nameBuffer), NULL);
+        SQLGetData(stmt, 3, SQL_C_CHAR, phoneBuffer, sizeof(phoneBuffer), NULL);
+        SQLGetData(stmt, 4, SQL_C_CHAR, pinHashBuffer, sizeof(pinHashBuffer), NULL);
+        SQLGetData(stmt, 5, SQL_C_CHAR, roleBuffer, sizeof(roleBuffer), NULL);
+        SQLGetData(stmt, 6, SQL_C_SLONG, &isActiveBuffer, sizeof(isActiveBuffer), NULL);
+
+        emp.setId((int)idBuffer);
+        emp.setName((char*)nameBuffer);
+        emp.setPhoneNumber((char*)phoneBuffer);
+        emp.setPinHash((char*)pinHashBuffer);
+        std::string roleStr((char*)roleBuffer);
+        emp.setRole(stringToRole(roleStr));
+        emp.setIsActive((int)isActiveBuffer);
+    }
+    db.clearStmt();
+    return emp;
+}
+
+Employee StaffRepo::getByPhone(const std::string& phone) {
+    Employee emp;
+    std::string query =
+        "SELECT StaffId, StaffName, StaffPhone, PinHash, Role, isActive FROM Staffs WHERE StaffPhone='"
+        + phone + "';";
+    db.execute(query);
+    SQLHSTMT stmt = db.getStmt();
+    if (SQLFetch(stmt) == SQL_SUCCESS) {
+        SQLINTEGER idBuffer, isActiveBuffer;
+        SQLCHAR nameBuffer[50], phoneBuffer[10], pinHashBuffer[100], roleBuffer[10];
 
         SQLGetData(stmt, 1, SQL_C_SLONG, &idBuffer, sizeof(idBuffer), NULL);
         SQLGetData(stmt, 2, SQL_C_CHAR, nameBuffer, sizeof(nameBuffer), NULL);

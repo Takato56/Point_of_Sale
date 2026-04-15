@@ -319,9 +319,9 @@ void EmployeeController::syncOrderCards() {
 }
 
 void EmployeeController::run() {
-    syncOrderCards();
     int choice;
     do {
+        syncOrderCards();
         empView.showStaffMenu();
         choice = empView.getMenuChoice();
 

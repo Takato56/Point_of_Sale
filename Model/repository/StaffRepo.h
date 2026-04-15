@@ -5,6 +5,7 @@
 #ifndef POINT_OF_SALE_STAFFREPO_H
 #define POINT_OF_SALE_STAFFREPO_H
 #include "../database/DBContext.h"
+#include "../../utils/DataHelper.h"
 #include <vector>
 #include "../../Model/entity/Employee.h"
 
@@ -13,9 +14,10 @@ private:
     DBContext& db;
 public:
     StaffRepo(DBContext& context) : db(context) {}
-    void addStaff(const Employee& employee);
+    void addStaff(Employee& employee);
     std::vector<Employee> getAll();
-    Employee getByID(int id);
+    Employee getById(int id);
+    Employee getByPhone(const std::string& phone);
     void update(const Employee& employee);
     void remove(int id);
 

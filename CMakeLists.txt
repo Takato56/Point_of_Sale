@@ -23,8 +23,6 @@ add_executable(Point_of_Sale main.cpp
         model/entity/Categories.h
         model/entity/Employee.cpp
         model/entity/Employee.h
-        model/entity/Manager.cpp
-        model/entity/Manager.h
         model/entity/Modifiers.cpp
         model/entity/Modifiers.h
         model/entity/ProductVariants.cpp
@@ -55,8 +53,6 @@ add_executable(Point_of_Sale main.cpp
         model/repository/PVRepo.h
         model/repository/PMRepo.cpp
         model/repository/PMRepo.h
-        model/repository/EmployeeRepo.cpp
-        model/repository/EmployeeRepo.h
         model/repository/CustomerRepo.cpp
         model/repository/CustomerRepo.h
         model/repository/OrderRepo.cpp

@@ -4,17 +4,17 @@
 #include "EmployeeController.h"
 #include "../Model/repository/DiscountRepo.h"
 #include "../view/ManagerView.h"
-#include "../model/repository/EmployeeRepo.h"
 #include "../model/repository/OrderRepo.h"
 #include "../model/repository/OrderItemRepo.h"
 #include "../model/repository/PaymentRepo.h"
+#include "../Model/repository/StaffRepo.h"
 
 class ManagerController : public EmployeeController {
 private:
     DBContext db;
     CategoriesRepo cr;
     ProductRepo pr;
-    EmployeeRepo er;
+    StaffRepo sr;
     OrderRepo orderRepo;
     OrderItemsRepo oiRepo;
     PaymentRepo payRepo2;
@@ -56,7 +56,7 @@ private:
 public:
     explicit ManagerController(DBContext& context)
         : EmployeeController(context), db(context),
-          cr(context), pr(context), er(context),
+          cr(context), pr(context), sr(context),
           orderRepo(context), oiRepo(context), payRepo2(context), dr(context) {}
 
     void run();
