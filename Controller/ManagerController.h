@@ -3,23 +3,22 @@
 
 #include "EmployeeController.h"
 #include "../Model/repository/DiscountRepo.h"
-#include "../view/ManagerView.h"
-#include "../model/repository/OrderRepo.h"
-#include "../model/repository/OrderItemRepo.h"
-#include "../model/repository/PaymentRepo.h"
+#include "../View/ManagerView.h"
+#include "../Model/repository/OrderRepo.h"
+#include "../Model/repository/OrderItemRepo.h"
+#include "../Model/repository/PaymentRepo.h"
 #include "../Model/repository/StaffRepo.h"
 
 class ManagerController : public EmployeeController {
 private:
-    DBContext db;
-    CategoriesRepo cr;
-    ProductRepo pr;
-    StaffRepo sr;
-    OrderRepo orderRepo;
-    OrderItemsRepo oiRepo;
-    PaymentRepo payRepo2;
+    CategoriesRepo mgrCateRepo;
+    ProductRepo mgrProdRepo;
+    StaffRepo mgrStaffRepo;
+    OrderRepo mgrOrderRepo;
+    OrderItemsRepo mgrOiRepo;
+    PaymentRepo mgrPayRepo;
     ManagerView mgrView;
-    DiscountRepo dr;
+    DiscountRepo mgrDiscountRepo;
 
     // Category CRUD
     void addCategory();
@@ -55,9 +54,10 @@ private:
 
 public:
     explicit ManagerController(DBContext& context)
-        : EmployeeController(context), db(context),
-          cr(context), pr(context), sr(context),
-          orderRepo(context), oiRepo(context), payRepo2(context), dr(context) {}
+        : EmployeeController(context),
+          mgrCateRepo(context), mgrProdRepo(context), mgrStaffRepo(context),
+          mgrOrderRepo(context), mgrOiRepo(context), mgrPayRepo(context),
+          mgrDiscountRepo(context) {}
 
     void run();
 };

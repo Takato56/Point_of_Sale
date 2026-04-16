@@ -7,18 +7,18 @@
 #include "../database/DBContext.h"
 #include "../../utils/DataHelper.h"
 #include <vector>
-#include "../../Model/entity/Employee.h"
+#include "../../Model/entity/Staff.h"
 
 class StaffRepo {
 private:
     DBContext& db;
 public:
     StaffRepo(DBContext& context) : db(context) {}
-    void addStaff(Employee& employee);
-    std::vector<Employee> getAll();
-    Employee getById(int id);
-    Employee getByPhone(const std::string& phone);
-    void update(const Employee& employee);
+    void addStaff(Staff& employee);
+    std::vector<Staff> getAll();
+    Staff getById(int id);
+    Staff getByPhone(const std::string& phone);
+    void update(const Staff& employee);
     void remove(int id);
 
     std::string roleToString(Role r);

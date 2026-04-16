@@ -5,70 +5,74 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(Point_of_Sale main.cpp
         # Controller
-        controller/LoginController.cpp
-        controller/LoginController.h
-        controller/EmployeeController.cpp
-        controller/EmployeeController.h
-        controller/ManagerController.cpp
-        controller/ManagerController.h
+        Controller/LoginController.cpp
+        Controller/LoginController.h
+        Controller/EmployeeController.cpp
+        Controller/EmployeeController.h
+        Controller/ManagerController.cpp
+        Controller/ManagerController.h
 
         # Model - Database
-        model/database/DBContext.cpp
-        model/database/DBContext.h
+        Model/database/DBContext.cpp
+        Model/database/DBContext.h
 
         # Model - Entity
-        model/entity/Product.cpp
-        model/entity/Product.h
-        model/entity/Categories.cpp
-        model/entity/Categories.h
-        model/entity/Employee.cpp
-        model/entity/Employee.h
-        model/entity/Modifiers.cpp
-        model/entity/Modifiers.h
-        model/entity/ProductVariants.cpp
-        model/entity/ProductVariants.h
-        model/entity/ProductModifiers.cpp
-        model/entity/ProductModifiers.h
-        model/entity/OrderItems.cpp
-        model/entity/OrderItems.h
-        model/entity/Customer.cpp
-        model/entity/Customer.h
-        model/entity/Orders.cpp
-        model/entity/Orders.h
-        model/entity/Discount.cpp
-        model/entity/Discount.h
-        model/entity/OrderDiscounts.cpp
-        model/entity/OrderDiscounts.h
-        model/entity/Payments.cpp
-        model/entity/Payments.h
+        Model/entity/Product.cpp
+        Model/entity/Product.h
+        Model/entity/Categories.cpp
+        Model/entity/Categories.h
+        Model/entity/Staff.cpp
+        Model/entity/Staff.h
+        Model/entity/Modifiers.cpp
+        Model/entity/Modifiers.h
+        Model/entity/ProductVariants.cpp
+        Model/entity/ProductVariants.h
+        Model/entity/ProductModifiers.cpp
+        Model/entity/ProductModifiers.h
+        Model/entity/OrderItems.cpp
+        Model/entity/OrderItems.h
+        Model/entity/Customer.cpp
+        Model/entity/Customer.h
+        Model/entity/Orders.cpp
+        Model/entity/Orders.h
+        Model/entity/Discount.cpp
+        Model/entity/Discount.h
+        Model/entity/OrderDiscounts.cpp
+        Model/entity/OrderDiscounts.h
+        Model/entity/Payments.cpp
+        Model/entity/Payments.h
 
         # Model - Repository
-        model/repository/ProductRepo.cpp
-        model/repository/ProductRepo.h
-        model/repository/CategoriesRepo.cpp
-        model/repository/CategoriesRepo.h
-        model/repository/StaffRepo.cpp
-        model/repository/StaffRepo.h
-        model/repository/PVRepo.cpp
-        model/repository/PVRepo.h
-        model/repository/PMRepo.cpp
-        model/repository/PMRepo.h
-        model/repository/CustomerRepo.cpp
-        model/repository/CustomerRepo.h
-        model/repository/OrderRepo.cpp
-        model/repository/OrderRepo.h
-        model/repository/PaymentRepo.cpp
-        model/repository/PaymentRepo.h
-        model/repository/OrderItemRepo.cpp
-        model/repository/OrderItemRepo.h
+        Model/repository/ProductRepo.cpp
+        Model/repository/ProductRepo.h
+        Model/repository/CategoriesRepo.cpp
+        Model/repository/CategoriesRepo.h
+        Model/repository/StaffRepo.cpp
+        Model/repository/StaffRepo.h
+        Model/repository/PVRepo.cpp
+        Model/repository/PVRepo.h
+        Model/repository/PMRepo.cpp
+        Model/repository/PMRepo.h
+        Model/repository/CustomerRepo.cpp
+        Model/repository/CustomerRepo.h
+        Model/repository/OrderRepo.cpp
+        Model/repository/OrderRepo.h
+        Model/repository/PaymentRepo.cpp
+        Model/repository/PaymentRepo.h
+        Model/repository/OrderItemRepo.cpp
+        Model/repository/OrderItemRepo.h
+        Model/repository/DiscountRepo.cpp
+        Model/repository/DiscountRepo.h
+        Model/repository/ModifierRepo.cpp
+        Model/repository/ModifierRepo.h
 
         # View
-        view/EmployeeView.cpp
-        view/EmployeeView.h
-        view/ManagerView.cpp
-        view/ManagerView.h
-        view/MenuView.cpp
-        view/MenuView.h
+        View/EmployeeView.cpp
+        View/EmployeeView.h
+        View/ManagerView.cpp
+        View/ManagerView.h
+        View/MenuView.cpp
+        View/MenuView.h
 
         # Utils
         utils/App.cpp
@@ -79,10 +83,6 @@ add_executable(Point_of_Sale main.cpp
         utils/Exception.h
         utils/PasswordHasher.cpp
         utils/PasswordHasher.h
-        Model/repository/DiscountRepo.cpp
-        Model/repository/DiscountRepo.h
-        Model/repository/ModifierRepo.cpp
-        Model/repository/ModifierRepo.h
 )
 
 target_link_libraries(Point_of_Sale PRIVATE odbc32)

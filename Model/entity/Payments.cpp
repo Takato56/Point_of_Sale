@@ -1,45 +1,11 @@
-//
-// Created by ntt12 on 4/9/2026.
-//
-
 #include "Payments.h"
 
-int Payments::getPayId() const {
-    return PayId;
-}
-int Payments::getOrderId() const {
-    return OrderId;
-}
-double Payments::getAmount() const {
-    return Amount;
-}
-std::string Payments::getMethod() const {
-    return Method;
-}
+int Payments::getPayId() const { return payId; }
+int Payments::getOrderId() const { return orderId; }
+double Payments::getAmount() const { return amount; }
+const std::string& Payments::getMethod() const { return method; }
 
-void Payments::setPayId(int newPayId) {
-    PayId = newPayId;
-}
-void Payments::setOrderId(int newOrderId) {
-    OrderId = newOrderId;
-}
-void Payments::setAmount(double newAmount) {
-    Amount = newAmount;
-}
-void Payments::setMethod(std::string newMethod) {
-    Method = newMethod;
-}
-
-void Payments::edit() {
-    std::cout <<"Enter new method: ";
-    std::cin.ignore();
-    std::getline(std::cin,Method);
-    std::cout <<"Enter new amount: ";
-    std::cin >> Amount;
-}
-void Payments::display() const {
-    std::cout << "PayId: " << PayId << "\n";
-    std::cout << "OrderId: " << OrderId << "\n";
-    std::cout << "Amount: " << Amount << "\n";
-    std::cout << "Method: " << Method << "\n";
-}
+void Payments::setPayId(int newPayId) { payId = newPayId; }
+void Payments::setOrderId(int newOrderId) { orderId = newOrderId; }
+void Payments::setAmount(double newAmount) { amount = newAmount; }
+void Payments::setMethod(const std::string& newMethod) { method = newMethod; }

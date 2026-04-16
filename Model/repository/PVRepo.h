@@ -9,7 +9,7 @@ class PVRepo {
 private:
     DBContext& db;
 public:
-    PVRepo(DBContext& context) : db(context) {}
+    explicit PVRepo(DBContext& context) : db(context) {}
 
     void addPV(const ProductVariants& pv);
     std::vector<ProductVariants> getAll();

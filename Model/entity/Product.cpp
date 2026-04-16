@@ -1,51 +1,15 @@
-//
-// Created by ntt12 on 4/3/2026.
-//
-
 #include "Product.h"
 
-std::string Product::getProdName() const{
-    return ProdName;
-}
+const std::string& Product::getProdName() const { return prodName; }
+int Product::getProdId() const { return prodId; }
+int Product::getCateId() const { return cateId; }
+int Product::getProdPrice() const { return prodPrice; }
 
-int Product::getProdId() const {
-    return ProdId;
-}
-
-int Product::getCateId() const {
-    return CateId;
-}
-int Product::getProdPrice() const {
-    return ProdPrice;
-}
-
-void Product::setProdName(const std::string newName) {
-    ProdName = newName;
-}
-
-void Product::setProdId(const int newId) {
-    ProdId = newId;
-}
-
-void Product::setCateId(const int newCateId) {
-    CateId = newCateId;
-}
-
- void Product::setProdPrice(const int newPrice) {
-     ProdPrice = newPrice;
-}
-
-void Product::edit() {
-    std::cout << "Enter new name: ";
-    std::cin.ignore();
-    std::getline(std::cin, ProdName);
-    std::cout << "Enter new price: "; std::cin >> ProdPrice;
-}
-
-void Product::display() const {
-    std::cout << ProdId << " - " << CateId << " - " << ProdName << " - " << ProdPrice << std::endl;
-}
+void Product::setProdName(const std::string& newName) { prodName = newName; }
+void Product::setProdId(int newId) { prodId = newId; }
+void Product::setCateId(int newCateId) { cateId = newCateId; }
+void Product::setProdPrice(int newPrice) { prodPrice = newPrice; }
 
 std::string Product::toString() const {
-    return std::to_string(ProdId) + " | " + ProdName + " | " + std::to_string(ProdPrice);
+    return std::to_string(prodId) + " | " + prodName + " | " + std::to_string(prodPrice);
 }

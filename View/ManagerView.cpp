@@ -10,7 +10,7 @@ void ManagerView::showManagerMenu() const {
     std::cout << "\n===== MANAGER UI =====\n";
     std::cout << "1. Categories\n";
     std::cout << "2. Product\n";
-    std::cout << "3. Employee\n";
+    std::cout << "3. Staff\n";
     std::cout << "4. Discount\n";
     std::cout << "5. Check Income\n";
     std::cout << "6. Goes to Staff View\n";
@@ -139,11 +139,11 @@ void ManagerView::showProductByCateId(const std::vector<Categories>& ct, const s
     }
 }
 
-// ─── Employee ───
+// ─── Staff ───
 
 std::string ManagerView::promptEmployeeName() const {
     std::string name;
-    std::cout << "Employee name: ";
+    std::cout << "Staff name: ";
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::getline(std::cin, name);
     return name;
@@ -151,14 +151,14 @@ std::string ManagerView::promptEmployeeName() const {
 
 std::string ManagerView::promptEmployeePhone() const {
     std::string phone;
-    std::cout << "Employee phone: ";
+    std::cout << "Staff phone: ";
     std::cin >> phone;
     return phone;
 }
 
 std::string ManagerView::promptEmployeePin() const {
     std::string pin;
-    std::cout << "Employee PIN: ";
+    std::cout << "Staff PIN: ";
     std::cin >> pin;
     return pin;
 }
@@ -172,12 +172,12 @@ int ManagerView::promptEmployeeRole() const {
 
 int ManagerView::promptEmployeeId() const {
     int id;
-    std::cout << "Enter Employee ID: ";
+    std::cout << "Enter Staff ID: ";
     std::cin >> id;
     return id;
 }
 
-void ManagerView::showAllEmployees(const std::vector<Employee>& employees) const {
+void ManagerView::showAllEmployees(const std::vector<Staff>& employees) const {
     if (employees.empty()) {
         std::cout << "\n[!] No employees found.\n";
         return;

@@ -10,7 +10,7 @@ private:
     DBContext& db;
 
 public:
-    PaymentRepo(DBContext& context) : db(context) {}
+    explicit PaymentRepo(DBContext& context) : db(context) {}
 
     void addPayment(const Payments& payment);
     std::vector<Payments> getAll();

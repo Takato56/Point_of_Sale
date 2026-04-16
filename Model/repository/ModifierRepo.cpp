@@ -68,13 +68,15 @@ Modifiers ModifierRepo::getByID(int id) {
     return m;
 }
 
-void ModifierRepo::update(const Modifiers &m) {
+void ModifierRepo::update(const Modifiers& m) {
     std::string query =
         "UPDATE Modifiers SET "
-        "ModId = " + std::to_string(m.getModId()) + ", "
-        "ModName = '" + m.getModName() + "', "
-        "ExtraCost = " + std::to_string(m.getExtraCost()) + " "
-        "WHERE ModId = " + std::to_string(m.getModId()) + ";";
+        "ModName='" + m.getModName() + "', "
+        "ExtraCost=" + std::to_string(m.getExtraCost()) + " "
+        "WHERE ModId=" + std::to_string(m.getModId()) + ";";
+
+    db.execute(query);
+    db.clearStmt();
 }
 
 void ModifierRepo::remove(int id) {

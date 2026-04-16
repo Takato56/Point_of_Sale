@@ -1,49 +1,15 @@
-//
-// Created by ntt12 on 4/8/2026.
-//
-
 #include "Customer.h"
 
-std::string Customer::getCustName() const {
-    return CustName;
-}
-std::string Customer::getCustPhone() const {
-    return CustPhone;
-}
-int Customer::getCustId() const {
-    return CustId;
-}
-int Customer::getPoint() const {
-    return Point;
-}
+const std::string& Customer::getCustName() const { return custName; }
+const std::string& Customer::getCustPhone() const { return custPhone; }
+int Customer::getCustId() const { return custId; }
+int Customer::getPoint() const { return point; }
 
-void Customer::setCustName(const std::string newCustName) {
-    CustName = newCustName;
-}
-void Customer::setCustPhone(const std::string newCustPhone) {
-    CustPhone = newCustPhone;
-}
-void Customer::setCustId(const int newCustId) {
-    CustId = newCustId;
-}
-void Customer::setPoint(const int newPoint) {
-    Point = newPoint;
-}
-
-void Customer::edit() {
-    std::cout <<"Enter new CustName: ";
-    std::cin.ignore();
-    std::getline(std::cin,CustName);
-    std::cout << "Enter new phone: ";
-    std::cin.ignore();
-    std::getline(std::cin,CustPhone);
-    std::cout << "Enter new cust id: "; std::cin >> CustId;
-    std::cout << "Enter new point: "; std::cin >> Point;
-}
+void Customer::setCustName(const std::string& newCustName) { custName = newCustName; }
+void Customer::setCustPhone(const std::string& newCustPhone) { custPhone = newCustPhone; }
+void Customer::setCustId(int newCustId) { custId = newCustId; }
+void Customer::setPoint(int newPoint) { point = newPoint; }
 
 std::string Customer::toString() const {
-    return std::to_string(CustId) + " | " + CustName + " | " + CustPhone + " | " + std::to_string(Point);
-}
-
-Customer::~Customer() {
+    return std::to_string(custId) + " | " + custName + " | " + custPhone + " | " + std::to_string(point);
 }

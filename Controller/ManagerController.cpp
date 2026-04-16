@@ -3,12 +3,13 @@
 #include "../utils/PasswordHasher.h"
 #include <iomanip>
 #include <regex>
+
 // ═══════════════════════════════════════════
 //  CATEGORY CRUD
 // ═══════════════════════════════════════════
 
 void ManagerController::addCategory() {
-    int cateId = DataHelper::getNextId(db, "Categories", "CateId");
+    int cateId = DataHelper::getNextId(getDB(), "Categories", "CateId");
     std::string cateName = mgrView.promptCategoryName();
     int displayOrder = mgrView.promptDisplayOrder();
 
@@ -17,19 +18,19 @@ void ManagerController::addCategory() {
     ct.setCateName(cateName);
     ct.setDisplayOrder(displayOrder);
 
-    cr.addCategories(ct);
+    mgrCateRepo.addCategories(ct);
     mgrView.showMessage("Category created successfully.");
 }
 
 void ManagerController::viewAllCategories() {
-    mgrView.showAllCategories(cr.getAll());
+    mgrView.showAllCategories(mgrCateRepo.getAll());
 }
 
 void ManagerController::updateCategory() {
     viewAllCategories();
     int id = mgrView.promptCategoryId();
 
-    Categories ct = cr.getByID(id);
+    Categories ct = mgrCateRepo.getByID(id);
     if (ct.getCateId() == 0) {
         mgrView.showMessage("Category not found!");
         return;
@@ -41,7 +42,7 @@ void ManagerController::updateCategory() {
 
     ct.setCateName(newName);
     ct.setDisplayOrder(newOrder);
-    cr.update(ct);
+    mgrCateRepo.update(ct);
     mgrView.showMessage("Category updated successfully.");
 }
 
@@ -49,13 +50,13 @@ void ManagerController::deleteCategory() {
     viewAllCategories();
     int id = mgrView.promptCategoryId();
 
-    Categories ct = cr.getByID(id);
+    Categories ct = mgrCateRepo.getByID(id);
     if (ct.getCateId() == 0) {
         mgrView.showMessage("Category not found!");
         return;
     }
 
-    cr.remove(id);
+    mgrCateRepo.remove(id);
     mgrView.showMessage("Category deleted successfully.");
 }
 
@@ -81,7 +82,7 @@ void ManagerController::categoryMenu() {
 // ═══════════════════════════════════════════
 
 void ManagerController::addProduct() {
-    std::vector<Categories> listCate = cr.getAll();
+    std::vector<Categories> listCate = mgrCateRepo.getAll();
     if (listCate.empty()) {
         mgrView.showMessage("No categories found! Create a category first.");
         return;
@@ -94,7 +95,7 @@ void ManagerController::addProduct() {
     }
 
     int selectedCateId = listCate[cateChoice - 1].getCateId();
-    int autoProdId = DataHelper::getNextId(db, "Products", "ProdId");
+    int autoProdId = DataHelper::getNextId(getDB(), "Products", "ProdId");
 
     std::string prodName = mgrView.promptProductName();
     int prodPrice = mgrView.promptProductPrice();
@@ -105,60 +106,33 @@ void ManagerController::addProduct() {
     p.setProdName(prodName);
     p.setProdPrice(prodPrice);
 
-    pr.addProduct(p);
+    mgrProdRepo.addProduct(p);
     mgrView.showMessage("Product created successfully.");
 }
 
 void ManagerController::showProductByCateId() {
-    std::vector<Categories> listCate = cr.getAll();
-    std::vector<Product> listProd = pr.getAll();
+    std::vector<Categories> listCate = mgrCateRepo.getAll();
+    std::vector<Product> listProd = mgrProdRepo.getAll();
     mgrView.showProductByCateId(listCate, listProd);
 }
 
-void ManagerController::viewAllProducts(){
-    std::vector<Product> listProd = pr.getAll();
-    std::vector<Categories> listCate = cr.getAll();
+void ManagerController::viewAllProducts() {
+    std::vector<Product> listProd = mgrProdRepo.getAll();
+    std::vector<Categories> listCate = mgrCateRepo.getAll();
     if (listCate.empty()) {
-        std::cout << "\n[!] No categories available.\n";
+        mgrView.showMessage("No categories available.");
         return;
     }
 
-    std::cout << "\n" << std::string(65, '=') << "\n";
-    std::cout << "              LIST PRODUCT BY CATEGORY               \n";
-    std::cout << std::string(65, '=') << "\n";
-
-    for (const auto& cate : listCate) {
-        std::cout << "\n>>> CATEGORY: " << cate.getCateName() << " <<<\n";
-        std::cout << std::left
-                  << std::setw(8)  << "ID"
-                  << std::setw(35) << "PRODUCT NAME"
-                  << "PRICE" << "\n";
-        std::cout << std::string(60, '-') << "\n";
-
-        bool hasProduct = false;
-        for (const auto& prod : listProd) {
-            if (prod.getCateId() == cate.getCateId()) {
-                std::cout << std::left
-                          << std::setw(8)  << prod.getProdId()
-                          << std::setw(35) << prod.getProdName()
-                          << (int)prod.getProdPrice() << " VND" << "\n";
-                hasProduct = true;
-            }
-        }
-
-        if (!hasProduct) {
-            std::cout << "   (No product in this category)\n";
-        }
-        std::cout << std::string(60, '.') << "\n";
-    }
-    std::cout << "\n" << std::string(65, '=') << "\n";
+    // Delegate display to the view
+    mgrView.showProductByCateId(listCate, listProd);
 }
 
 void ManagerController::updateProduct() {
     showProductByCateId();
     int id = mgrView.promptProductId();
 
-    Product p = pr.getByID(id);
+    Product p = mgrProdRepo.getByID(id);
     if (p.getProdId() == 0) {
         mgrView.showMessage("Product not found!");
         return;
@@ -166,7 +140,7 @@ void ManagerController::updateProduct() {
 
     mgrView.showMessage("Current: " + p.toString());
 
-    std::vector<Categories> listCate = cr.getAll();
+    std::vector<Categories> listCate = mgrCateRepo.getAll();
     if (!listCate.empty()) {
         mgrView.showMessage("Select new category (or same):");
         int cateChoice = mgrView.promptCategoryChoice(listCate);
@@ -180,7 +154,7 @@ void ManagerController::updateProduct() {
 
     p.setProdName(newName);
     p.setProdPrice(newPrice);
-    pr.update(p);
+    mgrProdRepo.update(p);
     mgrView.showMessage("Product updated successfully.");
 }
 
@@ -188,13 +162,13 @@ void ManagerController::deleteProduct() {
     showProductByCateId();
     int id = mgrView.promptProductId();
 
-    Product p = pr.getByID(id);
+    Product p = mgrProdRepo.getByID(id);
     if (p.getProdId() == 0) {
         mgrView.showMessage("Product not found!");
         return;
     }
 
-    pr.remove(id);
+    mgrProdRepo.remove(id);
     mgrView.showMessage("Product deleted successfully.");
 }
 
@@ -223,19 +197,17 @@ void ManagerController::addEmployee() {
     std::string name = mgrView.promptEmployeeName();
     std::string phone;
 
-    // Enter a phone number and make sure it doesn't duplicate
-    Employee emp;
+    Staff existing;
     const std::regex phonePattern("^0[0-9]{9}$");
     do {
         phone = mgrView.promptEmployeePhone();
-        emp = sr.getByPhone(phone);
-        if (emp.getPhoneNumber() == phone)
-            mgrView.showMessage("This phone number is already exist, please enter a different phone.");
+        existing = mgrStaffRepo.getByPhone(phone);
+        if (existing.getPhoneNumber() == phone)
+            mgrView.showMessage("This phone number already exists, please enter a different phone.");
         if (!std::regex_match(phone, phonePattern))
             mgrView.showMessage("Invalid phone number. Please enter a valid phone number (e.g., 0123456789).");
-    } while (emp.getPhoneNumber() == phone || !std::regex_match(phone, phonePattern));
+    } while (existing.getPhoneNumber() == phone || !std::regex_match(phone, phonePattern));
 
-    // Enter pin code and make sure the pin contains 6 digits and only numbers
     const std::regex pinPattern("^[0-9]{6}$");
     std::string pin;
     do {
@@ -244,44 +216,45 @@ void ManagerController::addEmployee() {
             mgrView.showMessage("Invalid PIN code. Please enter a valid PIN code (e.g., 123456).");
         }
     } while (!std::regex_match(pin, pinPattern));
+
     int roleChoice = mgrView.promptEmployeeRole();
 
-    Employee newEmp;
-    newEmp.setName(name);
-    newEmp.setPhoneNumber(phone);
-    newEmp.setPinHash(PasswordHasher::hash(pin));
-    newEmp.setRole(roleChoice == 2 ? Role_Manager : Role_Staff);
-    newEmp.setIsActive(1);
+    Staff newStf;
+    newStf.setName(name);
+    newStf.setPhoneNumber(phone);
+    newStf.setPinHash(PasswordHasher::hash(pin));
+    newStf.setRole(roleChoice == 2 ? Role_Manager : Role_Staff);
+    newStf.setIsActive(1);
 
-    sr.addStaff(newEmp);
-    mgrView.showMessage("Employee added successfully. ID: " + std::to_string(emp.getId()));
+    mgrStaffRepo.addStaff(newStf);
+    mgrView.showMessage("Employee added successfully. ID: " + std::to_string(newStf.getId()));
 }
 
 void ManagerController::viewAllEmployees() {
-    mgrView.showAllEmployees(sr.getAll());
+    mgrView.showAllEmployees(mgrStaffRepo.getAll());
 }
 
 void ManagerController::updateEmployee() {
     viewAllEmployees();
     int id = mgrView.promptEmployeeId();
 
-    Employee emp = sr.getById(id);
-    if (emp.getId() == 0) {
+    Staff stf = mgrStaffRepo.getById(id);
+    if (stf.getId() == 0) {
         mgrView.showMessage("Employee not found!");
         return;
     }
 
-    mgrView.showMessage("Updating: " + emp.getName());
+    mgrView.showMessage("Updating: " + stf.getName());
 
     std::string newName = mgrView.promptEmployeeName();
     std::string newPhone = mgrView.promptEmployeePhone();
     int newRole = mgrView.promptEmployeeRole();
 
-    emp.setName(newName);
-    emp.setPhoneNumber(newPhone);
-    emp.setRole(newRole == 2 ? Role_Manager : Role_Staff);
+    stf.setName(newName);
+    stf.setPhoneNumber(newPhone);
+    stf.setRole(newRole == 2 ? Role_Manager : Role_Staff);
 
-    sr.update(emp);
+    mgrStaffRepo.update(stf);
     mgrView.showMessage("Employee updated successfully.");
 }
 
@@ -289,13 +262,13 @@ void ManagerController::deleteEmployee() {
     viewAllEmployees();
     int id = mgrView.promptEmployeeId();
 
-    Employee emp = sr.getById(id);
-    if (emp.getId() == 0) {
+    Staff stf = mgrStaffRepo.getById(id);
+    if (stf.getId() == 0) {
         mgrView.showMessage("Employee not found!");
         return;
     }
 
-    sr.remove(id);
+    mgrStaffRepo.remove(id);
     mgrView.showMessage("Employee deleted successfully.");
 }
 
@@ -321,7 +294,7 @@ void ManagerController::employeeMenu() {
 // ═══════════════════════════════════════════
 
 void ManagerController::checkIncome() {
-    std::vector<std::string> dates = orderRepo.getDistinctDates();
+    std::vector<std::string> dates = mgrOrderRepo.getDistinctDates();
 
     if (dates.empty()) {
         mgrView.showMessage("No data available.");
@@ -329,19 +302,18 @@ void ManagerController::checkIncome() {
     }
 
     int dateChoice = mgrView.showDatesAndSelect(dates);
-
     if (dateChoice <= 0 || dateChoice > static_cast<int>(dates.size())) {
         mgrView.showMessage("Invalid Date ID selected!");
         return;
     }
 
     std::string selectedDate = dates[dateChoice - 1];
-    std::vector<Orders> dayOrders = orderRepo.getByDate(selectedDate);
+    std::vector<Orders> dayOrders = mgrOrderRepo.getByDate(selectedDate);
     std::vector<double> totals;
     double dailyIncome = 0.0;
 
     for (const auto& order : dayOrders) {
-        std::vector<OrderItems> items = oiRepo.getByOrderID(order.getOrderId());
+        std::vector<OrderItems> items = mgrOiRepo.getByOrderID(order.getOrderId());
         double orderTotal = 0.0;
         for (const auto& item : items) {
             orderTotal += item.getQuantity() * item.getUnitPrice();
@@ -353,18 +325,18 @@ void ManagerController::checkIncome() {
     mgrView.showDailyIncome(selectedDate, dailyIncome);
 
     int billChoice = mgrView.showOrdersAndSelect(dayOrders, totals);
-
     if (billChoice <= 0 || billChoice > static_cast<int>(dayOrders.size())) {
         mgrView.showMessage("Invalid Order ID selected!");
         return;
     }
 
     Orders selectedOrder = dayOrders[billChoice - 1];
-    std::vector<OrderItems> items = oiRepo.getByOrderID(selectedOrder.getOrderId());
-    std::vector<Payments> payments = payRepo2.getByOrderID(selectedOrder.getOrderId());
+    std::vector<OrderItems> items = mgrOiRepo.getByOrderID(selectedOrder.getOrderId());
+    std::vector<Payments> payments = mgrPayRepo.getByOrderID(selectedOrder.getOrderId());
 
     mgrView.showBillDetail(selectedOrder, items, payments, totals[billChoice - 1]);
 }
+
 // ═══════════════════════════════════════════
 //  DISCOUNT CRUD
 // ═══════════════════════════════════════════
@@ -380,19 +352,19 @@ void ManagerController::addDiscount() {
     d.setType(type);
     d.setIsActive(1);
 
-    dr.addDiscount(d);
+    mgrDiscountRepo.addDiscount(d);
     mgrView.showMessage("Discount added successfully. ID: " + std::to_string(d.getDiscountId()));
 }
 
 void ManagerController::viewAllDiscounts() {
-    mgrView.showAllDiscounts(dr.getAll());
+    mgrView.showAllDiscounts(mgrDiscountRepo.getAll());
 }
 
 void ManagerController::updateDiscount() {
     viewAllDiscounts();
     int id = mgrView.promptDiscountId();
 
-    Discount d = dr.getByID(id);
+    Discount d = mgrDiscountRepo.getByID(id);
     if (d.getDiscountId() == 0) {
         mgrView.showMessage("Discount not found!");
         return;
@@ -402,14 +374,13 @@ void ManagerController::updateDiscount() {
 
     std::string newCode = mgrView.promptDiscountCode();
     std::string newType = mgrView.promptDiscountType();
-
     int newValue = mgrView.promptDiscountValue(newType);
 
     d.setCode(newCode);
     d.setType(newType);
     d.setValue(newValue);
 
-    dr.update(d);
+    mgrDiscountRepo.update(d);
     mgrView.showMessage("Discount updated successfully.");
 }
 
@@ -417,13 +388,13 @@ void ManagerController::deleteDiscount() {
     viewAllDiscounts();
     int id = mgrView.promptDiscountId();
 
-    Discount d = dr.getByID(id);
+    Discount d = mgrDiscountRepo.getByID(id);
     if (d.getDiscountId() == 0) {
         mgrView.showMessage("Discount not found!");
         return;
     }
 
-    dr.remove(id);
+    mgrDiscountRepo.remove(id);
     mgrView.showMessage("Discount deleted successfully.");
 }
 

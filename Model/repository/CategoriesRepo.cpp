@@ -1,7 +1,3 @@
-//
-// Created by ntt12 on 4/7/2026.
-//
-
 #include "CategoriesRepo.h"
 #include "../../utils/DataHelper.h"
 
@@ -9,8 +5,10 @@ void CategoriesRepo::addCategories(const Categories& ct) {
     int newId = DataHelper::getNextId(db, "Categories", "CateId");
 
     std::string query =
-    "INSERT INTO Categories (CateId, CateName, DisplayOrder) VALUES ('" +
-        std::to_string(newId) + "', '" + ct.getCateName() + "', '" + ct.getDisplayOrder() + "');";
+        "INSERT INTO Categories (CateId, CateName, DisplayOrder) VALUES ("
+        + std::to_string(newId) + ", '"
+        + ct.getCateName() + "', "
+        + std::to_string(ct.getDisplayOrder()) + ");";
 
     db.execute(query);
     db.clearStmt();
@@ -20,19 +18,19 @@ std::vector<Categories> CategoriesRepo::getAll() {
     std::vector<Categories> list;
     db.execute("SELECT CateId, CateName, DisplayOrder FROM Categories;");
     SQLHSTMT stmt = db.getStmt();
-    SQLINTEGER idBuffer;
-    SQLCHAR CateName[50];
-    SQLLEN cbId, cbName, cbDisplayOrder;
+
+    SQLINTEGER idBuffer, displayOrderBuffer;
+    SQLCHAR cateName[50];
+
     while (SQLFetch(stmt) == SQL_SUCCESS) {
         Categories ct;
-
         SQLGetData(stmt, 1, SQL_C_SLONG, &idBuffer, sizeof(idBuffer), NULL);
-        SQLGetData(stmt, 2, SQL_C_CHAR, CateName, sizeof(CateName), &cbName);
-        SQLGetData(stmt, 3, SQL_C_SLONG,&cbDisplayOrder , 0, &cbDisplayOrder);
+        SQLGetData(stmt, 2, SQL_C_CHAR, cateName, sizeof(cateName), NULL);
+        SQLGetData(stmt, 3, SQL_C_SLONG, &displayOrderBuffer, sizeof(displayOrderBuffer), NULL);
 
-        ct.setCateId((int)idBuffer);
-        ct.setCateName((char*)CateName);
-        ct.setDisplayOrder((int)cbDisplayOrder);
+        ct.setCateId(static_cast<int>(idBuffer));
+        ct.setCateName(reinterpret_cast<char*>(cateName));
+        ct.setDisplayOrder(static_cast<int>(displayOrderBuffer));
 
         list.push_back(ct);
     }
@@ -40,44 +38,43 @@ std::vector<Categories> CategoriesRepo::getAll() {
     return list;
 }
 
-Categories CategoriesRepo::getByID(const int id) {
+Categories CategoriesRepo::getByID(int id) {
     Categories ct;
     std::string query =
-        "SELECT CateId, CateName, DisplayOrder FROM Categories WHERE CateId='" + std::to_string(id) + "';";
+        "SELECT CateId, CateName, DisplayOrder FROM Categories WHERE CateId=" + std::to_string(id) + ";";
 
     db.execute(query);
     SQLHSTMT stmt = db.getStmt();
-    if  (SQLFetch(stmt) == SQL_SUCCESS) {
-        SQLINTEGER idBuffer;
-        SQLCHAR CateName[50];
-        SQLLEN cbId, cbName, cbDisplayOrder;
 
-        SQLGetData(stmt, 1, SQL_C_SLONG, &idBuffer, 0, &cbId);
-        SQLGetData(stmt, 2, SQL_C_CHAR, CateName, sizeof(CateName), &cbName);
-        SQLGetData(stmt, 3, SQL_C_SLONG,&cbDisplayOrder , 0, &cbDisplayOrder);
+    if (SQLFetch(stmt) == SQL_SUCCESS) {
+        SQLINTEGER idBuffer, displayOrderBuffer;
+        SQLCHAR cateName[50];
 
-        ct.setCateId((int)idBuffer);
-        ct.setCateName((char*)CateName);
-        ct.setDisplayOrder((int)cbDisplayOrder);
+        SQLGetData(stmt, 1, SQL_C_SLONG, &idBuffer, sizeof(idBuffer), NULL);
+        SQLGetData(stmt, 2, SQL_C_CHAR, cateName, sizeof(cateName), NULL);
+        SQLGetData(stmt, 3, SQL_C_SLONG, &displayOrderBuffer, sizeof(displayOrderBuffer), NULL);
+
+        ct.setCateId(static_cast<int>(idBuffer));
+        ct.setCateName(reinterpret_cast<char*>(cateName));
+        ct.setDisplayOrder(static_cast<int>(displayOrderBuffer));
     }
     db.clearStmt();
     return ct;
 }
 
-void CategoriesRepo::update(const Categories &ct) {
+void CategoriesRepo::update(const Categories& ct) {
     std::string query =
-        "UPDATE Categories SET CateName= '" +
-            ct.getCateName()+ "', DisplayOrder='" +
-            ct.getDisplayOrder() + "'"
-        "WHERE CateId='" + std::to_string(ct.getCateId()) + "';";
+        "UPDATE Categories SET CateName='"
+        + ct.getCateName() + "', DisplayOrder="
+        + std::to_string(ct.getDisplayOrder())
+        + " WHERE CateId=" + std::to_string(ct.getCateId()) + ";";
+
     db.execute(query);
     db.clearStmt();
 }
 
-void CategoriesRepo::remove(const int id) {
-    std::string query =
-        "DELETE FROM Categories WHERE CateId='" + std::to_string(id) + "';";
-
+void CategoriesRepo::remove(int id) {
+    std::string query = "DELETE FROM Categories WHERE CateId=" + std::to_string(id) + ";";
     db.execute(query);
     db.clearStmt();
 }

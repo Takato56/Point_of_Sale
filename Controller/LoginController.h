@@ -1,16 +1,11 @@
-//
-// Created by admin on 4/7/2026.
-//
+#ifndef POINT_OF_SALE_LOGINCONTROLLER_H
+#define POINT_OF_SALE_LOGINCONTROLLER_H
 
-#ifndef POINT_OF_SALE_STAFFCONTROLLER_H
-#define POINT_OF_SALE_STAFFCONTROLLER_H
-
-#include "../model/database/DBContext.h"
-#include "../Model/entity/Employee.h"
+#include "../Model/database/DBContext.h"
+#include "../Model/entity/Staff.h"
 #include "../utils/PasswordHasher.h"
 #include "../Model/repository/StaffRepo.h"
 #include <string>
-
 
 struct LoginResult {
     bool isSuccess = false;
@@ -21,12 +16,11 @@ struct LoginResult {
 
 class LoginController {
 private:
-    DBContext db;
+    DBContext& db;
     StaffRepo sr;
 public:
     explicit LoginController(DBContext& context) : db(context), sr(context) {}
     LoginResult login();
 };
 
-
-#endif //POINT_OF_SALE_STAFFCONTROLLER_H
+#endif //POINT_OF_SALE_LOGINCONTROLLER_H

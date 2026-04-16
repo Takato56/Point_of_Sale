@@ -1,41 +1,11 @@
-//
-// Created by ntt12 on 4/7/2026.
-//
-
 #include "Modifiers.h"
 
-std::string Modifiers::getModName() const {
-    return ModName;
-}
-int Modifiers::getModId() const {
-    return ModId;
-}
-int Modifiers::getExtraCost() const {
-    return ExtraCost;
-}
-std::string Modifiers::getModType() const {
-    return ModType;
-}
+const std::string& Modifiers::getModName() const { return modName; }
+int Modifiers::getModId() const { return modId; }
+int Modifiers::getExtraCost() const { return extraCost; }
+const std::string& Modifiers::getModType() const { return modType; }
 
-
-void Modifiers::setModName(const std::string newName) {
-    ModName = newName;
-}
-void Modifiers::setModId(const int newId) {
-    ModId = newId;
-}
-void Modifiers::setExtraCost(const int newExtraCost) {
-    ExtraCost = newExtraCost;
-}
-void Modifiers::setModType(const std::string newModType) {
-    ModType = newModType;
-}
-
-void Modifiers::edit() {
-    std::cout << "Enter new modifier name: ";
-    std::cin.ignore();
-    std::getline(std::cin, ModName);
-}
-void Modifiers::display() const {
-    std::cout << ModName << std::endl;
-}
+void Modifiers::setModName(const std::string& newName) { modName = newName; }
+void Modifiers::setModId(int newId) { modId = newId; }
+void Modifiers::setExtraCost(int newExtraCost) { extraCost = newExtraCost; }
+void Modifiers::setModType(const std::string& newModType) { modType = newModType; }

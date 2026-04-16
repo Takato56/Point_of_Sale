@@ -18,7 +18,7 @@ Role StaffRepo::stringToRole(const std::string& str) {
     return Role::Role_Staff;
 }
 
-void StaffRepo::addStaff(Employee& employee) {
+void StaffRepo::addStaff(Staff& employee) {
     int newId = DataHelper::getNextId(db, "Staffs", "StaffId");
     employee.setId(newId);
     std::string roleStr = roleToString(employee.getRole());
@@ -40,8 +40,8 @@ void StaffRepo::addStaff(Employee& employee) {
     db.clearStmt();
 }
 
-std::vector<Employee> StaffRepo::getAll() {
-    std::vector<Employee> list;
+std::vector<Staff> StaffRepo::getAll() {
+    std::vector<Staff> list;
     db.execute("SELECT StaffId, StaffName, StaffPhone, PinHash, Role, isActive FROM Staffs;");
     SQLHSTMT stmt = db.getStmt();
 
@@ -49,7 +49,7 @@ std::vector<Employee> StaffRepo::getAll() {
     SQLCHAR nameBuffer[100], phoneBuffer[11], pinHashBuffer[100], roleBuffer[10];
 
     while (SQLFetch(stmt) == SQL_SUCCESS) {
-        Employee emp;
+        Staff emp;
 
         SQLGetData(stmt, 1, SQL_C_SLONG, &idBuffer, sizeof(idBuffer), NULL);
         SQLGetData(stmt, 2, SQL_C_CHAR, nameBuffer, sizeof(nameBuffer), NULL);
@@ -72,8 +72,8 @@ std::vector<Employee> StaffRepo::getAll() {
     return list;
 }
 
-Employee StaffRepo::getById(int id) {
-    Employee emp;
+Staff StaffRepo::getById(int id) {
+    Staff emp;
     std::string query =
         "SELECT StaffId, StaffName, StaffPhone, PinHash, Role, isActive FROM Staffs WHERE StaffId="
         + std::to_string(id) + ";";
@@ -104,8 +104,8 @@ Employee StaffRepo::getById(int id) {
     return emp;
 }
 
-Employee StaffRepo::getByPhone(const std::string& phone) {
-    Employee emp;
+Staff StaffRepo::getByPhone(const std::string& phone) {
+    Staff emp;
     std::string query =
         "SELECT StaffId, StaffName, StaffPhone, PinHash, Role, isActive FROM Staffs WHERE StaffPhone='"
         + phone + "';";
@@ -134,7 +134,7 @@ Employee StaffRepo::getByPhone(const std::string& phone) {
     return emp;
 }
 
-void StaffRepo::update(const Employee& employee) {
+void StaffRepo::update(const Staff& employee) {
     std::string roleStr = roleToString(employee.getRole());
     std::string query =
         "UPDATE Staffs SET StaffName='" + employee.getName()

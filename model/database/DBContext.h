@@ -1,7 +1,3 @@
-//
-// Created by ntt12 on 4/3/2026.
-//
-
 #ifndef POINT_OF_SALE_DBCONTEXT_H
 #define POINT_OF_SALE_DBCONTEXT_H
 
@@ -19,12 +15,18 @@ private:
     SQLHSTMT stmt{};
 
     void showError(SQLHANDLE handle, SQLSMALLINT type);
+
 public:
     DBContext() {
         SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &env);
         SQLSetEnvAttr(env, SQL_ATTR_ODBC_VERSION, (void*)SQL_OV_ODBC3, 0);
         SQLAllocHandle(SQL_HANDLE_DBC, env, &dbc);
     }
+
+    // Prevent copying — ODBC handles are not copyable
+    DBContext(const DBContext&) = delete;
+    DBContext& operator=(const DBContext&) = delete;
+
     bool connect(const std::string& connStr);
     bool execute(const std::string& query);
     SQLHSTMT getStmt();
@@ -39,4 +41,5 @@ public:
         if (env) SQLFreeHandle(SQL_HANDLE_ENV, env);
     }
 };
+
 #endif //POINT_OF_SALE_DBCONTEXT_H

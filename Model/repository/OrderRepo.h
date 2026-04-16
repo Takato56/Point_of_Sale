@@ -10,7 +10,7 @@ private:
     DBContext& db;
 
 public:
-    OrderRepo(DBContext& context) : db(context) {}
+    explicit OrderRepo(DBContext& context) : db(context) {}
 
     void addOrder(const Orders& order);
     std::vector<Orders> getAll();

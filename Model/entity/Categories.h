@@ -1,7 +1,3 @@
-//
-// Created by ntt12 on 4/7/2026.
-//
-
 #ifndef POINT_OF_SALE_CATEGORIES_H
 #define POINT_OF_SALE_CATEGORIES_H
 #include <string>
@@ -9,30 +5,24 @@
 
 class Categories {
 private:
-    std::string CateName;
-    int CateId;
-    int DisplayOrder;
+    std::string cateName;
+    int cateId = 0;
+    int displayOrder = 0;
 public:
-    Categories() : CateName(""), CateId(), DisplayOrder() {}
+    Categories() = default;
+    Categories(const std::string& name, int id, int order);
 
-    Categories(const std::string &name, int id, int order);
+    [[nodiscard]] const std::string& getCateName() const;
+    [[nodiscard]] int getCateId() const;
+    [[nodiscard]] int getDisplayOrder() const;
 
-    std::string getCateName() const;
-    int getCateId() const;
-    std::string getDisplayOrder() const;
-
-    void setCateName(std::string newCateName);
+    void setCateName(const std::string& newCateName);
     void setCateId(int newCateId);
     void setDisplayOrder(int displayOrder);
 
-    virtual void editCate();
-    virtual void displayCate() const;
-    virtual ~Categories();
+    [[nodiscard]] std::string toString() const;
 
-    std::string toString() const {
-        return "ID: " + std::to_string(CateId) + " | Name: " + CateName;
-    }
+    virtual ~Categories() = default;
 };
-
 
 #endif //POINT_OF_SALE_CATEGORIES_H

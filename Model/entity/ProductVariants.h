@@ -1,5 +1,5 @@
-#ifndef POINT_OF_SALE_PRODUCTVARIANS_H
-#define POINT_OF_SALE_PRODUCTVARIANS_H
+#ifndef POINT_OF_SALE_PRODUCTVARIANTS_H
+#define POINT_OF_SALE_PRODUCTVARIANTS_H
 #include <string>
 
 enum Size {
@@ -10,25 +10,23 @@ enum Size {
 
 class ProductVariants {
 private:
-    int PVId;
-    Size size;
-    int ProdId;
+    int pvId = 0;
+    Size size = Small;
+    int prodId = 0;
 public:
-    ProductVariants() : PVId(), size(), ProdId() {}
+    ProductVariants() = default;
 
-    Size getSize() const;
-    int getPVId() const;
-    int getProdId() const;
+    [[nodiscard]] Size getSize() const;
+    [[nodiscard]] int getPVId() const;
+    [[nodiscard]] int getProdId() const;
 
     void setPVId(int newPVId);
     void setSize(Size newSize);
     void setProdId(int newProdId);
 
-    virtual void edit();
-    virtual void display() const;
-    virtual ~ProductVariants() {}
+    [[nodiscard]] std::string toString() const;
 
-    std::string toString() const;
+    virtual ~ProductVariants() = default;
 };
 
-#endif //POINT_OF_SALE_PRODUCTVARIANS_H
+#endif //POINT_OF_SALE_PRODUCTVARIANTS_H

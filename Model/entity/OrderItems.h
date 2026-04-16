@@ -4,32 +4,33 @@
 
 class OrderItems {
 private:
-    int OIId, OrderId, ProdId, Quantity;
-    double UnitPrice;
-    std::string SizeLabel;
-    std::string Note;
+    int oiId = 0;
+    int orderId = 0;
+    int prodId = 0;
+    int quantity = 0;
+    double unitPrice = 0.0;
+    std::string sizeLabel;
+    std::string note;
 public:
-    OrderItems() : OIId(), OrderId(), ProdId(), Quantity(), UnitPrice(0.0), SizeLabel(""), Note("") {}
+    OrderItems() = default;
 
-    int getOIId() const;
-    int getOrderId() const;
-    int getProdId() const;
-    int getQuantity() const;
-    double getUnitPrice() const;
-    std::string getSizeLabel() const;
-    std::string getNote() const;
+    [[nodiscard]] int getOIId() const;
+    [[nodiscard]] int getOrderId() const;
+    [[nodiscard]] int getProdId() const;
+    [[nodiscard]] int getQuantity() const;
+    [[nodiscard]] double getUnitPrice() const;
+    [[nodiscard]] const std::string& getSizeLabel() const;
+    [[nodiscard]] const std::string& getNote() const;
 
     void setOIId(int newOIId);
     void setOrderId(int newOrderId);
     void setProdId(int newProdId);
     void setQuantity(int newQuantity);
     void setUnitPrice(double newUnitPrice);
-    void setSizeLabel(std::string newSizeLabel);
-    void setNote(std::string newNote);
+    void setSizeLabel(const std::string& newSizeLabel);
+    void setNote(const std::string& newNote);
 
-    virtual void edit();
-    virtual void display() const;
-    virtual ~OrderItems() {}
+    virtual ~OrderItems() = default;
 };
 
 #endif //POINT_OF_SALE_ORDERITEMS_H

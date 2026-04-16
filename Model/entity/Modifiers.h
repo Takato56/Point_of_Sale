@@ -1,34 +1,27 @@
-//
-// Created by ntt12 on 4/7/2026.
-//
-
 #ifndef POINT_OF_SALE_MODIFIERS_H
 #define POINT_OF_SALE_MODIFIERS_H
 #include <string>
-#include <iostream>
 
 class Modifiers {
 private:
-    int ModId;
-    std::string ModName, ModType;
-    int ExtraCost;
+    int modId = 0;
+    std::string modName;
+    std::string modType;
+    int extraCost = 0;
 public:
-    Modifiers() : ModId(), ModName(""), ExtraCost(), ModType("") {}
+    Modifiers() = default;
 
-    std::string getModName() const;
-    int getModId() const;
-    int getExtraCost() const;
-    std::string getModType() const;
+    [[nodiscard]] const std::string& getModName() const;
+    [[nodiscard]] int getModId() const;
+    [[nodiscard]] int getExtraCost() const;
+    [[nodiscard]] const std::string& getModType() const;
 
-    void setModName(std::string newName);
+    void setModName(const std::string& newName);
     void setModId(int newId);
     void setExtraCost(int newExtraCost);
-    void setModType(std::string newModType);
+    void setModType(const std::string& newModType);
 
-    virtual void edit();
-    virtual void display() const;
-    virtual ~Modifiers() {}
+    virtual ~Modifiers() = default;
 };
-
 
 #endif //POINT_OF_SALE_MODIFIERS_H

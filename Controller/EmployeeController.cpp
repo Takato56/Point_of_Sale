@@ -1,13 +1,13 @@
 #include "EmployeeController.h"
-#include "../model/repository/ProductRepo.h"
+#include "../Model/repository/ProductRepo.h"
 
 void EmployeeController::loadData(const std::vector<Categories>& c, const std::vector<Product>& p) {
     listCt = c;
     listPd = p;
 }
 
-void EmployeeController::setCurrentStaffId(int StaffId) {
-    currentStaffId = StaffId;
+void EmployeeController::setCurrentStaffId(int staffId) {
+    currentStaffId = staffId;
 }
 
 bool EmployeeController::isOrderCardValid(int cardId) const {
@@ -76,14 +76,12 @@ void EmployeeController::createOrder() {
 
     while (isOrdering) {
         int selectedCateId = menuView.showAndSelectCategories(listCt);
-
         if (selectedCateId == 0) break;
 
         menuView.displayProductsByCategory(selectedCateId, listPd);
 
         empView.showMessage("\n--- Enter Product ID to add, or 0 to STOP choosing items ---");
         int prodId = empView.promptProductId();
-
         if (prodId == 0) {
             isOrdering = false;
             break;
@@ -112,17 +110,16 @@ void EmployeeController::createOrder() {
             continue;
         }
 
-        std::string notes = "";
+        std::string notes;
         empView.showMessage("\n--- Add Modifiers? (1. Yes / 0. No) ---");
         if (empView.getMenuChoice() == 1) {
             std::vector<Modifiers> allModifiers = ModifierRepo(db).getAll();
-            bool menuActive = true;
 
-            while (menuActive) {
+            while (true) {
                 empView.showMessage("\n===== SELECT MODIFIER CATEGORY =====");
-                empView.showMessage("1. Ice Options (Đá)");
-                empView.showMessage("2. Sugar Options (Đường)");
-                empView.showMessage("0. Finish (Hoàn tất)");
+                empView.showMessage("1. Ice Options");
+                empView.showMessage("2. Sugar Options");
+                empView.showMessage("0. Finish");
 
                 int catChoice = empView.getMenuChoice();
                 if (catChoice == 0) break;
@@ -139,15 +136,14 @@ void EmployeeController::createOrder() {
                 }
 
                 empView.showMessage("\n--- Select Option (1-" + std::to_string(filteredList.size()) + ") ---");
-                for (int i = 0; i < filteredList.size(); ++i) {
+                for (size_t i = 0; i < filteredList.size(); ++i) {
                     empView.showMessage(std::to_string(i + 1) + ". " + filteredList[i].getModName());
                 }
                 empView.showMessage("0. Back to categories");
 
                 int itemChoice = empView.getMenuChoice();
-                if (itemChoice > 0 && itemChoice <= (int)filteredList.size()) {
-                    Modifiers selected = filteredList[itemChoice - 1];
-
+                if (itemChoice > 0 && itemChoice <= static_cast<int>(filteredList.size())) {
+                    const Modifiers& selected = filteredList[itemChoice - 1];
                     if (!notes.empty()) notes += ", ";
                     notes += selected.getModName();
                     empView.showMessage(">> Added: " + selected.getModName());
@@ -160,7 +156,7 @@ void EmployeeController::createOrder() {
         item.setSizeLabel(sizeLabel);
         item.setQuantity(quantity);
         item.setUnitPrice(calcSizePrice(selectedProduct.getProdPrice(), sizeLabel));
-        item.setNote("");
+        item.setNote(notes);
 
         tempItems.push_back(item);
         empView.showMessage("Added " + selectedProduct.getProdName() + " (" + sizeLabel + ") x" + std::to_string(quantity));
@@ -199,10 +195,9 @@ void EmployeeController::createOrder() {
 }
 
 void EmployeeController::createPayment() {
-    empView.showOccupiedOrderCards(orderCardUsed, orderCardId);
+    empView.showOccupiedOrderCards(orderCardUsed.data(), orderCardId.data());
 
     int cardId = empView.promptOrderCardToPay();
-
     if (!isOrderCardValid(cardId) || !orderCardUsed[cardId - 1]) {
         empView.showMessage("Order card is empty or invalid!");
         return;
@@ -254,8 +249,7 @@ void EmployeeController::createPayment() {
         }
     }
 
-    double finalAmount = totalAmount - discountValue;
-    if (finalAmount < 0) finalAmount = 0;
+    double finalAmount = std::max(0.0, totalAmount - discountValue);
 
     empView.showOrderDetail(order, cardId, items, finalAmount);
 
@@ -272,15 +266,11 @@ void EmployeeController::createPayment() {
         Customer customer = cr.getByID(order.getCustId());
 
         if (customer.getCustId() != 0) {
-
             int pointsToAdd = static_cast<int>(finalAmount / 1000.0);
-
             if (pointsToAdd > 0) {
                 int newPoints = customer.getPoint() + pointsToAdd;
                 customer.setPoint(newPoints);
-
                 cr.update(customer);
-
                 empView.showMessage("Added +" + std::to_string(pointsToAdd) +
                                     " points. Total: " + std::to_string(newPoints));
             }
@@ -292,11 +282,12 @@ void EmployeeController::createPayment() {
 }
 
 void EmployeeController::takeOrderCard() {
-    empView.showOccupiedOrderCards(orderCardUsed, orderCardId);
+    empView.showOccupiedOrderCards(orderCardUsed.data(), orderCardId.data());
 
     empView.showMessage("Enter Order Card ID to view details (or 0 to go back): ");
     int cardId;
     std::cin >> cardId;
+
     if (cardId > 0 && isOrderCardValid(cardId)) {
         if (orderCardUsed[cardId - 1]) {
             int orderId = orderCardId[cardId - 1];
@@ -304,7 +295,9 @@ void EmployeeController::takeOrderCard() {
             std::vector<OrderItems> items = oir.getByOrderID(orderId);
 
             double total = 0;
-            for(const auto& item : items) total += item.getQuantity() * item.getUnitPrice();
+            for (const auto& item : items) {
+                total += item.getQuantity() * item.getUnitPrice();
+            }
 
             empView.showOrderDetail(order, cardId, items, total);
         } else {

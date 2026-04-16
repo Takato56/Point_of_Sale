@@ -1,31 +1,26 @@
-//
-// Created by ntt12 on 4/9/2026.
-//
-
 #ifndef POINT_OF_SALE_ORDERDISCOUNTS_H
 #define POINT_OF_SALE_ORDERDISCOUNTS_H
-#include <iostream>
 
 class OrderDiscounts {
 private:
-    int ODId, OrderId, DiscountId, appliedValue;
+    int odId = 0;
+    int orderId = 0;
+    int discountId = 0;
+    int appliedValue = 0;
 public:
-    OrderDiscounts() : ODId(), OrderId(), DiscountId(), appliedValue() {}
+    OrderDiscounts() = default;
 
-    int getODId() const;
-    int getOrderId() const;
-    int getDiscountId() const;
-    int getAppliedValue() const;
+    [[nodiscard]] int getODId() const;
+    [[nodiscard]] int getOrderId() const;
+    [[nodiscard]] int getDiscountId() const;
+    [[nodiscard]] int getAppliedValue() const;
 
     void setODId(int newODId);
     void setOrderId(int newOrderId);
     void setDiscountId(int newDiscountId);
     void setAppliedValue(int newAppliedValue);
 
-    virtual void edit();
-    virtual void display() const;
-    virtual ~OrderDiscounts() {}
+    virtual ~OrderDiscounts() = default;
 };
-
 
 #endif //POINT_OF_SALE_ORDERDISCOUNTS_H

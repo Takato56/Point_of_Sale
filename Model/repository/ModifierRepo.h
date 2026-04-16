@@ -12,7 +12,7 @@ class ModifierRepo {
 private:
     DBContext& db;
 public:
-    ModifierRepo(DBContext& context) : db(context) {}
+    explicit ModifierRepo(DBContext& context) : db(context) {}
     void addModifier(const Modifiers& m);
     std::vector<Modifiers> getAll();
     Modifiers getByID(int id);

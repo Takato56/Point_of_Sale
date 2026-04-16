@@ -13,7 +13,7 @@ class ProductRepo {
 private:
     DBContext& db;
 public:
-    ProductRepo(DBContext& context) : db(context) {}
+    explicit ProductRepo(DBContext& context) : db(context) {}
     void addProduct(const Product& pd);
     std::vector<Product> getAll();
     Product getByID(int id);

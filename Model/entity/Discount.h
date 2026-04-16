@@ -1,36 +1,30 @@
-//
-// Created by ntt12 on 4/9/2026.
-//
-
 #ifndef POINT_OF_SALE_DISCOUNT_H
 #define POINT_OF_SALE_DISCOUNT_H
-#include <iostream>
 #include <string>
 
 class Discount {
 private:
-    int DiscountId, Value;
-    std::string Code, Type;
+    int discountId = 0;
+    int value = 0;
+    std::string code;
+    std::string type;
     int isActive = 1;
 public:
-    Discount() : DiscountId(), Value(), Code("") {}
+    Discount() = default;
 
-    int getDiscountId() const;
-    int getValue() const;
-    std::string getCode() const;
-    int getIsActive() const;
-    std::string getType() const;
+    [[nodiscard]] int getDiscountId() const;
+    [[nodiscard]] int getValue() const;
+    [[nodiscard]] const std::string& getCode() const;
+    [[nodiscard]] int getIsActive() const;
+    [[nodiscard]] const std::string& getType() const;
 
     void setDiscountId(int newDiscountId);
     void setValue(int newValue);
-    void setCode(std::string newCode);
+    void setCode(const std::string& newCode);
     void setIsActive(int newIsActive);
-    void setType(std::string newType);
+    void setType(const std::string& newType);
 
-    virtual void edit();
-    virtual void display() const;
-    virtual ~Discount() {}
+    virtual ~Discount() = default;
 };
-
 
 #endif //POINT_OF_SALE_DISCOUNT_H

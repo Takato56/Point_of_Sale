@@ -1,38 +1,29 @@
-//
-// Created by ntt12 on 4/3/2026.
-//
-
 #ifndef POINT_OF_SALE_PRODUCT_H
 #define POINT_OF_SALE_PRODUCT_H
 #include <string>
-#include <iostream>
+
 class Product {
 private:
-    std::string ProdName;
-    int ProdId;
-    int CateId;
-    int ProdPrice;
+    std::string prodName;
+    int prodId = 0;
+    int cateId = 0;
+    int prodPrice = 0;
 public:
-    Product() : ProdId(), ProdName(""), CateId(), ProdPrice() {}
+    Product() = default;
 
-    Product(const std::string& n, int id) : ProdName(n), ProdId(id) {}
+    [[nodiscard]] const std::string& getProdName() const;
+    [[nodiscard]] int getProdId() const;
+    [[nodiscard]] int getProdPrice() const;
+    [[nodiscard]] int getCateId() const;
 
-    std::string getProdName() const;
-    int getProdId() const;
-    int getProdPrice() const;
-    int getCateId() const;
-
-    void setProdName(std::string newName);
+    void setProdName(const std::string& newName);
     void setProdId(int newId);
     void setProdPrice(int newPrice);
     void setCateId(int newCateId);
 
-    virtual void edit();
-    virtual void display() const;
-    virtual ~Product() {}
+    [[nodiscard]] std::string toString() const;
 
-    std::string toString() const;
+    virtual ~Product() = default;
 };
-
 
 #endif //POINT_OF_SALE_PRODUCT_H
