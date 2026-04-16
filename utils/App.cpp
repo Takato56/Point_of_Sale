@@ -28,7 +28,7 @@ int runApp() {
         loginResult = loginController.login();
 
         if (!loginResult.isSuccess) {
-            std::cout << "Invalid login.\n";
+            std::cout << "Wrong login credential, please try again.\n";
         }
 
     } while (!loginResult.isSuccess);

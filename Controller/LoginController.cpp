@@ -1,19 +1,31 @@
 #include "LoginController.h"
+#include <regex>
 
 LoginResult LoginController::login() {
     LoginResult result;
     StaffRepo sr(db);
+    const std::regex phoneRegex("^[0-9]{10}$");
 
     std::string phoneNumber;
-    std::cout << "Enter phone number: ";
-    std::cin >> phoneNumber;
+    do {
+        std::cout << "Enter phone number: ";
+        std::cin >> phoneNumber;
+        if (!std::regex_match(phoneNumber, phoneRegex)) {
+            std::cout << "Invalid phone number. Please enter a valid phone number starts with 0 and contain 10 digits.\n";
+        }
+    } while (!std::regex_match(phoneNumber, phoneRegex));
 
     Employee emp = sr.getByPhone(phoneNumber);
 
+    const std::regex pinRegex("^[0-9]{6}$");
     std::string pin;
-    std::cout << "Enter PIN: ";
-    std::cin >> pin;
-
+    do {
+        std::cout << "Enter PIN (contains 6 digits): ";
+        std::cin >> pin;
+        if (!std::regex_match(pin, pinRegex)) {
+            std::cout << "Invalid PIN. Please enter a valid PIN with 6 digits.\n";
+        }
+    } while (!std::regex_match(pin, pinRegex));
 
     if (PasswordHasher::verify(pin, emp.getPinHash())) {
         result.isSuccess = true;
