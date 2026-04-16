@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef POINT_OF_SALE_PASSWORD_HASHER_H
+#define POINT_OF_SALE_PASSWORD_HASHER_H
 #include <string>
 #include <cstdint>
 
@@ -43,3 +43,5 @@ private:
     static void sha256Transform(uint32_t state[8], const uint8_t block[64]);
     static const uint32_t K[64];
 };
+
+#endif //POINT_OF_SALE_PASSWORD_HASHER_H

@@ -4,6 +4,7 @@
 
 #include "EmployeeView.h"
 #include <limits>
+#include <regex>
 
 void EmployeeView::showStaffMenu() const {
     std::cout << "\n===== STAFF UI =====\n";
@@ -107,9 +108,15 @@ std::string EmployeeView::promptPaymentMethod() const {
 }
 
 std::string EmployeeView::promptCustPhone() const {
+    const std::regex pattern("^0[0-9]{9}$");
     std::string phone;
-    std::cout << "Enter CustPhone: ";
-    std::cin >> phone;
+    do {
+        std::cout << "Enter CustPhone: ";
+        std::cin >> phone;
+        if (!std::regex_match(phone, pattern)) {
+            std::cout << "Invalid phone number. Please enter a valid phone number starts with 0 and contain only digits.\n";
+        }
+    } while (!std::regex_match(phone, pattern));
     return phone;
 }
 

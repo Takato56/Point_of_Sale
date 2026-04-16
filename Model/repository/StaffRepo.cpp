@@ -46,7 +46,7 @@ std::vector<Employee> StaffRepo::getAll() {
     SQLHSTMT stmt = db.getStmt();
 
     SQLINTEGER idBuffer, isActiveBuffer;
-    SQLCHAR nameBuffer[100], phoneBuffer[10], pinHashBuffer[100], roleBuffer[10];
+    SQLCHAR nameBuffer[100], phoneBuffer[11], pinHashBuffer[100], roleBuffer[10];
 
     while (SQLFetch(stmt) == SQL_SUCCESS) {
         Employee emp;
@@ -83,7 +83,7 @@ Employee StaffRepo::getById(int id) {
 
     if (SQLFetch(stmt) == SQL_SUCCESS) {
         SQLINTEGER idBuffer, isActiveBuffer;
-        SQLCHAR nameBuffer[50], phoneBuffer[10], pinHashBuffer[100], roleBuffer[10];
+        SQLCHAR nameBuffer[50], phoneBuffer[11], pinHashBuffer[100], roleBuffer[10];
 
         SQLGetData(stmt, 1, SQL_C_SLONG, &idBuffer, sizeof(idBuffer), NULL);
         SQLGetData(stmt, 2, SQL_C_CHAR, nameBuffer, sizeof(nameBuffer), NULL);
@@ -113,7 +113,7 @@ Employee StaffRepo::getByPhone(const std::string& phone) {
     SQLHSTMT stmt = db.getStmt();
     if (SQLFetch(stmt) == SQL_SUCCESS) {
         SQLINTEGER idBuffer, isActiveBuffer;
-        SQLCHAR nameBuffer[50], phoneBuffer[10], pinHashBuffer[100], roleBuffer[10];
+        SQLCHAR nameBuffer[50], phoneBuffer[11], pinHashBuffer[100], roleBuffer[10];
 
         SQLGetData(stmt, 1, SQL_C_SLONG, &idBuffer, sizeof(idBuffer), NULL);
         SQLGetData(stmt, 2, SQL_C_CHAR, nameBuffer, sizeof(nameBuffer), NULL);

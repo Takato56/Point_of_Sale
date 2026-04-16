@@ -2,6 +2,7 @@
 #include "../utils/DataHelper.h"
 #include "../utils/PasswordHasher.h"
 #include <iomanip>
+#include <regex>
 // ═══════════════════════════════════════════
 //  CATEGORY CRUD
 // ═══════════════════════════════════════════
@@ -221,14 +222,28 @@ void ManagerController::productMenu() {
 void ManagerController::addEmployee() {
     std::string name = mgrView.promptEmployeeName();
     std::string phone;
+
+    // Enter a phone number and make sure it doesn't duplicate
     Employee emp;
+    const std::regex phonePattern("^0[0-9]{9}$");
     do {
         phone = mgrView.promptEmployeePhone();
         emp = sr.getByPhone(phone);
         if (emp.getPhoneNumber() == phone)
             mgrView.showMessage("This phone number is already exist, please enter a different phone.");
-    } while (emp.getPhoneNumber() == phone);
-    std::string pin = mgrView.promptEmployeePin();
+        if (!std::regex_match(phone, phonePattern))
+            mgrView.showMessage("Invalid phone number. Please enter a valid phone number (e.g., 0123456789).");
+    } while (emp.getPhoneNumber() == phone || !std::regex_match(phone, phonePattern));
+
+    // Enter pin code and make sure the pin contains 6 digits and only numbers
+    const std::regex pinPattern("^[0-9]{6}$");
+    std::string pin;
+    do {
+        pin = mgrView.promptEmployeePin();
+        if (!std::regex_match(pin, pinPattern)) {
+            mgrView.showMessage("Invalid PIN code. Please enter a valid PIN code (e.g., 123456).");
+        }
+    } while (!std::regex_match(pin, pinPattern));
     int roleChoice = mgrView.promptEmployeeRole();
 
     Employee newEmp;
@@ -445,6 +460,7 @@ void ManagerController::run() {
             case 3: employeeMenu(); break;
             case 4: discountMenu(); break;
             case 5: checkIncome(); break;
+            case 6: EmployeeController::run(); break;
             case 0: break;
             default: mgrView.showMessage("Invalid choice!"); break;
         }

@@ -63,8 +63,6 @@ add_executable(Point_of_Sale main.cpp
         model/repository/OrderItemRepo.h
 
         # View
-        view/Menu.cpp
-        view/Menu.h
         view/EmployeeView.cpp
         view/EmployeeView.h
         view/ManagerView.cpp
