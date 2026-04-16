@@ -4,6 +4,7 @@
 #include "EmployeeController.h"
 #include "../Model/repository/DiscountRepo.h"
 #include "../View/ManagerView.h"
+#include "../View/MenuView.h"
 #include "../Model/repository/OrderRepo.h"
 #include "../Model/repository/OrderItemRepo.h"
 #include "../Model/repository/PaymentRepo.h"
@@ -30,7 +31,6 @@ private:
     // Product CRUD
     void addProduct();
     void viewAllProducts();
-    void showProductByCateId();
     void updateProduct();
     void deleteProduct();
     void productMenu();
@@ -59,7 +59,7 @@ public:
           mgrOrderRepo(context), mgrOiRepo(context), mgrPayRepo(context),
           mgrDiscountRepo(context) {}
 
-    void run();
+    void run() override;
 };
 
 #endif //POINT_OF_SALE_MANAGERCONTROLLER_H

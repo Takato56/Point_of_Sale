@@ -6,6 +6,12 @@ void EmployeeController::loadData(const std::vector<Categories>& c, const std::v
     listPd = p;
 }
 
+void EmployeeController::showProductByCateId() {
+    std::vector<Categories> listCate = cateRepo.getAll();
+    std::vector<Product> listProd = prodRepo.getAll();
+    menuView.showProductByCateId(listCate, listProd);
+}
+
 void EmployeeController::setCurrentStaffId(int staffId) {
     currentStaffId = staffId;
 }
@@ -75,10 +81,7 @@ void EmployeeController::createOrder() {
     std::vector<OrderItems> tempItems;
 
     while (isOrdering) {
-        int selectedCateId = menuView.showAndSelectCategories(listCt);
-        if (selectedCateId == 0) break;
-
-        menuView.displayProductsByCategory(selectedCateId, listPd);
+        showProductByCateId();
 
         empView.showMessage("\n--- Enter Product ID to add, or 0 to STOP choosing items ---");
         int prodId = empView.promptProductId();

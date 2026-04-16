@@ -23,13 +23,11 @@ public:
     int promptDisplayOrder() const;
     int promptCategoryChoice(const std::vector<Categories>& categories) const;
     int promptCategoryId() const;
-    void showAllCategories(const std::vector<Categories>& categories) const;
 
     // Product
     std::string promptProductName() const;
     int promptProductPrice() const;
     int promptProductId() const;
-    void showProductByCateId(const std::vector<Categories>& ct, const std::vector<Product>& pd) const;
 
     // Employee
     std::string promptEmployeeName() const;

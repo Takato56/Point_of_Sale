@@ -16,7 +16,7 @@
 #include <array>
 
 class EmployeeController {
-private:
+protected:
     DBContext& db;
     std::vector<Categories> listCt;
     std::vector<Product> listPd;
@@ -32,6 +32,8 @@ private:
     PaymentRepo payRepo;
     DiscountRepo dr;
     ModifierRepo mr;
+    CategoriesRepo cateRepo;
+    ProductRepo prodRepo;
 
     int currentStaffId = -1;
     std::array<bool, 20> orderCardUsed{};
@@ -43,13 +45,13 @@ private:
     Orders getOrderByCardId(int cardId);
     double calcSizePrice(double basePrice, const std::string& sizeLabel) const;
 
-protected:
     DBContext& getDB() { return db; }
 
 public:
     explicit EmployeeController(DBContext& context)
         : db(context), odr(context), cr(context), oir(context),
-          payRepo(context), dr(context), mr(context)
+          payRepo(context), dr(context), mr(context),
+          cateRepo(context), prodRepo(context)
     {
         orderCardUsed.fill(false);
         orderCardId.fill(-1);
@@ -60,6 +62,7 @@ public:
     int checkCustPhone();
     void setCurrentStaffId(int staffId);
     void loadData(const std::vector<Categories>& c, const std::vector<Product>& p);
+    void showProductByCateId();
     void createOrder();
     void createPayment();
     void takeOrderCard();

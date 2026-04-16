@@ -23,7 +23,7 @@ void ManagerController::addCategory() {
 }
 
 void ManagerController::viewAllCategories() {
-    mgrView.showAllCategories(mgrCateRepo.getAll());
+    menuView.showAllCategories(mgrCateRepo.getAll());
 }
 
 void ManagerController::updateCategory() {
@@ -110,22 +110,8 @@ void ManagerController::addProduct() {
     mgrView.showMessage("Product created successfully.");
 }
 
-void ManagerController::showProductByCateId() {
-    std::vector<Categories> listCate = mgrCateRepo.getAll();
-    std::vector<Product> listProd = mgrProdRepo.getAll();
-    mgrView.showProductByCateId(listCate, listProd);
-}
-
 void ManagerController::viewAllProducts() {
-    std::vector<Product> listProd = mgrProdRepo.getAll();
-    std::vector<Categories> listCate = mgrCateRepo.getAll();
-    if (listCate.empty()) {
-        mgrView.showMessage("No categories available.");
-        return;
-    }
-
-    // Delegate display to the view
-    mgrView.showProductByCateId(listCate, listProd);
+    showProductByCateId();
 }
 
 void ManagerController::updateProduct() {

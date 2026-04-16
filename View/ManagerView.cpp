@@ -77,26 +77,6 @@ int ManagerView::promptCategoryId() const {
     return id;
 }
 
-void ManagerView::showAllCategories(const std::vector<Categories>& categories) const {
-    if (categories.empty()) {
-        std::cout << "\n[!] No categories found.\n";
-        return;
-    }
-    std::cout << "\n" << std::string(40, '=') << "\n";
-    std::cout << std::left
-              << std::setw(10) << "ID"
-              << "CATEGORY NAME" << "\n";
-    std::cout << std::string(40, '-') << "\n";
-
-    for (const auto& c : categories) {
-        std::cout << std::left
-                  << std::setw(10) << c.getCateId()
-                  << c.getCateName() << "\n";
-    }
-
-    std::cout << std::string(40, '=') << "\n";
-}
-
 // ─── Product ───
 
 std::string ManagerView::promptProductName() const {
@@ -119,24 +99,6 @@ int ManagerView::promptProductId() const {
     std::cout << "Enter Product ID: ";
     std::cin >> id;
     return id;
-}
-
-void ManagerView::showProductByCateId(const std::vector<Categories>& ct, const std::vector<Product>& pd) const {
-    for (const auto& cat : ct) {
-        std::cout << "\nCategory: " << cat.getCateName() << " - ID: " << cat.getCateId() << "\n";
-        bool found = false;
-
-        for (const auto& p : pd) {
-            if (p.getCateId() == cat.getCateId()) {
-                std::cout << "  -> " << p.toString() << "\n";
-                found = true;
-            }
-        }
-
-        if (!found) {
-            std::cout << "  (No products in this category)\n";
-        }
-    }
 }
 
 // ─── Staff ───
