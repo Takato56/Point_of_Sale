@@ -401,6 +401,11 @@ void ManagerController::discountMenu() {
     } while (choice != 0);
 }
 
+void ManagerController::openEmployeeMenu() {
+    this->setCurrentStaffId(this->currentStaffId);
+    EmployeeController::run();
+}
+
 // ═══════════════════════════════════════════
 //  MAIN RUN LOOP
 // ═══════════════════════════════════════════
@@ -417,7 +422,7 @@ void ManagerController::run() {
             case 3: employeeMenu(); break;
             case 4: discountMenu(); break;
             case 5: checkIncome(); break;
-            case 6: EmployeeController::run(); break;
+            case 6: openEmployeeMenu(); break;
             case 0: break;
             default: mgrView.showMessage("Invalid choice!"); break;
         }
