@@ -13,7 +13,7 @@ void EmployeeController::showProductByCateId() {
 }
 
 void EmployeeController::setCurrentStaffId(int staffId) {
-    currentStaffId = staffId;
+    this->currentStaffId = staffId;
 }
 
 bool EmployeeController::isOrderCardValid(int cardId) const {
@@ -133,6 +133,9 @@ void EmployeeController::createOrder() {
         empView.showMessage("\n--- Add Modifiers? (1. Yes / 0. No) ---");
         if (empView.getMenuChoice() == 1) {
             std::vector<Modifiers> allModifiers = ModifierRepo(db).getAll();
+            std::vector<Modifiers> selectedTypes;
+            bool hasIce = false;
+            bool hasSugar = false;
 
             while (true) {
                 empView.showMessage("\n===== SELECT MODIFIER CATEGORY =====");
@@ -144,6 +147,14 @@ void EmployeeController::createOrder() {
                 if (catChoice == 0) break;
 
                 std::string targetType = (catChoice == 1) ? "ice" : "sugar";
+                if (catChoice == 1 && hasIce) {
+                    empView.showMessage("Ice options have already been selected.");
+                    continue;
+                }
+                if (catChoice == 2 && hasSugar) {
+                    empView.showMessage("Sugar options have already been selected.");
+                    continue;
+                }
                 std::vector<Modifiers> filteredList;
                 for (const auto& m : allModifiers) {
                     if (m.getModType() == targetType) filteredList.push_back(m);
@@ -166,6 +177,8 @@ void EmployeeController::createOrder() {
                     if (!notes.empty()) notes += ", ";
                     notes += selected.getModName();
                     empView.showMessage(">> Added: " + selected.getModName());
+                    if (targetType == "ice") hasIce = true;
+                    if (targetType == "sugar") hasSugar = true;
                 }
             }
         }

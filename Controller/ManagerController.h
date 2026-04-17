@@ -51,6 +51,7 @@ private:
     void updateDiscount();
     void deleteDiscount();
     void discountMenu();
+    void openEmployeeMenu();
 
 public:
     explicit ManagerController(DBContext& context)

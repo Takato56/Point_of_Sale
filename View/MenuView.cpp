@@ -5,6 +5,7 @@
 #include "MenuView.h"
 #include <iomanip>
 #include <algorithm>
+#include <iostream>
 
 int MenuView::showAndSelectCategories(const std::vector<Categories>& ct) const {
     std::cout << "\n===== CATEGORIES =====" << std::endl;
@@ -31,10 +32,6 @@ void MenuView::displayProductsByCategory(int cateId, const std::vector<Product>&
         std::cout << "Product not exist" << std::endl;
     }
 }
-
-#include <iomanip>
-#include <iostream>
-#include <algorithm>
 
 void MenuView::showProductByCateId(const std::vector<Categories>& ct, const std::vector<Product>& pd) const {
     if (ct.empty()) {
