@@ -32,31 +32,61 @@ void MenuView::displayProductsByCategory(int cateId, const std::vector<Product>&
     }
 }
 
-void MenuView::showProductByCateId(const std::vector<Categories>& ct, const std::vector<Product>& pd) const {
-    // Create a copy of categories to sort by displayOrder
-    std::vector<Categories> sortedCategories = ct;
+#include <iomanip>
+#include <iostream>
+#include <algorithm>
 
-    // Sort by displayOrder (stable sort maintains database order for duplicates)
+void MenuView::showProductByCateId(const std::vector<Categories>& ct, const std::vector<Product>& pd) const {
+    if (ct.empty()) {
+        std::cout << "\n[!] Không có danh mục nào để hiển thị.\n";
+        return;
+    }
+
+    // 1. Sắp xếp danh mục theo DisplayOrder
+    std::vector<Categories> sortedCategories = ct;
     std::stable_sort(sortedCategories.begin(), sortedCategories.end(),
                      [](const Categories& a, const Categories& b) {
                          return a.getDisplayOrder() < b.getDisplayOrder();
                      });
 
+    // 2. Tiêu đề tổng quát
+    std::cout << "\n" << std::string(65, '=') << "\n";
+    std::cout << std::setw(42) << std::right << "DANH SÁCH THỰC ĐƠN" << "\n";
+    std::cout << std::string(65, '=') << "\n";
+
     for (const auto& cat : sortedCategories) {
-        std::cout << "\n" << cat.getCateName() << "\n";
-        bool found = false;
+        // In tên danh mục nổi bật (Ví dụ: --- CÀ PHÊ ---)
+        std::cout << "\n--- " << cat.getCateName() << " ---\n";
+
+        // Tiêu đề cột (chỉ in nếu danh mục có sản phẩm)
+        bool hasProd = false;
 
         for (const auto& p : pd) {
             if (p.getCateId() == cat.getCateId()) {
-                std::cout << "  -> " << p.toString() << "\n";
-                found = true;
+                if (!hasProd) {
+                    std::cout << std::left << std::setw(8) << "  ID"
+                              << std::setw(35) << "Tên sản phẩm"
+                              << "Giá bán" << "\n";
+                    std::cout << "  " << std::string(55, '-') << "\n";
+                    hasProd = true;
+                }
+
+                // In thông tin sản phẩm thẳng hàng
+                std::cout << "  " << std::left
+                          << std::setw(6)  << p.getProdId()
+                          << std::setw(35) << p.getProdName()
+                          << std::right << std::setw(8) << (int)p.getProdPrice() << " VND" << "\n";
             }
         }
 
-        if (!found) {
-            std::cout << "  (No products in this category)\n";
+        if (!hasProd) {
+            std::cout << "  (Chưa có sản phẩm trong mục này)\n";
+        } else {
+            std::cout << "  " << std::string(55, '.') << "\n";
         }
     }
+
+    std::cout << "\n" << std::string(65, '=') << "\n";
 }
 
 void MenuView::showAllCategories(const std::vector<Categories>& categories) const {

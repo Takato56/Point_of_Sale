@@ -206,3 +206,13 @@ std::vector<Orders> OrderRepo::getUnpaidOrders() {
     db.clearStmt();
     return list;
 }
+
+bool OrderRepo::updateCardStatus(int orderId) {
+    std::string sql = "UPDATE Orders SET Status = 1 WHERE OrderId = " + std::to_string(orderId);
+
+    try {
+        return db.execute(sql);
+    } catch (...) {
+        return false;
+    }
+}

@@ -189,50 +189,88 @@ int ManagerView::showDatesAndSelect(const std::vector<std::string>& dates) const
 int ManagerView::showOrdersAndSelect(const std::vector<Orders>& orders,
                                      const std::vector<double>& totals) const {
     if (orders.empty()) {
-        std::cout << "No orders on this day.\n";
+        std::cout << "\n [!] No orders found on this day.\n";
         return 0;
     }
-    std::cout << "\n========== BILLS ==========\n";
+
+    std::cout << "\n" << std::string(65, '=') << "\n";
+    std::cout << std::left << std::setw(30) << " " << "BILLS LIST\n";
+    std::cout << std::string(65, '=') << "\n";
+
+    std::cout << std::left
+              << std::setw(6)  << "No."
+              << std::setw(12) << "Order ID"
+              << std::setw(18) << "Total (VND)"
+              << "Created Time" << "\n";
+    std::cout << std::string(65, '-') << "\n";
+
     for (size_t i = 0; i < orders.size(); i++) {
-        std::cout << i + 1 << ". OrderID: " << orders[i].getOrderId()
-                  << " | Total: " << std::fixed << std::setprecision(2) << totals[i]
-                  << " | Time: " << orders[i].getCreatedAt() << "\n";
+        std::cout << std::left << " "
+                  << std::setw(5)  << (i + 1)
+                  << std::setw(12) << orders[i].getOrderId()
+                  << std::setw(18) << std::fixed << std::setprecision(0) << totals[i] // VND không cần .00
+                  << orders[i].getCreatedAt() << "\n";
     }
-    std::cout << "0. Back\n";
-    std::cout << "Select a bill: ";
+
+    std::cout << std::string(65, '-') << "\n";
+    std::cout << " [0] Back\n";
+    std::cout << std::string(65, '=') << "\n";
+
     int choice;
-    std::cin >> choice;
-    return choice;
+    while (true) {
+        std::cout << " >> Select a bill (0 to go back): ";
+        if (std::cin >> choice) {
+            std::cin.ignore(1000, '\n');
+            if (choice >= 0 && choice <= (int)orders.size()) {
+                return choice;
+            }
+            std::cout << "Invalid index! Please choose between 0 and " << orders.size() << ".\n";
+        } else {
+            std::cin.clear();
+            std::cin.ignore(1000, '\n');
+            std::cout << "Invalid input! Please enter a number.\n";
+        }
+    }
 }
 
 void ManagerView::showBillDetail(const Orders& order,
                                  const std::vector<OrderItems>& items,
                                  const std::vector<Payments>& payments,
                                  double total) const {
-    std::cout << "\n========== BILL DETAIL ==========\n";
-    std::cout << "OrderID: " << order.getOrderId()
-              << " | StaffID: " << order.getStaffId()
-              << " | CustID: " << order.getCustId()
-              << " | Created: " << order.getCreatedAt() << "\n";
+    std::cout << "\n====================== BILL DETAILS ======================\n";
+    std::cout << std::left << std::setw(15) << " Order ID:" << order.getOrderId() << "\n";
+    std::cout << std::left << std::setw(15) << " Staff ID:" << order.getStaffId() << "\n";
+    std::cout << std::left << std::setw(15) << " Customer ID:" << order.getCustId() << "\n";
+    std::cout << std::left << std::setw(15) << " Created At:" << order.getCreatedAt() << "\n";
+    std::cout << "----------------------------------------------------------\n";
 
-    std::cout << "\n--- Items ---\n";
+    std::cout << std::left << std::setw(8)  << "ID"
+              << std::setw(10) << "Size"
+              << std::setw(8)  << "Qty"
+              << std::setw(15) << "Unit Price"
+              << std::right << std::setw(15) << "Subtotal" << "\n";
+    std::cout << "----------------------------------------------------------\n";
+
     for (const auto& item : items) {
         double lineTotal = item.getQuantity() * item.getUnitPrice();
-        std::cout << "  ProdID: " << item.getProdId()
-                  << " | Size: " << item.getSizeLabel()
-                  << " | Qty: " << item.getQuantity()
-                  << " | UnitPrice: " << std::fixed << std::setprecision(2) << item.getUnitPrice()
-                  << " | Subtotal: " << lineTotal << "\n";
+        std::cout << std::left << " " << std::setw(7) << item.getProdId()
+                  << std::setw(10) << item.getSizeLabel()
+                  << std::setw(8)  << item.getQuantity()
+                  << std::fixed << std::setprecision(0) << std::setw(15) << item.getUnitPrice()
+                  << std::right << std::setw(15) << lineTotal << "\n";
     }
 
-    std::cout << "\n--- Payment ---\n";
+    std::cout << "----------------------------------------------------------\n";
+    std::cout << " PAYMENT METHODS:\n";
     for (const auto& pay : payments) {
-        std::cout << "  PayID: " << pay.getPayId()
-                  << " | Method: " << pay.getMethod()
-                  << " | Amount: " << std::fixed << std::setprecision(2) << pay.getAmount() << "\n";
+        std::cout << "  - " << std::left << std::setw(15) << pay.getMethod()
+                  << ": " << std::fixed << std::setprecision(0) << pay.getAmount() << " VND\n";
     }
 
-    std::cout << "\nTOTAL: " << std::fixed << std::setprecision(2) << total << "\n";
+    std::cout << "==========================================================\n";
+    std::cout << std::right << std::setw(42) << "GRAND TOTAL: "
+              << std::fixed << std::setprecision(0) << total << " VND\n";
+    std::cout << "==========================================================\n\n";
 }
 
 // ─── Discount ───
@@ -246,6 +284,7 @@ std::string ManagerView::promptDiscountCode() const {
     std::string code;
     std::cout << "Discount code: ";
     std::cin >> code;
+    std::cin.ignore(1000, '\n');
     return code;
 }
 
@@ -253,11 +292,21 @@ std::string ManagerView::promptDiscountType() const {
     int choice;
     while (true) {
         std::cout << "Choose Discount Type (1. Percentage, 2. Fixed): ";
+
         if (std::cin >> choice) {
+            std::cin.ignore(1000, '\n');
+
             if (choice == 1) return "Percentage";
             if (choice == 2) return "Fixed";
+
+            std::cout << "Invalid choice! ";
+        } else {
+            std::cin.clear();
+            std::cin.ignore(1000, '\n');
+            std::cout << "Invalid input! ";
         }
-        std::cout << "Invalid choice! Please enter 1 or 2.\n";
+
+        std::cout << "Please enter 1 or 2.\n";
     }
 }
 
@@ -265,6 +314,7 @@ int ManagerView::promptDiscountValue(const std::string& type) const {
     int value;
     while (true) {
         std::cout << "Enter Discount Value (" << type << "): ";
+
         if (std::cin >> value) {
             if (type == "Percentage" && (value < 0 || value > 100)) {
                 std::cout << "Error: Percentage must be between 0 and 100.\n";
@@ -274,12 +324,16 @@ int ManagerView::promptDiscountValue(const std::string& type) const {
                 std::cout << "Error: Value cannot be negative.\n";
                 continue;
             }
+
+            std::cin.ignore(1000, '\n');
             return value;
+        } else {
+            std::cout << "Invalid input! Please enter a number.\n";
+            std::cin.clear();
+            std::cin.ignore(1000, '\n');
         }
-        std::cout << "Invalid input! Please enter a number.\n";
     }
 }
-
 int ManagerView::promptDiscountIsActive() const {
     std::cout << "Is active? (1 = Yes, 0 = No): ";
     int choice;
@@ -292,13 +346,14 @@ void ManagerView::showAllDiscounts(const std::vector<Discount>& discounts) const
         std::cout << "\n[!] No discounts found.\n";
         return;
     }
-    std::cout << "\n" << std::string(60, '=') << "\n";
+    std::cout << "\n" << std::string(75, '=') << "\n";
     std::cout << std::left
               << std::setw(8)  << "ID"
+              << std::setw(15) << "CODE"
               << std::setw(15) << "DISCOUNT TYPE"
               << std::setw(15) << "VALUE"
               << "STATUS" << "\n";
-    std::cout << std::string(60, '-') << "\n";
+    std::cout << std::string(75, '-') << "\n";
 
     for (const auto& d : discounts) {
         std::string valueDisplay = std::to_string((int)d.getValue());
@@ -310,16 +365,19 @@ void ManagerView::showAllDiscounts(const std::vector<Discount>& discounts) const
 
         std::cout << std::left
                   << std::setw(8)  << d.getDiscountId()
+                  << std::setw(15) << d.getCode()
                   << std::setw(15) << d.getType()
                   << std::setw(15) << valueDisplay
                   << (d.getIsActive() ? "[ Yes ]" : "[ No  ]") << "\n";
     }
-    std::cout << std::string(60, '=') << "\n";
+    std::cout << std::string(75, '=') << "\n";
 }
 
 void ManagerView::showDailyIncome(const std::string& date, double income) const {
-    std::cout << "  >> Income on " << date << ": "
-              << std::fixed << std::setprecision(2) << income << "\n";
+    std::cout << "\n  +---------------------------------------+" << "\n";
+    std::cout << "    INCOME REPORT FOR: " << date << "\n";
+    std::cout << "    TOTAL REVENUE    : " << std::fixed << std::setprecision(0) << income << " VND" << "\n";
+    std::cout << "  +---------------------------------------+" << "\n";
 }
 
 void ManagerView::showMessage(const std::string& msg) const {

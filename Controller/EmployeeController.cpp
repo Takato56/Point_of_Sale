@@ -29,8 +29,24 @@ int EmployeeController::findEmptyOrderCard() const {
 
 void EmployeeController::freeOrderCard(int cardId) {
     if (!isOrderCardValid(cardId)) return;
-    orderCardUsed[cardId - 1] = false;
-    orderCardId[cardId - 1] = -1;
+    int orderId = orderCardId[cardId - 1];
+
+    if (orderId <= 0) {
+        orderCardUsed[cardId - 1] = false;
+        orderCardId[cardId - 1] = -1;
+        return;
+    }
+
+    std::string sql = "UPDATE Orders SET Status = 1 WHERE OrderId = " + std::to_string(orderId);
+
+    if (db.execute(sql)) {
+        orderCardUsed[cardId - 1] = false;
+        orderCardId[cardId - 1] = -1;
+
+        empView.showMessage("OrderCard " + std::to_string(cardId) + " is now free.");
+    } else {
+        empView.showMessage("Error: Cannot update order status in Database!");
+    }
 }
 
 Orders EmployeeController::getOrderByCardId(int cardId) {

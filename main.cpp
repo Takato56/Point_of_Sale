@@ -3,7 +3,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #endif
-
+#include "utils/PasswordHasher.h"
 int main() {
     #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
