@@ -19,9 +19,9 @@ public:
     void showCrudMenu(const std::string& entityName) const;
 
     // Category
-    std::string promptCategoryName() const;
+    std::string promptCategoryName(const std::string &promptMessage) const;
     int promptDisplayOrder() const;
-    int promptCategoryChoice(const std::vector<Categories>& categories) const;
+    int promptCategoryChoice(const std::vector<Categories>& categories, const std::string &promptMessage) const;
     int promptCategoryId() const;
 
     // Product
