@@ -10,7 +10,7 @@
 
 void ManagerController::addCategory() {
     int cateId = DataHelper::getNextId(getDB(), "Categories", "CateId");
-    std::string cateName = mgrView.promptCategoryName();
+    std::string cateName = mgrView.promptCategoryName("Enter new category name: ");
     int displayOrder = mgrView.promptDisplayOrder();
 
     Categories ct;
@@ -37,7 +37,8 @@ void ManagerController::updateCategory() {
     }
 
     mgrView.showMessage("Current name: " + ct.getCateName());
-    std::string newName = mgrView.promptCategoryName();
+    std::string newName = mgrView.promptCategoryName("New category name: ");
+    mgrView.showMessage("Current display order: " + std::to_string(ct.getDisplayOrder()));
     int newOrder = mgrView.promptDisplayOrder();
 
     ct.setCateName(newName);
@@ -88,7 +89,7 @@ void ManagerController::addProduct() {
         return;
     }
 
-    int cateChoice = mgrView.promptCategoryChoice(listCate);
+    int cateChoice = mgrView.promptCategoryChoice(listCate, "Choose category: ");
     if (cateChoice < 1 || cateChoice > static_cast<int>(listCate.size())) {
         mgrView.showMessage("Invalid choice!");
         return;
@@ -128,8 +129,7 @@ void ManagerController::updateProduct() {
 
     std::vector<Categories> listCate = mgrCateRepo.getAll();
     if (!listCate.empty()) {
-        mgrView.showMessage("Select new category (or same):");
-        int cateChoice = mgrView.promptCategoryChoice(listCate);
+        int cateChoice = mgrView.promptCategoryChoice(listCate, "Select new category (or same):");
         if (cateChoice >= 1 && cateChoice <= static_cast<int>(listCate.size())) {
             p.setCateId(listCate[cateChoice - 1].getCateId());
         }

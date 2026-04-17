@@ -33,6 +33,15 @@ void MenuView::displayProductsByCategory(int cateId, const std::vector<Product>&
     }
 }
 
+// Hàm tính số bytes UTF-8 "thừa" (mỗi ký tự multibyte thêm 1 byte so với display width)
+int utf8ExtraBytes(const std::string& s) {
+    int extra = 0;
+    for (unsigned char c : s) {
+        if ((c & 0xC0) == 0x80) extra++; // continuation byte
+    }
+    return extra;
+}
+
 void MenuView::showProductByCateId(const std::vector<Categories>& ct, const std::vector<Product>& pd) const {
     if (ct.empty()) {
         std::cout << "\n[!] Không có danh mục nào để hiển thị.\n";
@@ -47,43 +56,49 @@ void MenuView::showProductByCateId(const std::vector<Categories>& ct, const std:
                      });
 
     // 2. Tiêu đề tổng quát
-    std::cout << "\n" << std::string(65, '=') << "\n";
-    std::cout << std::setw(42) << std::right << "DANH SÁCH THỰC ĐƠN" << "\n";
-    std::cout << std::string(65, '=') << "\n";
+    std::cout << "\n" << std::string(58, '=') << "\n";
+    std::cout << std::setw(38) << std::right << "DANH SÁCH THỰC ĐƠN" << "\n";
+    std::cout << std::string(58, '=') << "\n";
+
+    const int COL_ID   = 6;
+    const int COL_NAME = 30;
+    const int COL_PRICE_WIDTH = 5; // width của phần số giá
 
     for (const auto& cat : sortedCategories) {
-        // In tên danh mục nổi bật (Ví dụ: --- CÀ PHÊ ---)
         std::cout << "\n--- " << cat.getCateName() << " ---\n";
 
-        // Tiêu đề cột (chỉ in nếu danh mục có sản phẩm)
         bool hasProd = false;
 
         for (const auto& p : pd) {
             if (p.getCateId() == cat.getCateId()) {
                 if (!hasProd) {
-                    std::cout << std::left << std::setw(8) << "  ID"
-                              << std::setw(35) << "Tên sản phẩm"
-                              << "Giá bán" << "\n";
-                    std::cout << "  " << std::string(55, '-') << "\n";
+                    // Header: "Tên sản phẩm" cũng có dấu, cần bù bytes
+                    std::string headerName = "Tên sản phẩm";
+                    int headerExtra = utf8ExtraBytes(headerName);
+                    std::cout << "  " << std::left
+                              << std::setw(COL_ID) << "ID"
+                              << std::setw(COL_NAME + headerExtra) << headerName
+                              << std::right << "Giá bán" << "\n";
+                    std::cout << "  " << std::string(48, '-') << "\n";
                     hasProd = true;
                 }
 
-                // In thông tin sản phẩm thẳng hàng
+                std::string name = p.getProdName();
+                int extra = utf8ExtraBytes(name);
+
                 std::cout << "  " << std::left
-                          << std::setw(6)  << p.getProdId()
-                          << std::setw(35) << p.getProdName()
-                          << std::right << std::setw(8) << (int)p.getProdPrice() << " VND" << "\n";
+                          << std::setw(COL_ID) << p.getProdId()
+                          << std::setw(COL_NAME + extra) << name  // bù bytes thừa
+                          << std::right << std::setw(COL_PRICE_WIDTH) << (int)p.getProdPrice() << " VND\n";
             }
         }
 
-        if (!hasProd) {
-            std::cout << "  (Chưa có sản phẩm trong mục này)\n";
-        } else {
-            std::cout << "  " << std::string(55, '.') << "\n";
+        if (hasProd) {
+            std::cout << "  " << std::string(48, '.') << "\n";
         }
     }
 
-    std::cout << "\n" << std::string(65, '=') << "\n";
+    std::cout << "\n" << std::string(58, '=') << "\n";
 }
 
 void MenuView::showAllCategories(const std::vector<Categories>& categories) const {

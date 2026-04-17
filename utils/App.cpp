@@ -37,6 +37,7 @@ int runApp() {
 
     if (loginResult.role == Role_Manager) {
         ManagerController controller(db);
+        controller.setCurrentStaffId(loginResult.staffId);
         controller.run();
         return 0;
     }

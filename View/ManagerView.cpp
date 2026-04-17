@@ -43,9 +43,9 @@ void ManagerView::showCrudMenu(const std::string& entityName) const {
 
 // ─── Category ───
 
-std::string ManagerView::promptCategoryName() const {
+std::string ManagerView::promptCategoryName(const std::string &promptMessage) const {
     std::string name;
-    std::cout << "Category name: ";
+    std::cout << promptMessage;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::getline(std::cin, name);
     return name;
@@ -58,14 +58,14 @@ int ManagerView::promptDisplayOrder() const {
     return order;
 }
 
-int ManagerView::promptCategoryChoice(const std::vector<Categories>& categories) const {
+int ManagerView::promptCategoryChoice(const std::vector<Categories>& categories, const std::string &promptMessage) const {
     std::cout << "\n========== CATEGORIES ==========\n";
     for (size_t i = 0; i < categories.size(); i++) {
         std::cout << i + 1 << ". " << categories[i].getCateName()
                   << " (ID: " << categories[i].getCateId() << ")\n";
     }
     int choice;
-    std::cout << "Choose category: ";
+    std::cout << promptMessage;
     std::cin >> choice;
     return choice;
 }
